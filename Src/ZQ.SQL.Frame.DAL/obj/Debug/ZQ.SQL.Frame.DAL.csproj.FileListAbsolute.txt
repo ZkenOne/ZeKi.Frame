@@ -1,0 +1,15 @@
+C:\Users\cysoft\Desktop\Dapper.Extensions.ZQ\ZQ.SQL.Frame\ZQ.SQL.Frame.DAL\bin\Debug\ZQ.SQL.Frame.DAL.dll
+C:\Users\cysoft\Desktop\Dapper.Extensions.ZQ\ZQ.SQL.Frame\ZQ.SQL.Frame.DAL\bin\Debug\ZQ.SQL.Frame.DAL.pdb
+C:\Users\cysoft\Desktop\Dapper.Extensions.ZQ\ZQ.SQL.Frame\ZQ.SQL.Frame.DAL\bin\Debug\Dapper.Extensions.ZQ.dll
+C:\Users\cysoft\Desktop\Dapper.Extensions.ZQ\ZQ.SQL.Frame\ZQ.SQL.Frame.DAL\bin\Debug\ZQ.SQL.Frame.Common.dll
+C:\Users\cysoft\Desktop\Dapper.Extensions.ZQ\ZQ.SQL.Frame\ZQ.SQL.Frame.DAL\bin\Debug\ZQ.SQL.Frame.Model.dll
+C:\Users\cysoft\Desktop\Dapper.Extensions.ZQ\ZQ.SQL.Frame\ZQ.SQL.Frame.DAL\bin\Debug\Dapper.dll
+C:\Users\cysoft\Desktop\Dapper.Extensions.ZQ\ZQ.SQL.Frame\ZQ.SQL.Frame.DAL\bin\Debug\Dapper.Extensions.ZQ.pdb
+C:\Users\cysoft\Desktop\Dapper.Extensions.ZQ\ZQ.SQL.Frame\ZQ.SQL.Frame.DAL\bin\Debug\ZQ.SQL.Frame.Common.pdb
+C:\Users\cysoft\Desktop\Dapper.Extensions.ZQ\ZQ.SQL.Frame\ZQ.SQL.Frame.DAL\bin\Debug\ZQ.SQL.Frame.Model.pdb
+C:\Users\cysoft\Desktop\Dapper.Extensions.ZQ\ZQ.SQL.Frame\ZQ.SQL.Frame.DAL\bin\Debug\Dapper.xml
+C:\Users\cysoft\Desktop\Dapper.Extensions.ZQ\ZQ.SQL.Frame\ZQ.SQL.Frame.DAL\obj\Debug\ZQ.SQL.Frame.DAL.csprojAssemblyReference.cache
+C:\Users\cysoft\Desktop\Dapper.Extensions.ZQ\ZQ.SQL.Frame\ZQ.SQL.Frame.DAL\obj\Debug\ZQ.SQL.Frame.DAL.csproj.CoreCompileInputs.cache
+C:\Users\cysoft\Desktop\Dapper.Extensions.ZQ\ZQ.SQL.Frame\ZQ.SQL.Frame.DAL\obj\Debug\ZQ.SQL.Frame.DAL.csproj.CopyComplete
+C:\Users\cysoft\Desktop\Dapper.Extensions.ZQ\ZQ.SQL.Frame\ZQ.SQL.Frame.DAL\obj\Debug\ZQ.SQL.Frame.DAL.dll
+C:\Users\cysoft\Desktop\Dapper.Extensions.ZQ\ZQ.SQL.Frame\ZQ.SQL.Frame.DAL\obj\Debug\ZQ.SQL.Frame.DAL.pdb
