@@ -10,7 +10,6 @@ C:\Users\cysoft\Desktop\我的文档\ZeKi.Frame\ZeKi.Frame.Model\obj\Debug\netco
 D:\Program Files\桌面\Git\Src\ZeKi.Frame.Model\bin\Debug\netcoreapp3.1\ZeKi.Frame.Model.deps.json
 D:\Program Files\桌面\Git\Src\ZeKi.Frame.Model\bin\Debug\netcoreapp3.1\ZeKi.Frame.Model.dll
 D:\Program Files\桌面\Git\Src\ZeKi.Frame.Model\bin\Debug\netcoreapp3.1\ZeKi.Frame.Model.pdb
-D:\Program Files\桌面\Git\Src\ZeKi.Frame.Model\obj\Debug\netcoreapp3.1\ZeKi.Frame.Model.csprojAssemblyReference.cache
 D:\Program Files\桌面\Git\Src\ZeKi.Frame.Model\obj\Debug\netcoreapp3.1\ZeKi.Frame.Model.csproj.CoreCompileInputs.cache
 D:\Program Files\桌面\Git\Src\ZeKi.Frame.Model\obj\Debug\netcoreapp3.1\ZeKi.Frame.Model.AssemblyInfoInputs.cache
 D:\Program Files\桌面\Git\Src\ZeKi.Frame.Model\obj\Debug\netcoreapp3.1\ZeKi.Frame.Model.AssemblyInfo.cs

@@ -1,6 +1,9 @@
+.vs/
 obj/
 bin/
 Bin/
+Debug/
+debug/
 *.chw
 *.pidb
 *.userprefs
