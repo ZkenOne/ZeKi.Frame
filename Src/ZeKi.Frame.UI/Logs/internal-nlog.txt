@@ -1,0 +1,36 @@
+2020-04-18 18:45:07.3978 Info Message Template Auto Format enabled
+2020-04-18 18:45:07.4481 Info Loading assembly: NLog.Web.AspNetCore
+2020-04-18 18:45:07.6474 Info Adding target AsyncTargetWrapper(Name=file)
+2020-04-18 18:45:07.7355 Info Found 17 configuration items
+2020-04-18 18:49:06.8547 Info Message Template Auto Format enabled
+2020-04-18 18:49:06.8868 Info Loading assembly: NLog.Web.AspNetCore
+2020-04-18 18:49:07.0820 Info Adding target AsyncTargetWrapper(Name=file)
+2020-04-18 18:49:07.1636 Info Found 17 configuration items
+2020-04-18 18:50:11.7437 Info Message Template Auto Format enabled
+2020-04-18 18:50:11.7736 Info Loading assembly: NLog.Web.AspNetCore
+2020-04-18 18:50:11.9705 Info Adding target AsyncTargetWrapper(Name=file)
+2020-04-18 18:50:12.0817 Info Found 17 configuration items
+2020-04-18 19:13:24.7205 Info Message Template Auto Format enabled
+2020-04-18 19:13:24.7742 Info Loading assembly: NLog.Web.AspNetCore
+2020-04-18 19:13:25.0716 Info Adding target AsyncTargetWrapper(Name=file)
+2020-04-18 19:13:25.2289 Info Found 18 configuration items
+2020-04-18 19:15:00.1694 Info Message Template Auto Format enabled
+2020-04-18 19:15:00.2007 Info Loading assembly: NLog.Web.AspNetCore
+2020-04-18 19:15:00.4546 Info Adding target AsyncTargetWrapper(Name=file)
+2020-04-18 19:15:00.5404 Info Found 18 configuration items
+2020-04-18 19:15:39.3177 Info Message Template Auto Format enabled
+2020-04-18 19:15:39.3511 Info Loading assembly: NLog.Web.AspNetCore
+2020-04-18 19:15:39.5855 Info Adding target AsyncTargetWrapper(Name=file)
+2020-04-18 19:15:39.6759 Info Found 18 configuration items
+2020-04-18 19:17:16.4780 Info Message Template Auto Format enabled
+2020-04-18 19:17:16.5041 Info Loading assembly: NLog.Web.AspNetCore
+2020-04-18 19:17:16.7182 Info Adding target AsyncTargetWrapper(Name=file)
+2020-04-18 19:17:16.7964 Info Found 18 configuration items
+2020-04-18 21:53:31.7373 Info Message Template Auto Format enabled
+2020-04-18 21:53:31.8047 Info Loading assembly: NLog.Web.AspNetCore
+2020-04-18 21:53:32.0481 Info Adding target AsyncTargetWrapper(Name=file)
+2020-04-18 21:53:32.1518 Info Found 18 configuration items
+2020-04-18 22:04:44.3766 Info Message Template Auto Format enabled
+2020-04-18 22:04:44.4375 Info Loading assembly: NLog.Web.AspNetCore
+2020-04-18 22:04:44.6413 Info Adding target AsyncTargetWrapper(Name=file)
+2020-04-18 22:04:44.7328 Info Found 18 configuration items
