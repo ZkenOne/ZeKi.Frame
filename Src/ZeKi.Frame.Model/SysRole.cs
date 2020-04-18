@@ -20,5 +20,6 @@ namespace ZeKi.Frame.Model
         public bool rIsDel { get; set; }
 
         public DateTime rAddTime { get; set; }
+
     }
 }
