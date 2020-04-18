@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Program Files\\桌面\\ZeKi.Frame\\ZeKi.Frame.BLL\\ZeKi.Frame.BLL.csproj": {}
+    "D:\\Program Files\\桌面\\Git\\Src\\ZeKi.Frame.BLL\\ZeKi.Frame.BLL.csproj": {}
   },
   "projects": {
-    "D:\\Program Files\\桌面\\ZeKi.Frame\\ZeKi.Frame.BLL\\ZeKi.Frame.BLL.csproj": {
+    "D:\\Program Files\\桌面\\Git\\Src\\ZeKi.Frame.BLL\\ZeKi.Frame.BLL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Program Files\\桌面\\ZeKi.Frame\\ZeKi.Frame.BLL\\ZeKi.Frame.BLL.csproj",
+        "projectUniqueName": "D:\\Program Files\\桌面\\Git\\Src\\ZeKi.Frame.BLL\\ZeKi.Frame.BLL.csproj",
         "projectName": "ZeKi.Frame.BLL",
-        "projectPath": "D:\\Program Files\\桌面\\ZeKi.Frame\\ZeKi.Frame.BLL\\ZeKi.Frame.BLL.csproj",
+        "projectPath": "D:\\Program Files\\桌面\\Git\\Src\\ZeKi.Frame.BLL\\ZeKi.Frame.BLL.csproj",
         "packagesPath": "C:\\Users\\ZZQ\\.nuget\\packages\\",
-        "outputPath": "D:\\Program Files\\桌面\\ZeKi.Frame\\ZeKi.Frame.BLL\\obj\\",
+        "outputPath": "D:\\Program Files\\桌面\\Git\\Src\\ZeKi.Frame.BLL\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -30,11 +30,11 @@
         "frameworks": {
           "netcoreapp3.1": {
             "projectReferences": {
-              "D:\\Program Files\\桌面\\ZeKi.Frame\\ZeKi.Frame.DAL\\ZeKi.Frame.DAL.csproj": {
-                "projectPath": "D:\\Program Files\\桌面\\ZeKi.Frame\\ZeKi.Frame.DAL\\ZeKi.Frame.DAL.csproj"
+              "D:\\Program Files\\桌面\\Git\\Src\\ZeKi.Frame.DAL\\ZeKi.Frame.DAL.csproj": {
+                "projectPath": "D:\\Program Files\\桌面\\Git\\Src\\ZeKi.Frame.DAL\\ZeKi.Frame.DAL.csproj"
               },
-              "D:\\Program Files\\桌面\\ZeKi.Frame\\ZeKi.Frame.IBLL\\ZeKi.Frame.IBLL.csproj": {
-                "projectPath": "D:\\Program Files\\桌面\\ZeKi.Frame\\ZeKi.Frame.IBLL\\ZeKi.Frame.IBLL.csproj"
+              "D:\\Program Files\\桌面\\Git\\Src\\ZeKi.Frame.IBLL\\ZeKi.Frame.IBLL.csproj": {
+                "projectPath": "D:\\Program Files\\桌面\\Git\\Src\\ZeKi.Frame.IBLL\\ZeKi.Frame.IBLL.csproj"
               }
             }
           }
@@ -72,14 +72,14 @@
         }
       }
     },
-    "D:\\Program Files\\桌面\\ZeKi.Frame\\ZeKi.Frame.Common\\ZeKi.Frame.Common.csproj": {
+    "D:\\Program Files\\桌面\\Git\\Src\\ZeKi.Frame.Common\\ZeKi.Frame.Common.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Program Files\\桌面\\ZeKi.Frame\\ZeKi.Frame.Common\\ZeKi.Frame.Common.csproj",
+        "projectUniqueName": "D:\\Program Files\\桌面\\Git\\Src\\ZeKi.Frame.Common\\ZeKi.Frame.Common.csproj",
         "projectName": "ZeKi.Frame.Common",
-        "projectPath": "D:\\Program Files\\桌面\\ZeKi.Frame\\ZeKi.Frame.Common\\ZeKi.Frame.Common.csproj",
+        "projectPath": "D:\\Program Files\\桌面\\Git\\Src\\ZeKi.Frame.Common\\ZeKi.Frame.Common.csproj",
         "packagesPath": "C:\\Users\\ZZQ\\.nuget\\packages\\",
-        "outputPath": "D:\\Program Files\\桌面\\ZeKi.Frame\\ZeKi.Frame.Common\\obj\\",
+        "outputPath": "D:\\Program Files\\桌面\\Git\\Src\\ZeKi.Frame.Common\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -98,8 +98,8 @@
         "frameworks": {
           "netcoreapp3.1": {
             "projectReferences": {
-              "D:\\Program Files\\桌面\\ZeKi.Frame\\ZeKi.Frame.Model\\ZeKi.Frame.Model.csproj": {
-                "projectPath": "D:\\Program Files\\桌面\\ZeKi.Frame\\ZeKi.Frame.Model\\ZeKi.Frame.Model.csproj"
+              "D:\\Program Files\\桌面\\Git\\Src\\ZeKi.Frame.Model\\ZeKi.Frame.Model.csproj": {
+                "projectPath": "D:\\Program Files\\桌面\\Git\\Src\\ZeKi.Frame.Model\\ZeKi.Frame.Model.csproj"
               }
             }
           }
@@ -157,14 +157,14 @@
         }
       }
     },
-    "D:\\Program Files\\桌面\\ZeKi.Frame\\ZeKi.Frame.DAL\\ZeKi.Frame.DAL.csproj": {
+    "D:\\Program Files\\桌面\\Git\\Src\\ZeKi.Frame.DAL\\ZeKi.Frame.DAL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Program Files\\桌面\\ZeKi.Frame\\ZeKi.Frame.DAL\\ZeKi.Frame.DAL.csproj",
+        "projectUniqueName": "D:\\Program Files\\桌面\\Git\\Src\\ZeKi.Frame.DAL\\ZeKi.Frame.DAL.csproj",
         "projectName": "ZeKi.Frame.DAL",
-        "projectPath": "D:\\Program Files\\桌面\\ZeKi.Frame\\ZeKi.Frame.DAL\\ZeKi.Frame.DAL.csproj",
+        "projectPath": "D:\\Program Files\\桌面\\Git\\Src\\ZeKi.Frame.DAL\\ZeKi.Frame.DAL.csproj",
         "packagesPath": "C:\\Users\\ZZQ\\.nuget\\packages\\",
-        "outputPath": "D:\\Program Files\\桌面\\ZeKi.Frame\\ZeKi.Frame.DAL\\obj\\",
+        "outputPath": "D:\\Program Files\\桌面\\Git\\Src\\ZeKi.Frame.DAL\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -183,11 +183,11 @@
         "frameworks": {
           "netcoreapp3.1": {
             "projectReferences": {
-              "D:\\Program Files\\桌面\\ZeKi.Frame\\ZeKi.Frame.DB\\ZeKi.Frame.DB.csproj": {
-                "projectPath": "D:\\Program Files\\桌面\\ZeKi.Frame\\ZeKi.Frame.DB\\ZeKi.Frame.DB.csproj"
+              "D:\\Program Files\\桌面\\Git\\Src\\ZeKi.Frame.DB\\ZeKi.Frame.DB.csproj": {
+                "projectPath": "D:\\Program Files\\桌面\\Git\\Src\\ZeKi.Frame.DB\\ZeKi.Frame.DB.csproj"
               },
-              "D:\\Program Files\\桌面\\ZeKi.Frame\\ZeKi.Frame.IDAL\\ZeKi.Frame.IDAL.csproj": {
-                "projectPath": "D:\\Program Files\\桌面\\ZeKi.Frame\\ZeKi.Frame.IDAL\\ZeKi.Frame.IDAL.csproj"
+              "D:\\Program Files\\桌面\\Git\\Src\\ZeKi.Frame.IDAL\\ZeKi.Frame.IDAL.csproj": {
+                "projectPath": "D:\\Program Files\\桌面\\Git\\Src\\ZeKi.Frame.IDAL\\ZeKi.Frame.IDAL.csproj"
               }
             }
           }
@@ -225,14 +225,14 @@
         }
       }
     },
-    "D:\\Program Files\\桌面\\ZeKi.Frame\\ZeKi.Frame.DB\\ZeKi.Frame.DB.csproj": {
+    "D:\\Program Files\\桌面\\Git\\Src\\ZeKi.Frame.DB\\ZeKi.Frame.DB.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Program Files\\桌面\\ZeKi.Frame\\ZeKi.Frame.DB\\ZeKi.Frame.DB.csproj",
+        "projectUniqueName": "D:\\Program Files\\桌面\\Git\\Src\\ZeKi.Frame.DB\\ZeKi.Frame.DB.csproj",
         "projectName": "ZeKi.Frame.DB",
-        "projectPath": "D:\\Program Files\\桌面\\ZeKi.Frame\\ZeKi.Frame.DB\\ZeKi.Frame.DB.csproj",
+        "projectPath": "D:\\Program Files\\桌面\\Git\\Src\\ZeKi.Frame.DB\\ZeKi.Frame.DB.csproj",
         "packagesPath": "C:\\Users\\ZZQ\\.nuget\\packages\\",
-        "outputPath": "D:\\Program Files\\桌面\\ZeKi.Frame\\ZeKi.Frame.DB\\obj\\",
+        "outputPath": "D:\\Program Files\\桌面\\Git\\Src\\ZeKi.Frame.DB\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -251,11 +251,11 @@
         "frameworks": {
           "netcoreapp3.1": {
             "projectReferences": {
-              "D:\\Program Files\\桌面\\ZeKi.Frame\\ZeKi.Frame.Common\\ZeKi.Frame.Common.csproj": {
-                "projectPath": "D:\\Program Files\\桌面\\ZeKi.Frame\\ZeKi.Frame.Common\\ZeKi.Frame.Common.csproj"
+              "D:\\Program Files\\桌面\\Git\\Src\\ZeKi.Frame.Common\\ZeKi.Frame.Common.csproj": {
+                "projectPath": "D:\\Program Files\\桌面\\Git\\Src\\ZeKi.Frame.Common\\ZeKi.Frame.Common.csproj"
               },
-              "D:\\Program Files\\桌面\\ZeKi.Frame\\ZeKi.Frame.Model\\ZeKi.Frame.Model.csproj": {
-                "projectPath": "D:\\Program Files\\桌面\\ZeKi.Frame\\ZeKi.Frame.Model\\ZeKi.Frame.Model.csproj"
+              "D:\\Program Files\\桌面\\Git\\Src\\ZeKi.Frame.Model\\ZeKi.Frame.Model.csproj": {
+                "projectPath": "D:\\Program Files\\桌面\\Git\\Src\\ZeKi.Frame.Model\\ZeKi.Frame.Model.csproj"
               }
             }
           }
@@ -301,14 +301,14 @@
         }
       }
     },
-    "D:\\Program Files\\桌面\\ZeKi.Frame\\ZeKi.Frame.IBLL\\ZeKi.Frame.IBLL.csproj": {
+    "D:\\Program Files\\桌面\\Git\\Src\\ZeKi.Frame.IBLL\\ZeKi.Frame.IBLL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Program Files\\桌面\\ZeKi.Frame\\ZeKi.Frame.IBLL\\ZeKi.Frame.IBLL.csproj",
+        "projectUniqueName": "D:\\Program Files\\桌面\\Git\\Src\\ZeKi.Frame.IBLL\\ZeKi.Frame.IBLL.csproj",
         "projectName": "ZeKi.Frame.IBLL",
-        "projectPath": "D:\\Program Files\\桌面\\ZeKi.Frame\\ZeKi.Frame.IBLL\\ZeKi.Frame.IBLL.csproj",
+        "projectPath": "D:\\Program Files\\桌面\\Git\\Src\\ZeKi.Frame.IBLL\\ZeKi.Frame.IBLL.csproj",
         "packagesPath": "C:\\Users\\ZZQ\\.nuget\\packages\\",
-        "outputPath": "D:\\Program Files\\桌面\\ZeKi.Frame\\ZeKi.Frame.IBLL\\obj\\",
+        "outputPath": "D:\\Program Files\\桌面\\Git\\Src\\ZeKi.Frame.IBLL\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -327,11 +327,11 @@
         "frameworks": {
           "netcoreapp3.1": {
             "projectReferences": {
-              "D:\\Program Files\\桌面\\ZeKi.Frame\\ZeKi.Frame.Common\\ZeKi.Frame.Common.csproj": {
-                "projectPath": "D:\\Program Files\\桌面\\ZeKi.Frame\\ZeKi.Frame.Common\\ZeKi.Frame.Common.csproj"
+              "D:\\Program Files\\桌面\\Git\\Src\\ZeKi.Frame.Common\\ZeKi.Frame.Common.csproj": {
+                "projectPath": "D:\\Program Files\\桌面\\Git\\Src\\ZeKi.Frame.Common\\ZeKi.Frame.Common.csproj"
               },
-              "D:\\Program Files\\桌面\\ZeKi.Frame\\ZeKi.Frame.Model\\ZeKi.Frame.Model.csproj": {
-                "projectPath": "D:\\Program Files\\桌面\\ZeKi.Frame\\ZeKi.Frame.Model\\ZeKi.Frame.Model.csproj"
+              "D:\\Program Files\\桌面\\Git\\Src\\ZeKi.Frame.Model\\ZeKi.Frame.Model.csproj": {
+                "projectPath": "D:\\Program Files\\桌面\\Git\\Src\\ZeKi.Frame.Model\\ZeKi.Frame.Model.csproj"
               }
             }
           }
@@ -363,14 +363,14 @@
         }
       }
     },
-    "D:\\Program Files\\桌面\\ZeKi.Frame\\ZeKi.Frame.IDAL\\ZeKi.Frame.IDAL.csproj": {
+    "D:\\Program Files\\桌面\\Git\\Src\\ZeKi.Frame.IDAL\\ZeKi.Frame.IDAL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Program Files\\桌面\\ZeKi.Frame\\ZeKi.Frame.IDAL\\ZeKi.Frame.IDAL.csproj",
+        "projectUniqueName": "D:\\Program Files\\桌面\\Git\\Src\\ZeKi.Frame.IDAL\\ZeKi.Frame.IDAL.csproj",
         "projectName": "ZeKi.Frame.IDAL",
-        "projectPath": "D:\\Program Files\\桌面\\ZeKi.Frame\\ZeKi.Frame.IDAL\\ZeKi.Frame.IDAL.csproj",
+        "projectPath": "D:\\Program Files\\桌面\\Git\\Src\\ZeKi.Frame.IDAL\\ZeKi.Frame.IDAL.csproj",
         "packagesPath": "C:\\Users\\ZZQ\\.nuget\\packages\\",
-        "outputPath": "D:\\Program Files\\桌面\\ZeKi.Frame\\ZeKi.Frame.IDAL\\obj\\",
+        "outputPath": "D:\\Program Files\\桌面\\Git\\Src\\ZeKi.Frame.IDAL\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -389,11 +389,11 @@
         "frameworks": {
           "netcoreapp3.1": {
             "projectReferences": {
-              "D:\\Program Files\\桌面\\ZeKi.Frame\\ZeKi.Frame.Common\\ZeKi.Frame.Common.csproj": {
-                "projectPath": "D:\\Program Files\\桌面\\ZeKi.Frame\\ZeKi.Frame.Common\\ZeKi.Frame.Common.csproj"
+              "D:\\Program Files\\桌面\\Git\\Src\\ZeKi.Frame.Common\\ZeKi.Frame.Common.csproj": {
+                "projectPath": "D:\\Program Files\\桌面\\Git\\Src\\ZeKi.Frame.Common\\ZeKi.Frame.Common.csproj"
               },
-              "D:\\Program Files\\桌面\\ZeKi.Frame\\ZeKi.Frame.Model\\ZeKi.Frame.Model.csproj": {
-                "projectPath": "D:\\Program Files\\桌面\\ZeKi.Frame\\ZeKi.Frame.Model\\ZeKi.Frame.Model.csproj"
+              "D:\\Program Files\\桌面\\Git\\Src\\ZeKi.Frame.Model\\ZeKi.Frame.Model.csproj": {
+                "projectPath": "D:\\Program Files\\桌面\\Git\\Src\\ZeKi.Frame.Model\\ZeKi.Frame.Model.csproj"
               }
             }
           }
@@ -425,14 +425,14 @@
         }
       }
     },
-    "D:\\Program Files\\桌面\\ZeKi.Frame\\ZeKi.Frame.Model\\ZeKi.Frame.Model.csproj": {
+    "D:\\Program Files\\桌面\\Git\\Src\\ZeKi.Frame.Model\\ZeKi.Frame.Model.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Program Files\\桌面\\ZeKi.Frame\\ZeKi.Frame.Model\\ZeKi.Frame.Model.csproj",
+        "projectUniqueName": "D:\\Program Files\\桌面\\Git\\Src\\ZeKi.Frame.Model\\ZeKi.Frame.Model.csproj",
         "projectName": "ZeKi.Frame.Model",
-        "projectPath": "D:\\Program Files\\桌面\\ZeKi.Frame\\ZeKi.Frame.Model\\ZeKi.Frame.Model.csproj",
+        "projectPath": "D:\\Program Files\\桌面\\Git\\Src\\ZeKi.Frame.Model\\ZeKi.Frame.Model.csproj",
         "packagesPath": "C:\\Users\\ZZQ\\.nuget\\packages\\",
-        "outputPath": "D:\\Program Files\\桌面\\ZeKi.Frame\\ZeKi.Frame.Model\\obj\\",
+        "outputPath": "D:\\Program Files\\桌面\\Git\\Src\\ZeKi.Frame.Model\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

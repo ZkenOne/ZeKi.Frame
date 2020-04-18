@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "tPiNkCNvoeh0thzS9FrV/17s2G4KAfnf9yP/N4OGpFOlBalT6MIKhch4WxEFm8fLTMfHS8+bAlwqA7vLMUrVvw==",
+  "dgSpecHash": "iNw8EoewP0X+yQi5HPrNYOePW2s+T933c/PSMtXsFK49UmJ3VqUob5kcosyk72t8GELMMG0t27XbsaILcSu2hg==",
   "success": true,
-  "projectFilePath": "D:\\Program Files\\桌面\\ZeKi.Frame\\ZeKi.Frame.Common\\ZeKi.Frame.Common.csproj",
+  "projectFilePath": "D:\\Program Files\\桌面\\Git\\Src\\ZeKi.Frame.Common\\ZeKi.Frame.Common.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\ZZQ\\.nuget\\packages\\dapper\\2.0.30\\dapper.2.0.30.nupkg.sha512",
     "C:\\Users\\ZZQ\\.nuget\\packages\\microsoft.extensions.configuration\\3.1.0\\microsoft.extensions.configuration.3.1.0.nupkg.sha512",

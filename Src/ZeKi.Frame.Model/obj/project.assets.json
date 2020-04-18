@@ -14,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Program Files\\桌面\\ZeKi.Frame\\ZeKi.Frame.Model\\ZeKi.Frame.Model.csproj",
+      "projectUniqueName": "D:\\Program Files\\桌面\\Git\\Src\\ZeKi.Frame.Model\\ZeKi.Frame.Model.csproj",
       "projectName": "ZeKi.Frame.Model",
-      "projectPath": "D:\\Program Files\\桌面\\ZeKi.Frame\\ZeKi.Frame.Model\\ZeKi.Frame.Model.csproj",
+      "projectPath": "D:\\Program Files\\桌面\\Git\\Src\\ZeKi.Frame.Model\\ZeKi.Frame.Model.csproj",
       "packagesPath": "C:\\Users\\ZZQ\\.nuget\\packages\\",
-      "outputPath": "D:\\Program Files\\桌面\\ZeKi.Frame\\ZeKi.Frame.Model\\obj\\",
+      "outputPath": "D:\\Program Files\\桌面\\Git\\Src\\ZeKi.Frame.Model\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

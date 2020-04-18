@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "5kT8YAH0H/tlL6hNvfGHbV7DQK0i7A+35QgRQ//+qB0n3VNMU1oRWNieHIyzY7C3/0CXH5xnbBvqasyq9o2Xgw==",
+  "dgSpecHash": "G8W3pPaYygCx1mOquG1TxxUDeFM4NS60ulSGvTj3s8WAATVozIL1CMbxkrjdZgZIAXv9JY7XM249D6xzI3OCww==",
   "success": true,
-  "projectFilePath": "D:\\Program Files\\桌面\\ZeKi.Frame\\ZeKi.Frame.DAL\\ZeKi.Frame.DAL.csproj",
+  "projectFilePath": "D:\\Program Files\\桌面\\Git\\Src\\ZeKi.Frame.DAL\\ZeKi.Frame.DAL.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\ZZQ\\.nuget\\packages\\dapper\\2.0.30\\dapper.2.0.30.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\microsoft.csharp\\4.3.0\\microsoft.csharp.4.3.0.nupkg.sha512",

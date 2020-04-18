@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "kwyTjze2haszgHmWmCbP1WLKa6tkcdoEMdUspeg+s23v8BKqt2GgqeamaVY2tudW0QI0mm7ZBSJXbP3E6KAP1g==",
+  "dgSpecHash": "PoAXUnEjQ8RZrGXc/sl7+jVg/n3m6mMQhsbvT/qSa7w3zsqMtTtq1BJLMWvLkTAs0lIXzexdPQIAH7HuPtLvxw==",
   "success": true,
-  "projectFilePath": "D:\\Program Files\\桌面\\ZeKi.Frame\\ZeKi.Frame.UI\\ZeKi.Frame.UI.csproj",
+  "projectFilePath": "D:\\Program Files\\桌面\\Git\\Src\\ZeKi.Frame.UI\\ZeKi.Frame.UI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\ZZQ\\.nuget\\packages\\autofac\\5.1.2\\autofac.5.1.2.nupkg.sha512",
     "C:\\Users\\ZZQ\\.nuget\\packages\\autofac.extensions.dependencyinjection\\6.0.0\\autofac.extensions.dependencyinjection.6.0.0.nupkg.sha512",

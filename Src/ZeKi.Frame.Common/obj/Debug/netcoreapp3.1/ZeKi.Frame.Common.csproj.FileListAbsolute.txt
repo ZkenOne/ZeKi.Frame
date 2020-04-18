@@ -10,3 +10,15 @@ C:\Users\cysoft\Desktop\我的文档\ZeKi.Frame\ZeKi.Frame.Common\obj\Debug\netc
 C:\Users\cysoft\Desktop\我的文档\ZeKi.Frame\ZeKi.Frame.Common\obj\Debug\netcoreapp3.1\ZeKi.Frame.Common.dll
 C:\Users\cysoft\Desktop\我的文档\ZeKi.Frame\ZeKi.Frame.Common\obj\Debug\netcoreapp3.1\ZeKi.Frame.Common.pdb
 C:\Users\cysoft\Desktop\我的文档\ZeKi.Frame\ZeKi.Frame.Common\obj\Debug\netcoreapp3.1\ZeKi.Frame.Common.csproj.CoreCompileInputs.cache
+D:\Program Files\桌面\Git\Src\ZeKi.Frame.Common\bin\Debug\netcoreapp3.1\ZeKi.Frame.Common.deps.json
+D:\Program Files\桌面\Git\Src\ZeKi.Frame.Common\bin\Debug\netcoreapp3.1\ZeKi.Frame.Common.dll
+D:\Program Files\桌面\Git\Src\ZeKi.Frame.Common\bin\Debug\netcoreapp3.1\ZeKi.Frame.Common.pdb
+D:\Program Files\桌面\Git\Src\ZeKi.Frame.Common\bin\Debug\netcoreapp3.1\ZeKi.Frame.Model.dll
+D:\Program Files\桌面\Git\Src\ZeKi.Frame.Common\bin\Debug\netcoreapp3.1\ZeKi.Frame.Model.pdb
+D:\Program Files\桌面\Git\Src\ZeKi.Frame.Common\obj\Debug\netcoreapp3.1\ZeKi.Frame.Common.csprojAssemblyReference.cache
+D:\Program Files\桌面\Git\Src\ZeKi.Frame.Common\obj\Debug\netcoreapp3.1\ZeKi.Frame.Common.csproj.CoreCompileInputs.cache
+D:\Program Files\桌面\Git\Src\ZeKi.Frame.Common\obj\Debug\netcoreapp3.1\ZeKi.Frame.Common.AssemblyInfoInputs.cache
+D:\Program Files\桌面\Git\Src\ZeKi.Frame.Common\obj\Debug\netcoreapp3.1\ZeKi.Frame.Common.AssemblyInfo.cs
+D:\Program Files\桌面\Git\Src\ZeKi.Frame.Common\obj\Debug\netcoreapp3.1\ZeKi.Frame.Common.csproj.CopyComplete
+D:\Program Files\桌面\Git\Src\ZeKi.Frame.Common\obj\Debug\netcoreapp3.1\ZeKi.Frame.Common.dll
+D:\Program Files\桌面\Git\Src\ZeKi.Frame.Common\obj\Debug\netcoreapp3.1\ZeKi.Frame.Common.pdb
