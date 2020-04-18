@@ -9,7 +9,7 @@ namespace ZeKi.Frame.Model
     [Table("sysRole_1")]
     public class SysRole
     {
-        public int rId { get; set; } 
+        public int rId { get; set; }
 
         public int rDepId { get; set; }
 
@@ -20,6 +20,5 @@ namespace ZeKi.Frame.Model
         public bool rIsDel { get; set; }
 
         public DateTime rAddTime { get; set; }
-
     }
 }
