@@ -4,6 +4,8 @@ bin/
 Bin/
 Debug/
 debug/
+logs/
+Logs/
 *.chw
 *.pidb
 *.userprefs
