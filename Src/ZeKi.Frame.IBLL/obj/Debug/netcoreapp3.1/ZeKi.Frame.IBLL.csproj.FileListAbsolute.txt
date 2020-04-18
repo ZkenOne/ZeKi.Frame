@@ -1,0 +1,14 @@
+C:\Users\cysoft\Desktop\我的文档\ZeKi.Frame\ZeKi.Frame.IBLL\bin\Debug\netcoreapp3.1\ZeKi.Frame.IBLL.deps.json
+C:\Users\cysoft\Desktop\我的文档\ZeKi.Frame\ZeKi.Frame.IBLL\bin\Debug\netcoreapp3.1\ZeKi.Frame.IBLL.dll
+C:\Users\cysoft\Desktop\我的文档\ZeKi.Frame\ZeKi.Frame.IBLL\bin\Debug\netcoreapp3.1\ZeKi.Frame.IBLL.pdb
+C:\Users\cysoft\Desktop\我的文档\ZeKi.Frame\ZeKi.Frame.IBLL\bin\Debug\netcoreapp3.1\ZeKi.Frame.Common.dll
+C:\Users\cysoft\Desktop\我的文档\ZeKi.Frame\ZeKi.Frame.IBLL\bin\Debug\netcoreapp3.1\ZeKi.Frame.Model.dll
+C:\Users\cysoft\Desktop\我的文档\ZeKi.Frame\ZeKi.Frame.IBLL\bin\Debug\netcoreapp3.1\ZeKi.Frame.Common.pdb
+C:\Users\cysoft\Desktop\我的文档\ZeKi.Frame\ZeKi.Frame.IBLL\bin\Debug\netcoreapp3.1\ZeKi.Frame.Model.pdb
+C:\Users\cysoft\Desktop\我的文档\ZeKi.Frame\ZeKi.Frame.IBLL\obj\Debug\netcoreapp3.1\ZeKi.Frame.IBLL.csprojAssemblyReference.cache
+C:\Users\cysoft\Desktop\我的文档\ZeKi.Frame\ZeKi.Frame.IBLL\obj\Debug\netcoreapp3.1\ZeKi.Frame.IBLL.csproj.CoreCompileInputs.cache
+C:\Users\cysoft\Desktop\我的文档\ZeKi.Frame\ZeKi.Frame.IBLL\obj\Debug\netcoreapp3.1\ZeKi.Frame.IBLL.AssemblyInfoInputs.cache
+C:\Users\cysoft\Desktop\我的文档\ZeKi.Frame\ZeKi.Frame.IBLL\obj\Debug\netcoreapp3.1\ZeKi.Frame.IBLL.AssemblyInfo.cs
+C:\Users\cysoft\Desktop\我的文档\ZeKi.Frame\ZeKi.Frame.IBLL\obj\Debug\netcoreapp3.1\ZeKi.Frame.IBLL.csproj.CopyComplete
+C:\Users\cysoft\Desktop\我的文档\ZeKi.Frame\ZeKi.Frame.IBLL\obj\Debug\netcoreapp3.1\ZeKi.Frame.IBLL.dll
+C:\Users\cysoft\Desktop\我的文档\ZeKi.Frame\ZeKi.Frame.IBLL\obj\Debug\netcoreapp3.1\ZeKi.Frame.IBLL.pdb

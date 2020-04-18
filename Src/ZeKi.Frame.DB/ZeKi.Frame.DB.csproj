@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.0.30" />
+    <PackageReference Include="MiniProfiler.Shared" Version="4.1.0" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ZeKi.Frame.Common\ZeKi.Frame.Common.csproj" />
+    <ProjectReference Include="..\ZeKi.Frame.Model\ZeKi.Frame.Model.csproj" />
+  </ItemGroup>
+
+</Project>

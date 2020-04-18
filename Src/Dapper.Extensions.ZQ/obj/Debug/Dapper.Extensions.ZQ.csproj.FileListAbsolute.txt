@@ -1,9 +1,0 @@
-C:\Users\cysoft\Desktop\Dapper.Extensions.ZQ\ZQ.SQL.Frame\Dapper.Extensions.ZQ\bin\Debug\Dapper.Extensions.ZQ.dll
-C:\Users\cysoft\Desktop\Dapper.Extensions.ZQ\ZQ.SQL.Frame\Dapper.Extensions.ZQ\bin\Debug\Dapper.Extensions.ZQ.pdb
-C:\Users\cysoft\Desktop\Dapper.Extensions.ZQ\ZQ.SQL.Frame\Dapper.Extensions.ZQ\bin\Debug\Dapper.dll
-C:\Users\cysoft\Desktop\Dapper.Extensions.ZQ\ZQ.SQL.Frame\Dapper.Extensions.ZQ\bin\Debug\Dapper.xml
-C:\Users\cysoft\Desktop\Dapper.Extensions.ZQ\ZQ.SQL.Frame\Dapper.Extensions.ZQ\obj\Debug\Dapper.Extensions.ZQ.csprojAssemblyReference.cache
-C:\Users\cysoft\Desktop\Dapper.Extensions.ZQ\ZQ.SQL.Frame\Dapper.Extensions.ZQ\obj\Debug\Dapper.Extensions.ZQ.csproj.CoreCompileInputs.cache
-C:\Users\cysoft\Desktop\Dapper.Extensions.ZQ\ZQ.SQL.Frame\Dapper.Extensions.ZQ\obj\Debug\Dapper.Extensions.ZQ.csproj.CopyComplete
-C:\Users\cysoft\Desktop\Dapper.Extensions.ZQ\ZQ.SQL.Frame\Dapper.Extensions.ZQ\obj\Debug\Dapper.Extensions.ZQ.dll
-C:\Users\cysoft\Desktop\Dapper.Extensions.ZQ\ZQ.SQL.Frame\Dapper.Extensions.ZQ\obj\Debug\Dapper.Extensions.ZQ.pdb

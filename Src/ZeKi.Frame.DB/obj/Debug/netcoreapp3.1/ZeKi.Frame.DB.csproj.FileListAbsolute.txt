@@ -1,0 +1,14 @@
+C:\Users\cysoft\Desktop\我的文档\ZeKi.Frame\ZeKi.Frame.DB\bin\Debug\netcoreapp3.1\ZeKi.Frame.DB.deps.json
+C:\Users\cysoft\Desktop\我的文档\ZeKi.Frame\ZeKi.Frame.DB\bin\Debug\netcoreapp3.1\ZeKi.Frame.DB.dll
+C:\Users\cysoft\Desktop\我的文档\ZeKi.Frame\ZeKi.Frame.DB\bin\Debug\netcoreapp3.1\ZeKi.Frame.DB.pdb
+C:\Users\cysoft\Desktop\我的文档\ZeKi.Frame\ZeKi.Frame.DB\bin\Debug\netcoreapp3.1\ZeKi.Frame.Common.dll
+C:\Users\cysoft\Desktop\我的文档\ZeKi.Frame\ZeKi.Frame.DB\bin\Debug\netcoreapp3.1\ZeKi.Frame.Model.dll
+C:\Users\cysoft\Desktop\我的文档\ZeKi.Frame\ZeKi.Frame.DB\bin\Debug\netcoreapp3.1\ZeKi.Frame.Common.pdb
+C:\Users\cysoft\Desktop\我的文档\ZeKi.Frame\ZeKi.Frame.DB\bin\Debug\netcoreapp3.1\ZeKi.Frame.Model.pdb
+C:\Users\cysoft\Desktop\我的文档\ZeKi.Frame\ZeKi.Frame.DB\obj\Debug\netcoreapp3.1\ZeKi.Frame.DB.csprojAssemblyReference.cache
+C:\Users\cysoft\Desktop\我的文档\ZeKi.Frame\ZeKi.Frame.DB\obj\Debug\netcoreapp3.1\ZeKi.Frame.DB.csproj.CoreCompileInputs.cache
+C:\Users\cysoft\Desktop\我的文档\ZeKi.Frame\ZeKi.Frame.DB\obj\Debug\netcoreapp3.1\ZeKi.Frame.DB.AssemblyInfoInputs.cache
+C:\Users\cysoft\Desktop\我的文档\ZeKi.Frame\ZeKi.Frame.DB\obj\Debug\netcoreapp3.1\ZeKi.Frame.DB.AssemblyInfo.cs
+C:\Users\cysoft\Desktop\我的文档\ZeKi.Frame\ZeKi.Frame.DB\obj\Debug\netcoreapp3.1\ZeKi.Frame.DB.csproj.CopyComplete
+C:\Users\cysoft\Desktop\我的文档\ZeKi.Frame\ZeKi.Frame.DB\obj\Debug\netcoreapp3.1\ZeKi.Frame.DB.dll
+C:\Users\cysoft\Desktop\我的文档\ZeKi.Frame\ZeKi.Frame.DB\obj\Debug\netcoreapp3.1\ZeKi.Frame.DB.pdb

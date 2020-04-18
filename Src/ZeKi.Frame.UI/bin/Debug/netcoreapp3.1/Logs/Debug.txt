@@ -1,0 +1,6 @@
+2020-04-18 19:17:16.9098|ZeKi.Frame.UI.Program.Main|init main 
+
+2020-04-18 21:53:32.3218|ZeKi.Frame.UI.Program.Main|init main 
+
+2020-04-18 22:04:44.8435|ZeKi.Frame.UI.Program.Main|init main 
+

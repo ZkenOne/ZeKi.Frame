@@ -1,0 +1,1122 @@
+2020-04-18 19:17:29.8375|ZeKi.Frame.UI.Filters.ProfilingFilterAttribute.AnalysisProfiler|Controller: Home.Index
+
+NO -》 1
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 307.4
+StartMilliseconds -》 339.5
+StackTraceSnippet -》 Index > Example > Insert > Insert > Insert > GetConnection
+Errored -》 False
+NO -》 2
+ExecuteType -》 Scalar
+CommandString -》 insert sysUserInfo (uDepId, uLoginName, uPwd, uGender, uEmail, uRemark, uAddTime) values (2, 'zzq', 'jsdjfiu', 0, '12@qq.com', 'ceshi1', '2020-04-18T19:17:24');SELECT SCOPE_IDENTITY();
+DurationMilliseconds-》 166.4
+StartMilliseconds -》 847.3
+StackTraceSnippet -》 Index > Example > Insert > Insert > Insert > Insert
+Errored -》 False
+NO -》 3
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 2.7
+StartMilliseconds -》 1024.3
+StackTraceSnippet -》 Index > Example > Insert > Insert > Insert > GetConnection
+Errored -》 False
+NO -》 4
+ExecuteType -》 NonQuery
+CommandString -》 insert sysUserInfo (uDepId, uLoginName, uPwd, uGender, uEmail, uRemark, uAddTime) values (2, 'lisi', 'jsdjfiu', 1, '222@@@@qq.com', 'ceshi1', '2020-04-18T19:17:24');
+DurationMilliseconds-》 71.3
+StartMilliseconds -》 1036
+StackTraceSnippet -》 Index > Example > Insert > Insert > Insert > Insert
+Errored -》 False
+NO -》 5
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 1
+StartMilliseconds -》 1111.6
+StackTraceSnippet -》 Index > Example > Update > Update > Update > GetConnection
+Errored -》 False
+NO -》 6
+ExecuteType -》 NonQuery
+CommandString -》 update sysUserInfo set uDepId= 21, uLoginName= 'zzq23', uPwd= '123456', uGender= 0, uEmail= '12@qq.com', uRemark= 'nihao', uIsDel= 1 where uId = 205
+DurationMilliseconds-》 63.4
+StartMilliseconds -》 1118.6
+StackTraceSnippet -》 Index > Example > Update > Update > Update > Update
+Errored -》 False
+NO -》 7
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 0.9
+StartMilliseconds -》 1184.2
+StackTraceSnippet -》 Index > Example > Update > Update > GetConnection
+Errored -》 False
+NO -》 8
+ExecuteType -》 NonQuery
+CommandString -》 update sysUserInfo set uRemark = 'upa' where  uId = 97 
+DurationMilliseconds-》 40.6
+StartMilliseconds -》 1223.4
+StackTraceSnippet -》 Index > Example > Update > Update > Update
+Errored -》 False
+NO -》 9
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 0.5
+StartMilliseconds -》 1265.8
+StackTraceSnippet -》 Index > Example > Delete > Delete > Delete > GetConnection
+Errored -》 False
+NO -》 10
+ExecuteType -》 NonQuery
+CommandString -》 delete from sysUserInfo where uId = 198
+DurationMilliseconds-》 58.3
+StartMilliseconds -》 1267.5
+StackTraceSnippet -》 Index > Example > Delete > Delete > Delete > Delete
+Errored -》 False
+NO -》 11
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 0.5
+StartMilliseconds -》 1327.3
+StackTraceSnippet -》 Index > Example > Count > GetConnection
+Errored -》 False
+NO -》 12
+ExecuteType -》 Scalar
+CommandString -》 SELECT COUNT(0) FROM [sysUserInfo]
+DurationMilliseconds-》 43.8
+StartMilliseconds -》 1328.4
+StackTraceSnippet -》 Index > Example > Count > Count
+Errored -》 False
+NO -》 13
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 0.5
+StartMilliseconds -》 1372.6
+StackTraceSnippet -》 Index > Example > Count > GetConnection
+Errored -》 False
+NO -》 14
+ExecuteType -》 Scalar
+CommandString -》 SELECT COUNT(0) FROM [sysUserInfo] where udepid=2;
+DurationMilliseconds-》 40
+StartMilliseconds -》 1374.5
+StackTraceSnippet -》 Index > Example > Count > Count
+Errored -》 False
+NO -》 15
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 0.5
+StartMilliseconds -》 1415.3
+StackTraceSnippet -》 Index > Example > Sum > GetConnection
+Errored -》 False
+NO -》 16
+ExecuteType -》 Scalar
+CommandString -》 SELECT SUM(udepid) FROM [sysUserInfo] where udepid=2;
+DurationMilliseconds-》 33.7
+StartMilliseconds -》 1416.8
+StackTraceSnippet -》 Index > Example > Sum > Sum
+Errored -》 False
+NO -》 17
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 0.5
+StartMilliseconds -》 1451.2
+StackTraceSnippet -》 Index > Example > Count > GetConnection
+Errored -》 False
+NO -》 18
+ExecuteType -》 Scalar
+CommandString -》 SELECT COUNT(0) FROM [sysUserInfo] where  udepid = 2 
+DurationMilliseconds-》 36.5
+StartMilliseconds -》 1452.6
+StackTraceSnippet -》 Index > Example > Count > Count
+Errored -》 False
+NO -》 19
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 0.9
+StartMilliseconds -》 1491.4
+StackTraceSnippet -》 Index > Example > QueryModel > QueryModel > GetConnection
+Errored -》 False
+NO -》 20
+ExecuteType -》 Reader
+CommandString -》 select  top 1  * from sysUserInfo where uemail='1269021626@qq.com'
+DurationMilliseconds-》 115.4
+StartMilliseconds -》 1500.8
+StackTraceSnippet -》 Index > Example > QueryModel > QueryModel > QueryModel > System.Data.IDbCommand.ExecuteReader
+Errored -》 False
+NO -》 21
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 0.6
+StartMilliseconds -》 1616.8
+StackTraceSnippet -》 Index > Example > QueryList > GetConnection
+Errored -》 False
+NO -》 22
+ExecuteType -》 Reader
+CommandString -》 select uId, uLoginName from SysUserInfo where udepid=2
+DurationMilliseconds-》 50.2
+StartMilliseconds -》 1623.2
+StackTraceSnippet -》 Index > Example > QueryList > QueryList > ToList > System.Data.IDbCommand.ExecuteReader
+Errored -》 False
+NO -》 23
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 0.5
+StartMilliseconds -》 1674.3
+StackTraceSnippet -》 Index > Example > DbAction > GetConnection
+Errored -》 False
+NO -》 24
+ExecuteType -》 Reader
+CommandString -》 select * from SysUserInfo where uloginname='zzq';select * from SysRole_1;
+DurationMilliseconds-》 80.9
+StartMilliseconds -》 1677.3
+StackTraceSnippet -》 Index > Example > DbAction > <Example>b__0 > System.Data.IDbCommand.ExecuteReader
+Errored -》 False
+NO -》 25
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 1.2
+StartMilliseconds -》 1759.8
+StackTraceSnippet -》 Index > Example > ExecDataSet > GetConnection
+Errored -》 False
+NO -》 26
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 0.5
+StartMilliseconds -》 1857.8
+StackTraceSnippet -》 Index > Example > ExecDataTable > GetConnection
+Errored -》 False
+NO -》 27
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 0.7
+StartMilliseconds -》 1921.7
+StackTraceSnippet -》 Index > Example > PageList > PageList > GetConnection
+Errored -》 False
+NO -》 28
+ExecuteType -》 Reader
+CommandString -》 SELECT * FROM ( SELECT ROW_NUMBER() OVER(ORDER BY ro.rId DESC) AS ROW_NUMBER,  ro.*, dep.depName from sysRole_1 as ro join sysDepartment as dep on dep.depId=ro.rdepId  where rName<>'liis' ) AS Tab WHERE ROW_NUMBER BETWEEN 1 AND 10;  SELECT COUNT(0) AS DataCount FROM (SELECT ro.*, dep.depName from sysRole_1 as ro join sysDepartment as dep on dep.depId=ro.rdepId where rName<>'liis') AS CountTb;
+DurationMilliseconds-》 69.3
+StartMilliseconds -》 1925.8
+StackTraceSnippet -》 Index > Example > PageList > PageList > PageList > System.Data.IDbCommand.ExecuteReader
+Errored -》 False
+NO -》 29
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 0.5
+StartMilliseconds -》 1996.6
+StackTraceSnippet -》 Index > Example > PageList > GetConnection
+Errored -》 False
+NO -》 30
+ExecuteType -》 Reader
+CommandString -》 SELECT * FROM (SELECT ROW_NUMBER() OVER(ORDER BY rId DESC  ) AS ROW_NUMBER, * FROM sysRole_1 where rName='项目经理'  ) Tab WHERE ROW_NUMBER BETWEEN 1 AND 10 ORDER BY rId DESC; SELECT COUNT(0) AS DataCount FROM sysRole_1 where rName='项目经理';
+DurationMilliseconds-》 37.1
+StartMilliseconds -》 1999.3
+StackTraceSnippet -》 Index > Example > PageList > PageList > System.Data.IDbCommand.ExecuteReader
+Errored -》 False
+NO -》 31
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 0.8
+StartMilliseconds -》 2039.9
+StackTraceSnippet -》 Index > Example > QueryList > QueryList > GetConnection
+Errored -》 False
+NO -》 32
+ExecuteType -》 Reader
+CommandString -》 select * from sysUserInfo  where  uloginname = 'zzq' and uRemark like '%良%' and uId not in ('78', '333') and (uEmail='12@qq.com' or uEmail='902@qq.com') and uDepId = 3 and uDepId >= 100 and uAddTime between '2020-03-19T19:17:26' and '2020-04-18T19:17:26' 
+DurationMilliseconds-》 45.9
+StartMilliseconds -》 2050.2
+StackTraceSnippet -》 Index > Example > QueryList > QueryList > QueryList > ToList > System.Data.IDbCommand.ExecuteReader
+Errored -》 False
+NO -》 33
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 0.7
+StartMilliseconds -》 2097.2
+StackTraceSnippet -》 Index > Example > QueryList > GetConnection
+Errored -》 False
+NO -》 34
+ExecuteType -》 Reader
+CommandString -》 select u.*, d.depName from sysUserInfo as u left join sysDepartment as d on u.uDepId=d.depId where  u.uloginname = 'zzq' and u.uRemark like '%良%' and u.uId not in ('78', '333') and u.depName = '公司' 
+DurationMilliseconds-》 58.4
+StartMilliseconds -》 2099.5
+StackTraceSnippet -》 Index > Example > QueryList > QueryList > ToList > System.Data.IDbCommand.ExecuteReader
+Errored -》 True
+ 
+
+2020-04-18 19:17:46.0495|ZeKi.Frame.UI.Filters.ProfilingFilterAttribute.AnalysisProfiler|Controller: Home.Index
+
+NO -》 1
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 2.8
+StartMilliseconds -》 30.6
+StackTraceSnippet -》 Index > Example > Insert > Insert > Insert > GetConnection
+Errored -》 False
+NO -》 2
+ExecuteType -》 Scalar
+CommandString -》 insert sysUserInfo (uDepId, uLoginName, uPwd, uGender, uEmail, uRemark, uAddTime) values (2, 'zzq', 'jsdjfiu', 0, '12@qq.com', 'ceshi1', '2020-04-18T19:17:42');SELECT SCOPE_IDENTITY();
+DurationMilliseconds-》 43.7
+StartMilliseconds -》 36.1
+StackTraceSnippet -》 Index > Example > Insert > Insert > Insert > Insert
+Errored -》 False
+NO -》 3
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 1
+StartMilliseconds -》 80.3
+StackTraceSnippet -》 Index > Example > Insert > Insert > Insert > GetConnection
+Errored -》 False
+NO -》 4
+ExecuteType -》 NonQuery
+CommandString -》 insert sysUserInfo (uDepId, uLoginName, uPwd, uGender, uEmail, uRemark, uAddTime) values (2, 'lisi', 'jsdjfiu', 1, '222@@@@qq.com', 'ceshi1', '2020-04-18T19:17:42');
+DurationMilliseconds-》 39.8
+StartMilliseconds -》 81.8
+StackTraceSnippet -》 Index > Example > Insert > Insert > Insert > Insert
+Errored -》 False
+NO -》 5
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 0.8
+StartMilliseconds -》 122.4
+StackTraceSnippet -》 Index > Example > Update > Update > Update > GetConnection
+Errored -》 False
+NO -》 6
+ExecuteType -》 NonQuery
+CommandString -》 update sysUserInfo set uDepId= 21, uLoginName= 'zzq23', uPwd= '123456', uGender= 0, uEmail= '12@qq.com', uRemark= 'nihao', uIsDel= 1 where uId = 205
+DurationMilliseconds-》 35.4
+StartMilliseconds -》 123.9
+StackTraceSnippet -》 Index > Example > Update > Update > Update > Update
+Errored -》 False
+NO -》 7
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 0.6
+StartMilliseconds -》 159.9
+StackTraceSnippet -》 Index > Example > Update > Update > GetConnection
+Errored -》 False
+NO -》 8
+ExecuteType -》 NonQuery
+CommandString -》 update sysUserInfo set uRemark = 'upa' where  uId = 97 
+DurationMilliseconds-》 31.6
+StartMilliseconds -》 161
+StackTraceSnippet -》 Index > Example > Update > Update > Update
+Errored -》 False
+NO -》 9
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 0.6
+StartMilliseconds -》 193.4
+StackTraceSnippet -》 Index > Example > Delete > Delete > Delete > GetConnection
+Errored -》 False
+NO -》 10
+ExecuteType -》 NonQuery
+CommandString -》 delete from sysUserInfo where uId = 198
+DurationMilliseconds-》 36.7
+StartMilliseconds -》 194.2
+StackTraceSnippet -》 Index > Example > Delete > Delete > Delete > Delete
+Errored -》 False
+NO -》 11
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 0.9
+StartMilliseconds -》 231.7
+StackTraceSnippet -》 Index > Example > Count > GetConnection
+Errored -》 False
+NO -》 12
+ExecuteType -》 Scalar
+CommandString -》 SELECT COUNT(0) FROM [sysUserInfo]
+DurationMilliseconds-》 46.1
+StartMilliseconds -》 232.7
+StackTraceSnippet -》 Index > Example > Count > Count
+Errored -》 False
+NO -》 13
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 1
+StartMilliseconds -》 279
+StackTraceSnippet -》 Index > Example > Count > GetConnection
+Errored -》 False
+NO -》 14
+ExecuteType -》 Scalar
+CommandString -》 SELECT COUNT(0) FROM [sysUserInfo] where udepid=2;
+DurationMilliseconds-》 49
+StartMilliseconds -》 280.4
+StackTraceSnippet -》 Index > Example > Count > Count
+Errored -》 False
+NO -》 15
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 0.8
+StartMilliseconds -》 329.6
+StackTraceSnippet -》 Index > Example > Sum > GetConnection
+Errored -》 False
+NO -》 16
+ExecuteType -》 Scalar
+CommandString -》 SELECT SUM(udepid) FROM [sysUserInfo] where udepid=2;
+DurationMilliseconds-》 45.2
+StartMilliseconds -》 330.5
+StackTraceSnippet -》 Index > Example > Sum > Sum
+Errored -》 False
+NO -》 17
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 1
+StartMilliseconds -》 376
+StackTraceSnippet -》 Index > Example > Count > GetConnection
+Errored -》 False
+NO -》 18
+ExecuteType -》 Scalar
+CommandString -》 SELECT COUNT(0) FROM [sysUserInfo] where  udepid = 2 
+DurationMilliseconds-》 38.6
+StartMilliseconds -》 377.3
+StackTraceSnippet -》 Index > Example > Count > Count
+Errored -》 False
+NO -》 19
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 1
+StartMilliseconds -》 417.7
+StackTraceSnippet -》 Index > Example > QueryModel > QueryModel > GetConnection
+Errored -》 False
+NO -》 20
+ExecuteType -》 Reader
+CommandString -》 select  top 1  * from sysUserInfo where uemail='1269021626@qq.com'
+DurationMilliseconds-》 71.7
+StartMilliseconds -》 419
+StackTraceSnippet -》 Index > Example > QueryModel > QueryModel > QueryModel > System.Data.IDbCommand.ExecuteReader
+Errored -》 False
+NO -》 21
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 1
+StartMilliseconds -》 490.9
+StackTraceSnippet -》 Index > Example > QueryList > GetConnection
+Errored -》 False
+NO -》 22
+ExecuteType -》 Reader
+CommandString -》 select uId, uLoginName from SysUserInfo where udepid=2
+DurationMilliseconds-》 56.2
+StartMilliseconds -》 492.1
+StackTraceSnippet -》 Index > Example > QueryList > QueryList > ToList > System.Data.IDbCommand.ExecuteReader
+Errored -》 False
+NO -》 23
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 0.6
+StartMilliseconds -》 548.5
+StackTraceSnippet -》 Index > Example > DbAction > GetConnection
+Errored -》 False
+NO -》 24
+ExecuteType -》 Reader
+CommandString -》 select * from SysUserInfo where uloginname='zzq';select * from SysRole_1;
+DurationMilliseconds-》 58.1
+StartMilliseconds -》 549.3
+StackTraceSnippet -》 Index > Example > DbAction > <Example>b__0 > System.Data.IDbCommand.ExecuteReader
+Errored -》 False
+NO -》 25
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 0.7
+StartMilliseconds -》 607.6
+StackTraceSnippet -》 Index > Example > ExecDataSet > GetConnection
+Errored -》 False
+NO -》 26
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 0.6
+StartMilliseconds -》 667.8
+StackTraceSnippet -》 Index > Example > ExecDataTable > GetConnection
+Errored -》 False
+NO -》 27
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 0.6
+StartMilliseconds -》 728.3
+StackTraceSnippet -》 Index > Example > PageList > PageList > GetConnection
+Errored -》 False
+NO -》 28
+ExecuteType -》 Reader
+CommandString -》 SELECT * FROM ( SELECT ROW_NUMBER() OVER(ORDER BY ro.rId DESC) AS ROW_NUMBER,  ro.*, dep.depName from sysRole_1 as ro join sysDepartment as dep on dep.depId=ro.rdepId  where rName<>'liis' ) AS Tab WHERE ROW_NUMBER BETWEEN 1 AND 10;  SELECT COUNT(0) AS DataCount FROM (SELECT ro.*, dep.depName from sysRole_1 as ro join sysDepartment as dep on dep.depId=ro.rdepId where rName<>'liis') AS CountTb;
+DurationMilliseconds-》 43.3
+StartMilliseconds -》 729.1
+StackTraceSnippet -》 Index > Example > PageList > PageList > PageList > System.Data.IDbCommand.ExecuteReader
+Errored -》 False
+NO -》 29
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 1
+StartMilliseconds -》 772.7
+StackTraceSnippet -》 Index > Example > PageList > GetConnection
+Errored -》 False
+NO -》 30
+ExecuteType -》 Reader
+CommandString -》 SELECT * FROM (SELECT ROW_NUMBER() OVER(ORDER BY rId DESC  ) AS ROW_NUMBER, * FROM sysRole_1 where rName='项目经理'  ) Tab WHERE ROW_NUMBER BETWEEN 1 AND 10 ORDER BY rId DESC; SELECT COUNT(0) AS DataCount FROM sysRole_1 where rName='项目经理';
+DurationMilliseconds-》 48.9
+StartMilliseconds -》 774
+StackTraceSnippet -》 Index > Example > PageList > PageList > System.Data.IDbCommand.ExecuteReader
+Errored -》 False
+NO -》 31
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 1
+StartMilliseconds -》 823.1
+StackTraceSnippet -》 Index > Example > QueryList > QueryList > GetConnection
+Errored -》 False
+NO -》 32
+ExecuteType -》 Reader
+CommandString -》 select * from sysUserInfo  where  uloginname = 'zzq' and uRemark like '%良%' and uId not in ('78', '333') and (uEmail='12@qq.com' or uEmail='902@qq.com') and uDepId = 3 and uDepId >= 100 and uAddTime between '2020-03-19T19:17:43' and '2020-04-18T19:17:43' 
+DurationMilliseconds-》 45.4
+StartMilliseconds -》 825.4
+StackTraceSnippet -》 Index > Example > QueryList > QueryList > QueryList > ToList > System.Data.IDbCommand.ExecuteReader
+Errored -》 False
+NO -》 33
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 0.9
+StartMilliseconds -》 871.1
+StackTraceSnippet -》 Index > Example > QueryList > GetConnection
+Errored -》 False
+NO -》 34
+ExecuteType -》 Reader
+CommandString -》 select u.*, d.depName from sysUserInfo as u left join sysDepartment as d on u.uDepId=d.depId where  u.uloginname = 'zzq' and u.uRemark like '%良%' and u.uId not in ('78', '333') and u.depName = '公司' 
+DurationMilliseconds-》 48.5
+StartMilliseconds -》 872.7
+StackTraceSnippet -》 Index > Example > QueryList > QueryList > ToList > System.Data.IDbCommand.ExecuteReader
+Errored -》 True
+ 
+
+2020-04-18 21:55:30.2071|ZeKi.Frame.UI.Filters.ProfilingFilterAttribute.AnalysisProfiler|Controller: Home.Index
+
+NO -》 1
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 449.5
+StartMilliseconds -》 253.8
+StackTraceSnippet -》 Index > Example > Insert > Insert > Insert > GetConnection
+Errored -》 False
+NO -》 2
+ExecuteType -》 Scalar
+CommandString -》 insert sysUserInfo (uDepId, uLoginName, uPwd, uGender, uEmail, uRemark, uAddTime) values (2, 'zzq', 'jsdjfiu', 0, '12@qq.com', 'ceshi1', '2020-04-18T21:53:40');SELECT SCOPE_IDENTITY();
+DurationMilliseconds-》 242.5
+StartMilliseconds -》 1241.4
+StackTraceSnippet -》 Index > Example > Insert > Insert > Insert > Insert
+Errored -》 False
+NO -》 3
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 7.3
+StartMilliseconds -》 1506.3
+StackTraceSnippet -》 Index > Example > Insert > Insert > Insert > GetConnection
+Errored -》 False
+NO -》 4
+ExecuteType -》 NonQuery
+CommandString -》 insert sysUserInfo (uDepId, uLoginName, uPwd, uGender, uEmail, uRemark, uAddTime) values (2, 'lisi', 'jsdjfiu', 1, '222@@@@qq.com', 'ceshi1', '2020-04-18T21:53:40');
+DurationMilliseconds-》 83.4
+StartMilliseconds -》 1522.5
+StackTraceSnippet -》 Index > Example > Insert > Insert > Insert > Insert
+Errored -》 False
+NO -》 5
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 0.7
+StartMilliseconds -》 1610.1
+StackTraceSnippet -》 Index > Example > Update > Update > Update > GetConnection
+Errored -》 False
+NO -》 6
+ExecuteType -》 NonQuery
+CommandString -》 update sysUserInfo set uDepId= 21, uLoginName= 'zzq23', uPwd= '123456', uGender= 0, uEmail= '12@qq.com', uRemark= 'nihao', uIsDel= 1 where uId = 205
+DurationMilliseconds-》 89
+StartMilliseconds -》 1616.4
+StackTraceSnippet -》 Index > Example > Update > Update > Update > Update
+Errored -》 False
+NO -》 7
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 0.6
+StartMilliseconds -》 1708.7
+StackTraceSnippet -》 Index > Example > Update > Update > GetConnection
+Errored -》 False
+NO -》 8
+ExecuteType -》 NonQuery
+CommandString -》 update sysUserInfo set uRemark = 'upa' where  uId = 97 
+DurationMilliseconds-》 76.3
+StartMilliseconds -》 1743.6
+StackTraceSnippet -》 Index > Example > Update > Update > Update
+Errored -》 False
+NO -》 9
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 1
+StartMilliseconds -》 1823.3
+StackTraceSnippet -》 Index > Example > Delete > Delete > Delete > GetConnection
+Errored -》 False
+NO -》 10
+ExecuteType -》 NonQuery
+CommandString -》 delete from sysUserInfo where uId = 198
+DurationMilliseconds-》 75.7
+StartMilliseconds -》 1827
+StackTraceSnippet -》 Index > Example > Delete > Delete > Delete > Delete
+Errored -》 False
+NO -》 11
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 0.6
+StartMilliseconds -》 1905.1
+StackTraceSnippet -》 Index > Example > Count > GetConnection
+Errored -》 False
+NO -》 12
+ExecuteType -》 Scalar
+CommandString -》 SELECT COUNT(0) FROM [sysUserInfo]
+DurationMilliseconds-》 40.7
+StartMilliseconds -》 1906.4
+StackTraceSnippet -》 Index > Example > Count > Count
+Errored -》 False
+NO -》 13
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 1.1
+StartMilliseconds -》 1948.2
+StackTraceSnippet -》 Index > Example > Count > GetConnection
+Errored -》 False
+NO -》 14
+ExecuteType -》 Scalar
+CommandString -》 SELECT COUNT(0) FROM [sysUserInfo] where udepid=2;
+DurationMilliseconds-》 35
+StartMilliseconds -》 1951.5
+StackTraceSnippet -》 Index > Example > Count > Count
+Errored -》 False
+NO -》 15
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 0.5
+StartMilliseconds -》 1987.3
+StackTraceSnippet -》 Index > Example > Sum > GetConnection
+Errored -》 False
+NO -》 16
+ExecuteType -》 Scalar
+CommandString -》 SELECT SUM(udepid) FROM [sysUserInfo] where udepid=2;
+DurationMilliseconds-》 56.2
+StartMilliseconds -》 1988.9
+StackTraceSnippet -》 Index > Example > Sum > Sum
+Errored -》 False
+NO -》 17
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 0.9
+StartMilliseconds -》 2046.1
+StackTraceSnippet -》 Index > Example > Count > GetConnection
+Errored -》 False
+NO -》 18
+ExecuteType -》 Scalar
+CommandString -》 SELECT COUNT(0) FROM [sysUserInfo] where  udepid = 2 
+DurationMilliseconds-》 129.6
+StartMilliseconds -》 2048.6
+StackTraceSnippet -》 Index > Example > Count > Count
+Errored -》 False
+NO -》 19
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 1
+StartMilliseconds -》 2185.3
+StackTraceSnippet -》 Index > Example > QueryModel > QueryModel > GetConnection
+Errored -》 False
+NO -》 20
+ExecuteType -》 Reader
+CommandString -》 select  top 1  * from sysUserInfo where uemail='1269021626@qq.com'
+DurationMilliseconds-》 240.8
+StartMilliseconds -》 2195.8
+StackTraceSnippet -》 Index > Example > QueryModel > QueryModel > QueryModel > System.Data.IDbCommand.ExecuteReader
+Errored -》 False
+NO -》 21
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 0.7
+StartMilliseconds -》 2437.5
+StackTraceSnippet -》 Index > Example > QueryList > GetConnection
+Errored -》 False
+NO -》 22
+ExecuteType -》 Reader
+CommandString -》 select uId, uLoginName from SysUserInfo where udepid=2
+DurationMilliseconds-》 151.3
+StartMilliseconds -》 2449.1
+StackTraceSnippet -》 Index > Example > QueryList > QueryList > ToList > System.Data.IDbCommand.ExecuteReader
+Errored -》 False
+NO -》 23
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 0.9
+StartMilliseconds -》 2601.9
+StackTraceSnippet -》 Index > Example > DbAction > GetConnection
+Errored -》 False
+NO -》 24
+ExecuteType -》 Reader
+CommandString -》 select * from SysUserInfo where uloginname='zzq';select * from SysRole_1;
+DurationMilliseconds-》 198.2
+StartMilliseconds -》 2606.6
+StackTraceSnippet -》 Index > Example > DbAction > <Example>b__0 > System.Data.IDbCommand.ExecuteReader
+Errored -》 False
+NO -》 25
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 0.9
+StartMilliseconds -》 2806.4
+StackTraceSnippet -》 Index > Example > ExecDataSet > GetConnection
+Errored -》 False
+NO -》 26
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 0.8
+StartMilliseconds -》 3022.7
+StackTraceSnippet -》 Index > Example > ExecDataTable > GetConnection
+Errored -》 False
+NO -》 27
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 3.7
+StartMilliseconds -》 13682.3
+StackTraceSnippet -》 Index > Example > PageList > PageList > GetConnection
+Errored -》 False
+NO -》 28
+ExecuteType -》 Reader
+CommandString -》 SELECT * FROM ( SELECT ROW_NUMBER() OVER(ORDER BY ro.rId DESC) AS ROW_NUMBER,  ro.*, dep.depName from sysRole_1 as ro join sysDepartment as dep on dep.depId=ro.rdepId  where rName<>'liis' ) AS Tab WHERE ROW_NUMBER BETWEEN 1 AND 10;  SELECT COUNT(0) AS DataCount FROM (SELECT ro.*, dep.depName from sysRole_1 as ro join sysDepartment as dep on dep.depId=ro.rdepId where rName<>'liis') AS CountTb;
+DurationMilliseconds-》 1178.4
+StartMilliseconds -》 65727.6
+StackTraceSnippet -》 Index > Example > PageList > PageList > PageList > System.Data.IDbCommand.ExecuteReader
+Errored -》 False
+NO -》 29
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 5.5
+StartMilliseconds -》 77399.8
+StackTraceSnippet -》 Index > Example > PageList > GetConnection
+Errored -》 False
+NO -》 30
+ExecuteType -》 Reader
+CommandString -》 SELECT * FROM (SELECT ROW_NUMBER() OVER(ORDER BY rId DESC  ) AS ROW_NUMBER, * FROM sysRole_1 where rName='项目经理'  ) Tab WHERE ROW_NUMBER BETWEEN 1 AND 10 ORDER BY rId DESC; SELECT COUNT(0) AS DataCount FROM sysRole_1 where rName='项目经理';
+DurationMilliseconds-》 59.8
+StartMilliseconds -》 108348
+StackTraceSnippet -》 Index > Example > PageList > PageList > System.Data.IDbCommand.ExecuteReader
+Errored -》 False
+NO -》 31
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 1.1
+StartMilliseconds -》 108412.2
+StackTraceSnippet -》 Index > Example > QueryList > QueryList > GetConnection
+Errored -》 False
+NO -》 32
+ExecuteType -》 Reader
+CommandString -》 select * from sysUserInfo  where  uloginname = 'zzq' and uRemark like '%良%' and uId not in ('78', '333') and (uEmail='12@qq.com' or uEmail='902@qq.com') and uDepId = 3 and uDepId >= 100 and uAddTime between '2020-03-19T21:55:28' and '2020-04-18T21:55:28' 
+DurationMilliseconds-》 42.8
+StartMilliseconds -》 108426.1
+StackTraceSnippet -》 Index > Example > QueryList > QueryList > QueryList > ToList > System.Data.IDbCommand.ExecuteReader
+Errored -》 False
+NO -》 33
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 0.5
+StartMilliseconds -》 108469.6
+StackTraceSnippet -》 Index > Example > QueryList > GetConnection
+Errored -》 False
+NO -》 34
+ExecuteType -》 Reader
+CommandString -》 select u.*, d.depName from sysUserInfo as u left join sysDepartment as d on u.uDepId=d.depId where  u.uloginname = 'zzq' and u.uRemark like '%良%' and u.uId not in ('78', '333') and d.depName = '公司'  order by u.uAddTime DESC
+DurationMilliseconds-》 47.6
+StartMilliseconds -》 108472
+StackTraceSnippet -》 Index > Example > QueryList > QueryList > ToList > System.Data.IDbCommand.ExecuteReader
+Errored -》 False
+NO -》 35
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 0.7
+StartMilliseconds -》 108519.9
+StackTraceSnippet -》 Index > Example > PageList > GetConnection
+Errored -》 False
+NO -》 36
+ExecuteType -》 Reader
+CommandString -》 SELECT * FROM ( SELECT ROW_NUMBER() OVER(ORDER BY u.uAddTime DESC) AS ROW_NUMBER,  u.*, d.depName from sysUserInfo as u left join sysDepartment as d on u.uDepId=d.depId   where  u.uloginname = 'zz1q' and u.uId not in ('7588', '333')  ) AS Tab WHERE ROW_NUMBER BETWEEN 1 AND 20;  SELECT COUNT(0) AS DataCount FROM (SELECT u.*, d.depName from sysUserInfo as u left join sysDepartment as d on u.uDepId=d.depId  where  u.uloginname = 'zz1q' and u.uId not in ('7588', '333') ) AS CountTb;
+DurationMilliseconds-》 75.1
+StartMilliseconds -》 109445.7
+StackTraceSnippet -》 Index > Example > PageList > PageList > System.Data.IDbCommand.ExecuteReader
+Errored -》 False
+NO -》 37
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 1
+StartMilliseconds -》 109521.7
+StackTraceSnippet -》 Index > Example > DbAction > GetConnection
+Errored -》 False
+NO -》 38
+ExecuteType -》 NonQuery
+CommandString -》 delete from sysUserInfo where uid=89
+DurationMilliseconds-》 48.3
+StartMilliseconds -》 109523.5
+StackTraceSnippet -》 Index > Example > DbAction > <Example>b__16_1
+Errored -》 False
+NO -》 39
+ExecuteType -》 Scalar
+CommandString -》 select count(0) from sysUserInfo where uloginname='zzq'
+DurationMilliseconds-》 42.4
+StartMilliseconds -》 109573.3
+StackTraceSnippet -》 Index > Example > DbAction > <Example>b__16_1
+Errored -》 False
+NO -》 40
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 1
+StartMilliseconds -》 109622
+StackTraceSnippet -》 Index > Example > ExecTransaction > GetConnection
+Errored -》 False
+NO -》 41
+ExecuteType -》 Scalar
+CommandString -》 insert sysUserInfo (uDepId, uLoginName, uPwd, uGender, uEmail, uRemark, uAddTime) values (2, 'zz1q', 'jsdjf1iu', 0, '1222@qq.com', 'ces2i1', '2020-04-18T21:55:30');SELECT SCOPE_IDENTITY();
+DurationMilliseconds-》 43.2
+StartMilliseconds -》 109635
+StackTraceSnippet -》 Index > Example > ExecTransaction > ExecTransaction > <Example>b__16_2 > Insert
+Errored -》 False
+NO -》 42
+ExecuteType -》 Scalar
+CommandString -》 insert sysUserInfo (uDepId, uLoginName, uPwd, uGender, uEmail, uRemark, uAddTime) values (2, 'zz1q', 'jsdjf1iu', 0, '1222@qq.com', 'ces2i1', '2020-04-18T21:55:30');SELECT SCOPE_IDENTITY();
+DurationMilliseconds-》 40
+StartMilliseconds -》 109678.6
+StackTraceSnippet -》 Index > Example > ExecTransaction > ExecTransaction > <Example>b__16_2 > Insert
+Errored -》 False
+NO -》 43
+ExecuteType -》 NonQuery
+CommandString -》 delete from sysUserInfo where uId = 7591
+DurationMilliseconds-》 45.8
+StartMilliseconds -》 109718.8
+StackTraceSnippet -》 Index > Example > ExecTransaction > ExecTransaction > <Example>b__16_2 > Delete
+Errored -》 False
+NO -》 44
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 0.9
+StartMilliseconds -》 109772.8
+StackTraceSnippet -》 Index > Example > QueryModel > QueryModel > GetConnection
+Errored -》 False
+NO -》 45
+ExecuteType -》 Reader
+CommandString -》 select top 1 * from sysRole_1 
+DurationMilliseconds-》 39.8
+StartMilliseconds -》 109775.4
+StackTraceSnippet -》 Index > Example > QueryModel > QueryModel > QueryModel > System.Data.IDbCommand.ExecuteReader
+Errored -》 False
+ 
+
+2020-04-18 21:58:07.1695|ZeKi.Frame.UI.Filters.ProfilingFilterAttribute.AnalysisProfiler|Controller: Home.Index
+
+NO -》 1
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 2.5
+StartMilliseconds -》 53
+StackTraceSnippet -》 Index > Example > Insert > Insert > Insert > GetConnection
+Errored -》 False
+NO -》 2
+ExecuteType -》 Scalar
+CommandString -》 insert sysUserInfo (uDepId, uLoginName, uPwd, uGender, uEmail, uRemark, uAddTime) values (2, 'zzq', 'jsdjfiu', 0, '12@qq.com', 'ceshi1', '2020-04-18T21:55:41');SELECT SCOPE_IDENTITY();
+DurationMilliseconds-》 39.5
+StartMilliseconds -》 57.3
+StackTraceSnippet -》 Index > Example > Insert > Insert > Insert > Insert
+Errored -》 False
+NO -》 3
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 0.6
+StartMilliseconds -》 97.2
+StackTraceSnippet -》 Index > Example > Insert > Insert > Insert > GetConnection
+Errored -》 False
+NO -》 4
+ExecuteType -》 NonQuery
+CommandString -》 insert sysUserInfo (uDepId, uLoginName, uPwd, uGender, uEmail, uRemark, uAddTime) values (2, 'lisi', 'jsdjfiu', 1, '222@@@@qq.com', 'ceshi1', '2020-04-18T21:55:41');
+DurationMilliseconds-》 30
+StartMilliseconds -》 98
+StackTraceSnippet -》 Index > Example > Insert > Insert > Insert > Insert
+Errored -》 False
+NO -》 5
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 0.5
+StartMilliseconds -》 128.8
+StackTraceSnippet -》 Index > Example > Update > Update > Update > GetConnection
+Errored -》 False
+NO -》 6
+ExecuteType -》 NonQuery
+CommandString -》 update sysUserInfo set uDepId= 21, uLoginName= 'zzq23', uPwd= '123456', uGender= 0, uEmail= '12@qq.com', uRemark= 'nihao', uIsDel= 1 where uId = 205
+DurationMilliseconds-》 30.2
+StartMilliseconds -》 129.8
+StackTraceSnippet -》 Index > Example > Update > Update > Update > Update
+Errored -》 False
+NO -》 7
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 0.5
+StartMilliseconds -》 160.7
+StackTraceSnippet -》 Index > Example > Update > Update > GetConnection
+Errored -》 False
+NO -》 8
+ExecuteType -》 NonQuery
+CommandString -》 update sysUserInfo set uRemark = 'upa' where  uId = 97 
+DurationMilliseconds-》 29.7
+StartMilliseconds -》 161.7
+StackTraceSnippet -》 Index > Example > Update > Update > Update
+Errored -》 False
+NO -》 9
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 0.6
+StartMilliseconds -》 192.4
+StackTraceSnippet -》 Index > Example > Delete > Delete > Delete > GetConnection
+Errored -》 False
+NO -》 10
+ExecuteType -》 NonQuery
+CommandString -》 delete from sysUserInfo where uId = 198
+DurationMilliseconds-》 42.5
+StartMilliseconds -》 193.1
+StackTraceSnippet -》 Index > Example > Delete > Delete > Delete > Delete
+Errored -》 False
+NO -》 11
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 0.9
+StartMilliseconds -》 236.5
+StackTraceSnippet -》 Index > Example > Count > GetConnection
+Errored -》 False
+NO -》 12
+ExecuteType -》 Scalar
+CommandString -》 SELECT COUNT(0) FROM [sysUserInfo]
+DurationMilliseconds-》 48.2
+StartMilliseconds -》 237.5
+StackTraceSnippet -》 Index > Example > Count > Count
+Errored -》 False
+NO -》 13
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 0.7
+StartMilliseconds -》 285.9
+StackTraceSnippet -》 Index > Example > Count > GetConnection
+Errored -》 False
+NO -》 14
+ExecuteType -》 Scalar
+CommandString -》 SELECT COUNT(0) FROM [sysUserInfo] where udepid=2;
+DurationMilliseconds-》 40.6
+StartMilliseconds -》 286.8
+StackTraceSnippet -》 Index > Example > Count > Count
+Errored -》 False
+NO -》 15
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 0.6
+StartMilliseconds -》 327.6
+StackTraceSnippet -》 Index > Example > Sum > GetConnection
+Errored -》 False
+NO -》 16
+ExecuteType -》 Scalar
+CommandString -》 SELECT SUM(udepid) FROM [sysUserInfo] where udepid=2;
+DurationMilliseconds-》 109
+StartMilliseconds -》 328.4
+StackTraceSnippet -》 Index > Example > Sum > Sum
+Errored -》 False
+NO -》 17
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 0.8
+StartMilliseconds -》 437.6
+StackTraceSnippet -》 Index > Example > Count > GetConnection
+Errored -》 False
+NO -》 18
+ExecuteType -》 Scalar
+CommandString -》 SELECT COUNT(0) FROM [sysUserInfo] where  udepid = 2 
+DurationMilliseconds-》 56.9
+StartMilliseconds -》 438.7
+StackTraceSnippet -》 Index > Example > Count > Count
+Errored -》 False
+NO -》 19
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 1
+StartMilliseconds -》 502.1
+StackTraceSnippet -》 Index > Example > QueryModel > QueryModel > GetConnection
+Errored -》 False
+NO -》 20
+ExecuteType -》 Reader
+CommandString -》 select  top 1  * from sysUserInfo where uemail='1269021626@qq.com'
+DurationMilliseconds-》 45.7
+StartMilliseconds -》 503.4
+StackTraceSnippet -》 Index > Example > QueryModel > QueryModel > QueryModel > System.Data.IDbCommand.ExecuteReader
+Errored -》 False
+NO -》 21
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 0.8
+StartMilliseconds -》 549.3
+StackTraceSnippet -》 Index > Example > QueryList > GetConnection
+Errored -》 False
+NO -》 22
+ExecuteType -》 Reader
+CommandString -》 select uId, uLoginName from SysUserInfo where udepid=2
+DurationMilliseconds-》 68.7
+StartMilliseconds -》 550.4
+StackTraceSnippet -》 Index > Example > QueryList > QueryList > ToList > System.Data.IDbCommand.ExecuteReader
+Errored -》 False
+NO -》 23
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 0.8
+StartMilliseconds -》 619.4
+StackTraceSnippet -》 Index > Example > DbAction > GetConnection
+Errored -》 False
+NO -》 24
+ExecuteType -》 Reader
+CommandString -》 select * from SysUserInfo where uloginname='zzq';select * from SysRole_1;
+DurationMilliseconds-》 65.2
+StartMilliseconds -》 620.4
+StackTraceSnippet -》 Index > Example > DbAction > <Example>b__0 > System.Data.IDbCommand.ExecuteReader
+Errored -》 False
+NO -》 25
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 0.5
+StartMilliseconds -》 685.8
+StackTraceSnippet -》 Index > Example > ExecDataSet > GetConnection
+Errored -》 False
+NO -》 26
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 0.5
+StartMilliseconds -》 737.6
+StackTraceSnippet -》 Index > Example > ExecDataTable > GetConnection
+Errored -》 False
+NO -》 27
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 1.2
+StartMilliseconds -》 9222.1
+StackTraceSnippet -》 Index > Example > PageList > PageList > GetConnection
+Errored -》 False
+NO -》 28
+ExecuteType -》 Reader
+CommandString -》 SELECT * FROM ( SELECT ROW_NUMBER() OVER(ORDER BY ro.rId DESC) AS ROW_NUMBER,  ro.*, dep.depName from sysRole_1 as ro join sysDepartment as dep on dep.depId=ro.rdepId  where rName<>'liis' ) AS Tab WHERE ROW_NUMBER BETWEEN 1 AND 10;  SELECT COUNT(0) AS DataCount FROM (SELECT ro.*, dep.depName from sysRole_1 as ro join sysDepartment as dep on dep.depId=ro.rdepId where rName<>'liis') AS CountTb;
+DurationMilliseconds-》 45.8
+StartMilliseconds -》 18251.2
+StackTraceSnippet -》 Index > Example > PageList > PageList > PageList > System.Data.IDbCommand.ExecuteReader
+Errored -》 False
+NO -》 29
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 1.3
+StartMilliseconds -》 18297.7
+StackTraceSnippet -》 Index > Example > PageList > GetConnection
+Errored -》 False
+NO -》 30
+ExecuteType -》 Reader
+CommandString -》 SELECT * FROM (SELECT ROW_NUMBER() OVER(ORDER BY rId DESC  ) AS ROW_NUMBER, * FROM sysRole_1 where rName='项目经理'  ) Tab WHERE ROW_NUMBER BETWEEN 1 AND 10 ORDER BY rId DESC; SELECT COUNT(0) AS DataCount FROM sysRole_1 where rName='项目经理';
+DurationMilliseconds-》 36.9
+StartMilliseconds -》 26737.2
+StackTraceSnippet -》 Index > Example > PageList > PageList > System.Data.IDbCommand.ExecuteReader
+Errored -》 False
+NO -》 31
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 0.7
+StartMilliseconds -》 26774.6
+StackTraceSnippet -》 Index > Example > QueryList > QueryList > GetConnection
+Errored -》 False
+NO -》 32
+ExecuteType -》 Reader
+CommandString -》 select * from sysUserInfo  where  uloginname = 'zzq' and uRemark like '%良%' and uId not in ('78', '333') and (uEmail='12@qq.com' or uEmail='902@qq.com') and uDepId = 3 and uDepId >= 100 and uAddTime between '2020-03-19T21:56:08' and '2020-04-18T21:56:08' 
+DurationMilliseconds-》 41.5
+StartMilliseconds -》 26776.8
+StackTraceSnippet -》 Index > Example > QueryList > QueryList > QueryList > ToList > System.Data.IDbCommand.ExecuteReader
+Errored -》 False
+NO -》 33
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 0.7
+StartMilliseconds -》 26818.5
+StackTraceSnippet -》 Index > Example > QueryList > GetConnection
+Errored -》 False
+NO -》 34
+ExecuteType -》 Reader
+CommandString -》 select u.*, d.depName from sysUserInfo as u left join sysDepartment as d on u.uDepId=d.depId where  u.uloginname = 'zzq' and u.uRemark like '%良%' and u.uId not in ('78', '333') and d.depName = '公司'  order by u.uAddTime DESC
+DurationMilliseconds-》 49.6
+StartMilliseconds -》 26820.2
+StackTraceSnippet -》 Index > Example > QueryList > QueryList > ToList > System.Data.IDbCommand.ExecuteReader
+Errored -》 False
+NO -》 35
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 1.5
+StartMilliseconds -》 38713.4
+StackTraceSnippet -》 Index > Example > PageList > GetConnection
+Errored -》 False
+NO -》 36
+ExecuteType -》 Reader
+CommandString -》 SELECT * FROM ( SELECT ROW_NUMBER() OVER(ORDER BY u.uAddTime DESC) AS ROW_NUMBER,  u.*, d.depName from sysUserInfo as u left join sysDepartment as d on u.uDepId=d.depId   where  u.uloginname = 'zz1q' and u.uId not in ('7588', '333')  ) AS Tab WHERE ROW_NUMBER BETWEEN 1 AND 20;  SELECT COUNT(0) AS DataCount FROM (SELECT u.*, d.depName from sysUserInfo as u left join sysDepartment as d on u.uDepId=d.depId  where  u.uloginname = 'zz1q' and u.uId not in ('7588', '333') ) AS CountTb;
+DurationMilliseconds-》 1271.1
+StartMilliseconds -》 102899.4
+StackTraceSnippet -》 Index > Example > PageList > PageList > System.Data.IDbCommand.ExecuteReader
+Errored -》 False
+NO -》 37
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 1.7
+StartMilliseconds -》 145426.9
+StackTraceSnippet -》 Index > Example > DbAction > GetConnection
+Errored -》 False
+NO -》 38
+ExecuteType -》 NonQuery
+CommandString -》 delete from sysUserInfo where uid=89
+DurationMilliseconds-》 37.4
+StartMilliseconds -》 145429.4
+StackTraceSnippet -》 Index > Example > DbAction > <Example>b__16_1
+Errored -》 False
+NO -》 39
+ExecuteType -》 Scalar
+CommandString -》 select count(0) from sysUserInfo where uloginname='zzq'
+DurationMilliseconds-》 38
+StartMilliseconds -》 145467.5
+StackTraceSnippet -》 Index > Example > DbAction > <Example>b__16_1
+Errored -》 False
+NO -》 40
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 1.2
+StartMilliseconds -》 145511.7
+StackTraceSnippet -》 Index > Example > ExecTransaction > GetConnection
+Errored -》 False
+NO -》 41
+ExecuteType -》 Scalar
+CommandString -》 insert sysUserInfo (uDepId, uLoginName, uPwd, uGender, uEmail, uRemark, uAddTime) values (2, 'zz1q', 'jsdjf1iu', 0, '1222@qq.com', 'ces2i1', '2020-04-18T21:58:07');SELECT SCOPE_IDENTITY();
+DurationMilliseconds-》 41.3
+StartMilliseconds -》 145517.9
+StackTraceSnippet -》 Index > Example > ExecTransaction > ExecTransaction > <Example>b__16_2 > Insert
+Errored -》 False
+NO -》 42
+ExecuteType -》 Scalar
+CommandString -》 insert sysUserInfo (uDepId, uLoginName, uPwd, uGender, uEmail, uRemark, uAddTime) values (2, 'zz1q', 'jsdjf1iu', 0, '1222@qq.com', 'ces2i1', '2020-04-18T21:58:07');SELECT SCOPE_IDENTITY();
+DurationMilliseconds-》 32.2
+StartMilliseconds -》 145560.2
+StackTraceSnippet -》 Index > Example > ExecTransaction > ExecTransaction > <Example>b__16_2 > Insert
+Errored -》 False
+NO -》 43
+ExecuteType -》 NonQuery
+CommandString -》 delete from sysUserInfo where uId = 7595
+DurationMilliseconds-》 31.3
+StartMilliseconds -》 145593.3
+StackTraceSnippet -》 Index > Example > ExecTransaction > ExecTransaction > <Example>b__16_2 > Delete
+Errored -》 False
+NO -》 44
+ExecuteType -》 Open
+CommandString -》 Connection Open()
+DurationMilliseconds-》 0.7
+StartMilliseconds -》 145629
+StackTraceSnippet -》 Index > Example > QueryModel > QueryModel > GetConnection
+Errored -》 False
+NO -》 45
+ExecuteType -》 Reader
+CommandString -》 select top 1 * from sysRole_1 
+DurationMilliseconds-》 38.2
+StartMilliseconds -》 145630
+StackTraceSnippet -》 Index > Example > QueryModel > QueryModel > QueryModel > System.Data.IDbCommand.ExecuteReader
+Errored -》 False
+ 
+

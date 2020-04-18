@@ -1,0 +1,8 @@
+C:\Users\cysoft\Desktop\我的文档\ZeKi.Frame\ZeKi.Frame.Model\bin\Debug\netstandard2.0\ZeKi.Frame.Model.deps.json
+C:\Users\cysoft\Desktop\我的文档\ZeKi.Frame\ZeKi.Frame.Model\bin\Debug\netstandard2.0\ZeKi.Frame.Model.dll
+C:\Users\cysoft\Desktop\我的文档\ZeKi.Frame\ZeKi.Frame.Model\bin\Debug\netstandard2.0\ZeKi.Frame.Model.pdb
+C:\Users\cysoft\Desktop\我的文档\ZeKi.Frame\ZeKi.Frame.Model\obj\Debug\netstandard2.0\ZeKi.Frame.Model.csproj.CoreCompileInputs.cache
+C:\Users\cysoft\Desktop\我的文档\ZeKi.Frame\ZeKi.Frame.Model\obj\Debug\netstandard2.0\ZeKi.Frame.Model.AssemblyInfoInputs.cache
+C:\Users\cysoft\Desktop\我的文档\ZeKi.Frame\ZeKi.Frame.Model\obj\Debug\netstandard2.0\ZeKi.Frame.Model.AssemblyInfo.cs
+C:\Users\cysoft\Desktop\我的文档\ZeKi.Frame\ZeKi.Frame.Model\obj\Debug\netstandard2.0\ZeKi.Frame.Model.dll
+C:\Users\cysoft\Desktop\我的文档\ZeKi.Frame\ZeKi.Frame.Model\obj\Debug\netstandard2.0\ZeKi.Frame.Model.pdb

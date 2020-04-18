@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ZeKi.Frame.DB\ZeKi.Frame.DB.csproj" />
+    <ProjectReference Include="..\ZeKi.Frame.IDAL\ZeKi.Frame.IDAL.csproj" />
+  </ItemGroup>
+
+</Project>
