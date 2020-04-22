@@ -21,8 +21,8 @@ namespace ZeKi.Frame.DAL
     /// <typeparam name="TModel">模型实体类</typeparam>
     public class BaseDAL<TModel> : IBaseDAL<TModel> where TModel : class, new()
     {
-        private static readonly DBType dbType = DBType.MSSQL;
-        private static readonly int commandTimeout = 0;
+        private static readonly DBType _dbType = DBType.MSSQL;
+        private static readonly int _commandTimeout = 0;
 
         #region 构造函数
         /// <summary>
@@ -44,7 +44,7 @@ namespace ZeKi.Frame.DAL
         {
             using (var _conn = GetConnection())
             {
-                return _conn.Insert(model, getId, commandTimeout: commandTimeout);
+                return _conn.Insert(model, getId, commandTimeout: _commandTimeout);
             }
         }
 
@@ -58,7 +58,7 @@ namespace ZeKi.Frame.DAL
         {
             using (var _conn = GetConnection())
             {
-                return _conn.BatchInsert(list, ps, commandTimeout: commandTimeout);
+                return _conn.BatchInsert(list, ps, commandTimeout: _commandTimeout);
             }
         }
         #endregion
@@ -73,7 +73,7 @@ namespace ZeKi.Frame.DAL
         {
             using (var _conn = GetConnection())
             {
-                return _conn.Update(model, commandTimeout: commandTimeout);
+                return _conn.Update(model, commandTimeout: _commandTimeout);
             }
         }
 
@@ -92,7 +92,7 @@ namespace ZeKi.Frame.DAL
         {
             using (var _conn = GetConnection())
             {
-                return _conn.Update<TModel>(setAndWhere, commandTimeout: commandTimeout);
+                return _conn.Update<TModel>(setAndWhere, commandTimeout: _commandTimeout);
             }
         }
         #endregion
@@ -107,7 +107,7 @@ namespace ZeKi.Frame.DAL
         {
             using (var _conn = GetConnection())
             {
-                return _conn.Delete(model, commandTimeout: commandTimeout);
+                return _conn.Delete(model, commandTimeout: _commandTimeout);
             }
         }
         #endregion
@@ -124,7 +124,7 @@ namespace ZeKi.Frame.DAL
         {
             using (var _conn = GetConnection())
             {
-                return _conn.QueryList<T>(sql, param, transaction: null, commandTimeout: commandTimeout);
+                return _conn.QueryList<T>(sql, param, transaction: null, commandTimeout: _commandTimeout);
             }
         }
 
@@ -151,7 +151,7 @@ namespace ZeKi.Frame.DAL
         {
             using (var _conn = GetConnection())
             {
-                return _conn.QueryList<T>(whereObj, orderStr, selectFields, commandTimeout: commandTimeout);
+                return _conn.QueryList<T>(whereObj, orderStr, selectFields, commandTimeout: _commandTimeout);
             }
         }
 
@@ -178,7 +178,7 @@ namespace ZeKi.Frame.DAL
         {
             using (var _conn = GetConnection())
             {
-                return _conn.QueryList<T>(sqlNoWhere, whereObj, orderStr, commandTimeout: commandTimeout);
+                return _conn.QueryList<T>(sqlNoWhere, whereObj, orderStr, commandTimeout: _commandTimeout);
             }
         }
 
@@ -193,7 +193,7 @@ namespace ZeKi.Frame.DAL
         {
             using (var _conn = GetConnection())
             {
-                return _conn.QueryModel<T>(sql, param, transaction: null, commandTimeout: commandTimeout);
+                return _conn.QueryModel<T>(sql, param, transaction: null, commandTimeout: _commandTimeout);
             }
         }
 
@@ -220,7 +220,7 @@ namespace ZeKi.Frame.DAL
         {
             using (var _conn = GetConnection())
             {
-                return _conn.QueryModel<T>(whereObj, orderStr, selectFields, commandTimeout: commandTimeout);
+                return _conn.QueryModel<T>(whereObj, orderStr, selectFields, commandTimeout: _commandTimeout);
             }
         }
 
@@ -247,7 +247,7 @@ namespace ZeKi.Frame.DAL
         {
             using (var _conn = GetConnection())
             {
-                return _conn.QueryModel<T>(sqlNoWhere, whereObj, orderStr, null, commandTimeout: commandTimeout);
+                return _conn.QueryModel<T>(sqlNoWhere, whereObj, orderStr, null, commandTimeout: _commandTimeout);
             }
         }
 
@@ -266,7 +266,7 @@ namespace ZeKi.Frame.DAL
         {
             using (var _conn = GetConnection())
             {
-                return _conn.Query(sql, map, param, commandTimeout: commandTimeout);
+                return _conn.Query(sql, map, param, commandTimeout: _commandTimeout);
             }
         }
 
@@ -285,7 +285,7 @@ namespace ZeKi.Frame.DAL
         {
             using (var _conn = GetConnection())
             {
-                return _conn.Query(sql, map, param, commandTimeout: commandTimeout);
+                return _conn.Query(sql, map, param, commandTimeout: _commandTimeout);
             }
         }
 
@@ -314,7 +314,7 @@ namespace ZeKi.Frame.DAL
         {
             using (var _conn = GetConnection())
             {
-                return _conn.PageList<T>(pcp, param, commandTimeout: commandTimeout);
+                return _conn.PageList<T>(pcp, param, commandTimeout: _commandTimeout);
             }
         }
 
@@ -358,6 +358,41 @@ namespace ZeKi.Frame.DAL
         //}
         #endregion
 
+        #region Procedure
+        /// <summary>
+        /// 执行查询存储过程(用于查询数据)
+        /// <para>参数传递参考：https://github.com/StackExchange/Dapper#stored-procedures </para>
+        /// </summary>
+        /// <typeparam name="T">返回模型,如果没有对应模型类接收,可以传入dynamic,然后序列化再反序列化成List泛型参数:Hashtable</typeparam>
+        /// <param name="proceName">存储过程名</param>
+        /// <param name="param">特定键值字典/Hashtable/匿名类/自定义类,过程中有OutPut或者Return参数,使用<see cref="DbParameters"/></param>
+        /// <returns>返回集合</returns>
+        public virtual IEnumerable<T> QueryProcedure<T>(string proceName, object param = null)
+        {
+            using (var _conn = GetConnection())
+            {
+                return _conn.QueryProcedure<T>(proceName, param, commandTimeout: _commandTimeout);
+            }
+        }
+
+        /// <summary>
+        /// 执行存储过程(查询数据使用QueryProcedure方法)
+        /// <para>参数传递参考：https://github.com/StackExchange/Dapper#stored-procedures </para>
+        /// </summary>
+        /// <param name="proceName">存储过程名</param>
+        /// <param name="param">特定键值字典/Hashtable/匿名类/自定义类,过程中有OutPut或者Return参数,使用<see cref="DbParameters"/></param>
+        /// <param name="transaction"></param>
+        /// <param name="commandTimeout"></param>
+        /// <returns></returns>
+        public virtual void ExecProcedure(string proceName, object param = null)
+        {
+            using (var _conn = GetConnection())
+            {
+                _conn.ExecProcedure(proceName, param, commandTimeout: _commandTimeout);
+            }
+        }
+        #endregion
+
         #region Statistics
         /// <summary>
         /// Count统计
@@ -370,7 +405,7 @@ namespace ZeKi.Frame.DAL
         {
             using (var _conn = GetConnection())
             {
-                return _conn.Count<TModel>(sqlWhere, param, commandTimeout: commandTimeout);
+                return _conn.Count<TModel>(sqlWhere, param, commandTimeout: _commandTimeout);
             }
         }
 
@@ -383,7 +418,7 @@ namespace ZeKi.Frame.DAL
         {
             using (var _conn = GetConnection())
             {
-                return _conn.Count<TModel>(whereObj, commandTimeout: commandTimeout);
+                return _conn.Count<TModel>(whereObj, commandTimeout: _commandTimeout);
             }
         }
 
@@ -399,7 +434,7 @@ namespace ZeKi.Frame.DAL
         {
             using (var _conn = GetConnection())
             {
-                return _conn.Sum<TModel, TResult>(field, sqlWhere, param, commandTimeout: commandTimeout);
+                return _conn.Sum<TModel, TResult>(field, sqlWhere, param, commandTimeout: _commandTimeout);
             }
         }
         #endregion
@@ -505,7 +540,7 @@ namespace ZeKi.Frame.DAL
         private IDbConnection GetConnection()
         {
             IDbConnection _conn = null;
-            switch (dbType)
+            switch (_dbType)
             {
                 case DBType.MSSQL:
                     _conn = new SqlConnection(AppConfig.SqlConnStr);

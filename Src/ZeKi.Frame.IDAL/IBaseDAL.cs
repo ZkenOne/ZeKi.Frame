@@ -215,6 +215,29 @@ namespace ZeKi.Frame.IDAL
         //DataTable PageDataTable(PageParameters pcp, object param = null);
         #endregion
 
+        #region Procedure
+        /// <summary>
+        /// 执行查询存储过程(用于查询数据)
+        /// <para>参数传递参考：https://github.com/StackExchange/Dapper#stored-procedures </para>
+        /// </summary>
+        /// <typeparam name="T">返回模型,如果没有对应模型类接收,可以传入dynamic,然后序列化再反序列化成List泛型参数:Hashtable</typeparam>
+        /// <param name="proceName">存储过程名</param>
+        /// <param name="param">特定键值字典/Hashtable/匿名类/自定义类,过程中有OutPut或者Return参数,使用<see cref="DbParameters"/></param>
+        /// <returns>返回集合</returns>
+        IEnumerable<T> QueryProcedure<T>(string proceName, object param = null);
+
+        /// <summary>
+        /// 执行存储过程(查询数据使用QueryProcedure方法)
+        /// <para>参数传递参考：https://github.com/StackExchange/Dapper#stored-procedures </para>
+        /// </summary>
+        /// <param name="proceName">存储过程名</param>
+        /// <param name="param">特定键值字典/Hashtable/匿名类/自定义类,过程中有OutPut或者Return参数,使用<see cref="DbParameters"/></param>
+        /// <param name="transaction"></param>
+        /// <param name="commandTimeout"></param>
+        /// <returns></returns>
+        void ExecProcedure(string proceName, object param = null);
+        #endregion
+
         #region Statistics
         /// <summary>
         /// Count统计

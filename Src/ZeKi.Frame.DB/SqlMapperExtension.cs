@@ -23,23 +23,23 @@ namespace ZeKi.Frame.DB
         /// <summary>
         /// 新增/修改字段缓存变量
         /// </summary>
-        private static readonly ConcurrentDictionary<string, List<string>> paramNameCache = new ConcurrentDictionary<string, List<string>>();
+        private static readonly ConcurrentDictionary<string, List<string>> _paramNameCache = new ConcurrentDictionary<string, List<string>>();
         /// <summary>
         /// 表名缓存变量
         /// </summary>
-        private static readonly ConcurrentDictionary<Type, string> tableNameMap = new ConcurrentDictionary<Type, string>();
+        private static readonly ConcurrentDictionary<Type, string> _tableNameMap = new ConcurrentDictionary<Type, string>();
         /// <summary>
         /// 主键缓存变量
         /// </summary>
-        private static readonly ConcurrentDictionary<Type, string> pKeyNameMap = new ConcurrentDictionary<Type, string>();
+        private static readonly ConcurrentDictionary<Type, string> _pKeyNameMap = new ConcurrentDictionary<Type, string>();
         /// <summary>
         /// 参数化前缀
         /// </summary>
-        private static readonly string sqlParamPrefix = "__Param__";
+        private static readonly string _sqlParamPrefix = "__Param__";
         /// <summary>
         /// 修改字段的前缀(代表此字段为修改)
         /// </summary>
-        private static readonly string upset_prefix = "renew_";
+        private static readonly string _upset_prefix = "renew_";
 
         #region Insert
         /// <summary>
@@ -127,7 +127,7 @@ namespace ZeKi.Frame.DB
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="connection"></param>
-        /// <param name="setAndWhere">set和where的键值对,使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、<see cref="DbParameters"/>、自定义类
+        /// <param name="setAndWhere">set和where的键值对,使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类
         /// <para>格式:new {renew_name="u",id=1},解析:set字段为renew_name="u",where条件为id=1</para>
         /// <para>修改值必须以renew_开头,如数据库字段名有此开头需要叠加</para>
         /// <para>如 where值中有集合/数组,则生成 in @Key ,sql: in ('','')</para>
@@ -140,17 +140,17 @@ namespace ZeKi.Frame.DB
         {
             var model_type = typeof(T);
             var dictPar = PackingObjToDict(setAndWhere);
-            var setFields = dictPar.Keys.Where(p => p.StartsWith(upset_prefix));
+            var setFields = dictPar.Keys.Where(p => p.StartsWith(_upset_prefix));
             if (setFields == null || !setFields.Any())
                 throw new Exception("未设置修改值");
-            var whereFields = dictPar.Keys.Where(p => !p.StartsWith(upset_prefix));
+            var whereFields = dictPar.Keys.Where(p => !p.StartsWith(_upset_prefix));
             if (whereFields == null || !whereFields.Any())
                 throw new Exception("未设置条件值");
             var allowUpFieldList = GetPropertyNames(model_type, 1);
             var forbidUpFieldList = new List<string>();
             foreach (var itemField in setFields)
             {
-                var tp_name = itemField.Remove(0, upset_prefix.Length);
+                var tp_name = itemField.Remove(0, _upset_prefix.Length);
                 if (!allowUpFieldList.Any(p => p.ToLower() == tp_name.ToLower()))
                 {
                     forbidUpFieldList.Add(tp_name);
@@ -165,7 +165,7 @@ namespace ZeKi.Frame.DB
             //name=@renew_name,flag_style=@renew_flag_style
             foreach (var itemField in setFields)
             {
-                builder.Append($"{itemField.Remove(0, upset_prefix.Length)} = @{itemField},");
+                builder.Append($"{itemField.Remove(0, _upset_prefix.Length)} = @{itemField},");
             }
             builder = builder.Remove(builder.Length - 1, 1);  //去掉多余的,
             builder.Append(BuildConditionSql(dictPar, whereFields));
@@ -213,7 +213,7 @@ namespace ZeKi.Frame.DB
         /// 查询(分页使用PageList方法)
         /// </summary>
         /// <typeparam name="T">返回模型</typeparam>
-        /// <param name="whereObj">使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、<see cref="DbParameters"/>、自定义类</param>
+        /// <param name="whereObj">使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</param>
         /// <param name="orderStr">填写：id asc / id,name desc</param>
         /// <param name="selectFields">,分隔</param>
         /// <param name="transaction"></param>
@@ -237,7 +237,7 @@ namespace ZeKi.Frame.DB
         /// </summary>
         /// <typeparam name="T">返回模型</typeparam>
         /// <param name="sqlNoWhere">sql语句,不包括where,如:select * from sysUserInfo as u left join sysDepartment as d on u.uDepId=d.depId</param>
-        /// <param name="whereObj">使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、<see cref="DbParameters"/>、自定义类</param>
+        /// <param name="whereObj">使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</param>
         /// <param name="orderStr">填写：id asc / id,name desc</param>
         /// <param name="transaction"></param>
         /// <param name="commandTimeout"></param>
@@ -275,7 +275,7 @@ namespace ZeKi.Frame.DB
         /// 查询(查询语句注意只写查询一条)
         /// </summary>
         /// <typeparam name="T">返回模型</typeparam>
-        /// <param name="whereObj">使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、<see cref="DbParameters"/>、自定义类</param>
+        /// <param name="whereObj">使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</param>
         /// <param name="selectFields">,分隔</param>
         /// <param name="orderStr">填写：id asc / id,name desc</param>
         /// <param name="transaction"></param>
@@ -299,7 +299,7 @@ namespace ZeKi.Frame.DB
         /// </summary>
         /// <typeparam name="T">返回模型</typeparam>
         /// <param name="sqlNoWhere">sql语句,不包括where,如:select top 1 * from sysUserInfo as u left join sysDepartment as d on u.uDepId=d.depId</param>
-        /// <param name="whereObj">使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、<see cref="DbParameters"/>、自定义类</param>
+        /// <param name="whereObj">使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</param>
         /// <param name="orderStr">填写：id asc / id,name desc</param>
         /// <param name="transaction"></param>
         /// <param name="commandTimeout"></param>
@@ -371,7 +371,7 @@ namespace ZeKi.Frame.DB
         /// <returns></returns>
         private static string CreatePageSql(IDbConnection connection, Type type, PageParameters pcp)
         {
-            if (IsSqlConnection(connection))
+            if (IsMsSqlConnection(connection))
             {
                 if (type == null && string.IsNullOrEmpty(pcp.TableName))
                     throw new NotImplementedException("pcp中需要传递TableName");
@@ -429,6 +429,39 @@ namespace ZeKi.Frame.DB
         }
         #endregion
 
+        #region Procedure
+        /// <summary>
+        /// 执行查询存储过程(用于查询数据)
+        /// <para>参数传递参考：https://github.com/StackExchange/Dapper#stored-procedures </para>
+        /// </summary>
+        /// <typeparam name="T">返回模型,如果没有对应模型类接收,可以传入dynamic,然后序列化再反序列化成List泛型参数:Hashtable</typeparam>
+        /// <param name="proceName">存储过程名</param>
+        /// <param name="param">特定键值字典/Hashtable/匿名类/自定义类,过程中有OutPut或者Return参数,使用<see cref="DbParameters"/></param>
+        /// <param name="transaction"></param>
+        /// <param name="commandTimeout"></param>
+        /// <returns>返回集合</returns>
+        public static IEnumerable<T> QueryProcedure<T>(this IDbConnection connection, string proceName, object param = null, IDbTransaction transaction = null, int? commandTimeout = null)
+        {
+            var objParam = param is DbParameters ? param : ToDictionary(param);
+            return connection.Query<T>(proceName, objParam, transaction, commandTimeout: commandTimeout, commandType: CommandType.StoredProcedure);
+        }
+
+        /// <summary>
+        /// 执行存储过程(查询数据使用QueryProcedure方法)
+        /// <para>参数传递参考：https://github.com/StackExchange/Dapper#stored-procedures </para>
+        /// </summary>
+        /// <param name="proceName">存储过程名</param>
+        /// <param name="param">特定键值字典/Hashtable/匿名类/自定义类,过程中有OutPut或者Return参数,使用<see cref="DbParameters"/></param>
+        /// <param name="transaction"></param>
+        /// <param name="commandTimeout"></param>
+        /// <returns></returns>
+        public static void ExecProcedure(this IDbConnection connection, string proceName, object param = null, IDbTransaction transaction = null, int? commandTimeout = null)
+        {
+            var objParam = param is DbParameters ? param : ToDictionary(param);
+            connection.Execute(proceName, objParam, transaction, commandTimeout, commandType: CommandType.StoredProcedure);
+        }
+        #endregion
+
         #region Statistics
         /// <summary>
         /// Count统计
@@ -448,7 +481,7 @@ namespace ZeKi.Frame.DB
         /// <summary>
         /// Count统计
         /// </summary>
-        /// <param name="whereObj">使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、<see cref="DbParameters"/>、自定义类</param>
+        /// <param name="whereObj">使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</param>
         /// <returns></returns>
         public static int Count<T>(this IDbConnection connection, object whereObj = null, IDbTransaction transaction = null, int? commandTimeout = null) where T : class
         {
@@ -566,8 +599,6 @@ namespace ZeKi.Frame.DB
         }
         #endregion
 
-
-
         #region DataTable 
         ///// <summary>
         ///// 获取DataTable(与dapper无关)
@@ -676,7 +707,7 @@ namespace ZeKi.Frame.DB
             for (int i = 0; i < dict.Count; i++)
             {
                 var item = dict.ElementAt(i);
-                if (item.Key.StartsWith(upset_prefix) || item.Value is SqlBaseCondition || item.Value is SqlBaseCondition[])
+                if (item.Key.StartsWith(_upset_prefix) || item.Value is SqlBaseCondition || item.Value is SqlBaseCondition[])
                     continue;
                 if (IsAssemble(item.Value))
                     dict[item.Key] = SCBuild.In(item.Value);
@@ -734,7 +765,7 @@ namespace ZeKi.Frame.DB
             var partStr = string.Empty;
             var sqlParam = string.Empty;
             if (!(baseCond is SqlTextCondition))
-                sqlParam = $"{sqlParamPrefix}{++index}";
+                sqlParam = $"{_sqlParamPrefix}{++index}";
             if (baseCond is SqlBasicCondition)
             {
                 partStr = $" {field} {baseCond.SqlOpt} @{sqlParam} and";
@@ -795,7 +826,7 @@ namespace ZeKi.Frame.DB
             Type t_model_type = type;
             var key = flag == 0 ? t_model_type.FullName + "_Ins" : t_model_type.FullName + "_Ups";
             List<string> paramNames = null;
-            if (!paramNameCache.TryGetValue(key, out paramNames))
+            if (!_paramNameCache.TryGetValue(key, out paramNames))
             {
                 paramNames = new List<string>();
                 foreach (var prop in t_model_type.GetProperties(BindingFlags.Instance | BindingFlags.Public).Where(p => p.GetGetMethod(false) != null))
@@ -813,10 +844,10 @@ namespace ZeKi.Frame.DB
                     }
                     if (propAttr != null && propAttr.IsPKey)
                     {
-                        pKeyNameMap[t_model_type] = prop.Name;
+                        _pKeyNameMap[t_model_type] = prop.Name;
                     }
                 }
-                paramNameCache[key] = paramNames;
+                _paramNameCache[key] = paramNames;
             }
             return paramNames;
         }
@@ -840,21 +871,38 @@ namespace ZeKi.Frame.DB
         }
 
         /// <summary>
+        /// 获取参数化前缀字符串 (@ : ?)
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        private static string GetParmPrefix(IDbConnection connection)
+        {
+            var parmPrefix = string.Empty;
+            if (IsMsSqlConnection(connection))
+                parmPrefix = "@";
+            else if (IsMsSqlConnection(connection))
+                parmPrefix = "?";
+            else if (IsOracleConnection(connection))
+                parmPrefix = ":";
+            return parmPrefix;
+        }
+
+        /// <summary>
         /// 获取表名
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
         private static string GetTableName(Type type)
         {
-            var tableName = string.Empty;
-            if (!tableNameMap.TryGetValue(type, out tableName))
+            string tableName;
+            if (!_tableNameMap.TryGetValue(type, out tableName))
             {
                 var att = type.GetCustomAttribute<TableAttribute>();
                 if (att == null)
                     tableName = type.Name;
                 else
                     tableName = att.TableName;
-                tableNameMap[type] = tableName;
+                _tableNameMap[type] = tableName;
             }
             return tableName;
         }
@@ -866,12 +914,12 @@ namespace ZeKi.Frame.DB
         /// <returns></returns>
         private static string GetPrimaryKey(Type type)
         {
-            if (!pKeyNameMap.ContainsKey(type))
+            if (!_pKeyNameMap.ContainsKey(type))
                 //触发缓存
                 GetPropertyNames(type);
-            if (!pKeyNameMap.ContainsKey(type))
+            if (!_pKeyNameMap.ContainsKey(type))
                 throw new Exception($"Model为[{type.Name}]未设置主键");
-            return pKeyNameMap[type];
+            return _pKeyNameMap[type];
         }
 
         /// <summary>
@@ -881,7 +929,7 @@ namespace ZeKi.Frame.DB
         /// <returns></returns>
         private static string GetInsertIncSql(IDbConnection connection)
         {
-            if (IsSqlConnection(connection))
+            if (IsMsSqlConnection(connection))
             {
                 return "SELECT SCOPE_IDENTITY();";
             }
@@ -905,14 +953,10 @@ namespace ZeKi.Frame.DB
         /// </summary>
         /// <param name="connection"></param>
         /// <returns></returns>
-        private static bool IsSqlConnection(IDbConnection connection)
+        private static bool IsMsSqlConnection(IDbConnection connection)
         {
-            var conn = connection as ProfiledDbConnection;
-            if (conn != null && conn.WrappedConnection is SqlConnection)
-                return true;
-            if (connection is SqlConnection)
-                return true;
-            return false;
+            var conn = ToActualConnetction(connection);
+            return (conn is SqlConnection);
         }
 
         /// <summary>
@@ -922,12 +966,21 @@ namespace ZeKi.Frame.DB
         /// <returns></returns>
         private static bool IsMySqlConnection(IDbConnection connection)
         {
-            //var conn = connection as ProfiledDbConnection;
-            //if (conn != null && conn.WrappedConnection is SqlConnection)
-            //    return true;
-            //if (connection is SqlConnection)
-            //    return true;
-            //return false;
+            //var conn = ToActualConnetction(connection);
+            //return (conn is SqlConnection);
+
+            throw new Exception("not imp");
+        }
+
+        /// <summary>
+        /// 是否为oracle
+        /// </summary>
+        /// <param name="connection"></param>
+        /// <returns></returns>
+        private static bool IsOracleConnection(IDbConnection connection)
+        {
+            //var conn = ToActualConnetction(connection);
+            //return (conn is SqlConnection);
 
             throw new Exception("not imp");
         }
