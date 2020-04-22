@@ -105,7 +105,7 @@
 //        /// </summary>
 //        /// <typeparam name="T"></typeparam>
 //        /// <param name="connection"></param>
-//        /// <param name="setAndWhere">set和where的键值对,使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、<see cref="DbParameters"/>、自定义类
+//        /// <param name="setAndWhere">set和where的键值对,使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类
 //        /// <para>格式:new {renew_name="u",id=1},解析:set字段为renew_name="u",where条件为id=1</para>
 //        /// <para>修改值必须以renew_开头,如数据库字段名有此开头需要叠加</para>
 //        /// <para>如 where值中有集合/数组,则生成 in @Key ,sql: in ('','')</para>
@@ -192,7 +192,7 @@
 //        /// 查询(分页使用PageList方法)
 //        /// </summary>
 //        /// <typeparam name="T">返回模型</typeparam>
-//        /// <param name="whereObj">使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、<see cref="DbParameters"/>、自定义类</param>
+//        /// <param name="whereObj">使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</param>
 //        /// <param name="orderStr">填写：id asc / id,name desc</param>
 //        /// <param name="selectFields">,分隔</param>
 //        /// <param name="transaction"></param>
@@ -232,7 +232,7 @@
 //        /// 查询
 //        /// </summary>
 //        /// <typeparam name="T">返回模型</typeparam>
-//        /// <param name="whereObj">使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、<see cref="DbParameters"/>、自定义类</param>
+//        /// <param name="whereObj">使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</param>
 //        /// <param name="selectFields">,分隔</param>
 //        /// <param name="transaction"></param>
 //        /// <param name="commandTimeout"></param>
@@ -292,7 +292,7 @@
 //        /// <summary>
 //        /// Count统计
 //        /// </summary>
-//        /// <param name="whereObj">使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、<see cref="DbParameters"/>、自定义类</param>
+//        /// <param name="whereObj">使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</param>
 //        /// <returns></returns>
 //        public static async Task<int> CountAsync<T>(this IDbConnection connection, object whereObj = null, IDbTransaction transaction = null, int? commandTimeout = null) where T : class
 //        {

@@ -81,7 +81,7 @@ namespace ZeKi.Frame.DAL
         /// 修改(根据自定义条件修改自定义值)
         /// </summary>
         /// <param name="model"></param>
-        /// <param name="setAndWhere">set和where的键值对,使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、<see cref="DbParameters"/>、自定义类
+        /// <param name="setAndWhere">set和where的键值对,使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类
         /// <para>格式:new {renew_name="u",id=1},解析:set字段为renew_name="u",where条件为id=1</para>
         /// <para>修改值必须以renew_开头,如数据库字段名有此开头需要叠加</para>
         /// <para>如 where值中有集合/数组,则生成 in @Key ,sql: in ('','')</para>
@@ -143,7 +143,7 @@ namespace ZeKi.Frame.DAL
         /// 查询
         /// </summary>
         /// <typeparam name="T">返回模型</typeparam>
-        /// <param name="whereObj">使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、<see cref="DbParameters"/>、自定义类</param>
+        /// <param name="whereObj">使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</param>
         /// <param name="orderStr">填写：id asc / id,name desc</param>
         /// <param name="selectFields">,分隔</param>
         /// <returns></returns>
@@ -158,7 +158,7 @@ namespace ZeKi.Frame.DAL
         /// <summary>
         /// 查询
         /// </summary>
-        /// <param name="whereObj">使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、<see cref="DbParameters"/>、自定义类</param>
+        /// <param name="whereObj">使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</param>
         /// <param name="orderStr">填写：id asc / id,name desc</param>
         /// <param name="selectFields">,分隔</param>
         /// <returns></returns>
@@ -171,7 +171,7 @@ namespace ZeKi.Frame.DAL
         /// 查询
         /// </summary>
         /// <typeparam name="T">返回模型</typeparam>
-        /// <param name="whereObj">使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、<see cref="DbParameters"/>、自定义类</param>
+        /// <param name="whereObj">使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</param>
         /// <param name="orderStr">填写：id asc / id,name desc</param>
         /// <returns></returns>
         public virtual IEnumerable<T> QueryList<T>(string sqlNoWhere, object whereObj = null, string orderStr = null)
@@ -212,7 +212,7 @@ namespace ZeKi.Frame.DAL
         /// 查询
         /// </summary>
         /// <typeparam name="T">返回模型</typeparam>
-        /// <param name="whereObj">使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、<see cref="DbParameters"/>、自定义类</param>
+        /// <param name="whereObj">使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</param>
         /// <param name="selectFields">,分隔</param>
         /// <param name="orderStr">填写：id asc / id,name desc</param>
         /// <returns></returns>
@@ -227,7 +227,7 @@ namespace ZeKi.Frame.DAL
         /// <summary>
         /// 查询
         /// </summary>
-        /// <param name="whereObj">使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、<see cref="DbParameters"/>、自定义类</param>
+        /// <param name="whereObj">使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</param>
         /// <param name="selectFields">,分隔</param>
         /// <param name="orderStr">填写：id asc / id,name desc</param>
         /// <returns></returns>
@@ -240,7 +240,7 @@ namespace ZeKi.Frame.DAL
         /// 查询
         /// </summary>
         /// <typeparam name="T">返回模型</typeparam>
-        /// <param name="whereObj">使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、<see cref="DbParameters"/>、自定义类</param>
+        /// <param name="whereObj">使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</param>
         /// <param name="orderStr">填写：id asc / id,name desc</param>
         /// <returns></returns>
         public virtual T QueryModel<T>(string sqlNoWhere, object whereObj = null, string orderStr = null)
@@ -412,7 +412,7 @@ namespace ZeKi.Frame.DAL
         /// <summary>
         /// Count统计
         /// </summary>
-        /// <param name="whereObj">使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、<see cref="DbParameters"/>、自定义类</param>
+        /// <param name="whereObj">使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</param>
         /// <returns></returns>
         public virtual int Count(object whereObj = null)
         {
