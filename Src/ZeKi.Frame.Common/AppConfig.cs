@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using ZeKi.Frame.Model;
 
 namespace ZeKi.Frame.Common
 {
@@ -24,5 +25,10 @@ namespace ZeKi.Frame.Common
         /// DALFullName
         /// </summary>
         public static string DALFullName { get; } = ConfigurationManager.GetValue("DALFullName");
+
+        /// <summary>
+        /// DALFullName
+        /// </summary>
+        public static DBEnums.DBType DBType { get; } = (DBEnums.DBType)ConfigurationManager.GetValue<int>("DBType");
     }
 }

@@ -21,7 +21,9 @@ namespace ZeKi.Frame.DAL
     /// <typeparam name="TModel">模型实体类</typeparam>
     public class BaseDAL<TModel> : IBaseDAL<TModel> where TModel : class, new()
     {
-        private static readonly DBType _dbType = DBType.MSSQL;
+        public IDbConnection DBConn { set; get; }
+
+
         private static readonly int _commandTimeout = 0;
 
         #region 构造函数
@@ -42,10 +44,7 @@ namespace ZeKi.Frame.DAL
         /// <returns>getId为true并且有自增列则返回插入的id值,否则为影响行数</returns>
         public virtual int Insert(TModel model, bool getId = false)
         {
-            using (var _conn = GetConnection())
-            {
-                return _conn.Insert(model, getId, commandTimeout: _commandTimeout);
-            }
+            return DBConn.Insert(model, getId, commandTimeout: _commandTimeout);
         }
 
         /// <summary>
@@ -56,10 +55,7 @@ namespace ZeKi.Frame.DAL
         /// <returns>返回总影响行数</returns>
         public virtual int BatchInsert(IEnumerable<TModel> list, int ps = 500)
         {
-            using (var _conn = GetConnection())
-            {
-                return _conn.BatchInsert(list, ps, commandTimeout: _commandTimeout);
-            }
+            return DBConn.BatchInsert(list, ps, commandTimeout: _commandTimeout);
         }
         #endregion
 
@@ -71,10 +67,7 @@ namespace ZeKi.Frame.DAL
         /// <returns></returns>
         public virtual bool Update(TModel model)
         {
-            using (var _conn = GetConnection())
-            {
-                return _conn.Update(model, commandTimeout: _commandTimeout);
-            }
+            return DBConn.Update(model, commandTimeout: _commandTimeout);
         }
 
         /// <summary>
@@ -90,10 +83,7 @@ namespace ZeKi.Frame.DAL
         /// <returns></returns>
         public virtual int Update(object setAndWhere)
         {
-            using (var _conn = GetConnection())
-            {
-                return _conn.Update<TModel>(setAndWhere, commandTimeout: _commandTimeout);
-            }
+            return DBConn.Update<TModel>(setAndWhere, commandTimeout: _commandTimeout);
         }
         #endregion
 
@@ -105,10 +95,7 @@ namespace ZeKi.Frame.DAL
         /// <returns></returns>
         public virtual bool Delete(TModel model)
         {
-            using (var _conn = GetConnection())
-            {
-                return _conn.Delete(model, commandTimeout: _commandTimeout);
-            }
+            return DBConn.Delete(model, commandTimeout: _commandTimeout);
         }
         #endregion
 
@@ -122,10 +109,7 @@ namespace ZeKi.Frame.DAL
         /// <returns>返回集合</returns>
         public virtual IEnumerable<T> QueryList<T>(string sql, object param = null)
         {
-            using (var _conn = GetConnection())
-            {
-                return _conn.QueryList<T>(sql, param, transaction: null, commandTimeout: _commandTimeout);
-            }
+            return DBConn.QueryList<T>(sql, param, transaction: null, commandTimeout: _commandTimeout);
         }
 
         /// <summary>
@@ -149,10 +133,7 @@ namespace ZeKi.Frame.DAL
         /// <returns></returns>
         public virtual IEnumerable<T> QueryList<T>(object whereObj = null, string orderStr = null, string selectFields = "*")
         {
-            using (var _conn = GetConnection())
-            {
-                return _conn.QueryList<T>(whereObj, orderStr, selectFields, commandTimeout: _commandTimeout);
-            }
+            return DBConn.QueryList<T>(whereObj, orderStr, selectFields, commandTimeout: _commandTimeout);
         }
 
         /// <summary>
@@ -176,10 +157,7 @@ namespace ZeKi.Frame.DAL
         /// <returns></returns>
         public virtual IEnumerable<T> QueryList<T>(string sqlNoWhere, object whereObj = null, string orderStr = null)
         {
-            using (var _conn = GetConnection())
-            {
-                return _conn.QueryList<T>(sqlNoWhere, whereObj, orderStr, commandTimeout: _commandTimeout);
-            }
+            return DBConn.QueryList<T>(sqlNoWhere, whereObj, orderStr, commandTimeout: _commandTimeout);
         }
 
         /// <summary>
@@ -191,10 +169,7 @@ namespace ZeKi.Frame.DAL
         /// <returns>返回单个</returns>
         public virtual T QueryModel<T>(string sql, object param = null)
         {
-            using (var _conn = GetConnection())
-            {
-                return _conn.QueryModel<T>(sql, param, transaction: null, commandTimeout: _commandTimeout);
-            }
+            return DBConn.QueryModel<T>(sql, param, transaction: null, commandTimeout: _commandTimeout);
         }
 
         /// <summary>
@@ -218,10 +193,7 @@ namespace ZeKi.Frame.DAL
         /// <returns></returns>
         public virtual T QueryModel<T>(object whereObj, string orderStr = null, string selectFields = "*")
         {
-            using (var _conn = GetConnection())
-            {
-                return _conn.QueryModel<T>(whereObj, orderStr, selectFields, commandTimeout: _commandTimeout);
-            }
+            return DBConn.QueryModel<T>(whereObj, orderStr, selectFields, commandTimeout: _commandTimeout);
         }
 
         /// <summary>
@@ -245,10 +217,7 @@ namespace ZeKi.Frame.DAL
         /// <returns></returns>
         public virtual T QueryModel<T>(string sqlNoWhere, object whereObj = null, string orderStr = null)
         {
-            using (var _conn = GetConnection())
-            {
-                return _conn.QueryModel<T>(sqlNoWhere, whereObj, orderStr, null, commandTimeout: _commandTimeout);
-            }
+            return DBConn.QueryModel<T>(sqlNoWhere, whereObj, orderStr, null, commandTimeout: _commandTimeout);
         }
 
         /// <summary>
@@ -264,10 +233,7 @@ namespace ZeKi.Frame.DAL
         /// <returns></returns>
         public virtual IEnumerable<TReturn> QueryList<TFirst, TSecond, TReturn>(string sql, Func<TFirst, TSecond, TReturn> map, object param = null)
         {
-            using (var _conn = GetConnection())
-            {
-                return _conn.Query(sql, map, param, commandTimeout: _commandTimeout);
-            }
+            return DBConn.Query(sql, map, param, commandTimeout: _commandTimeout);
         }
 
         /// <summary>
@@ -283,10 +249,7 @@ namespace ZeKi.Frame.DAL
         /// <returns></returns>
         public virtual IEnumerable<TReturn> QueryList<TFirst, TSecond, TThird, TReturn>(string sql, Func<TFirst, TSecond, TThird, TReturn> map, object param = null)
         {
-            using (var _conn = GetConnection())
-            {
-                return _conn.Query(sql, map, param, commandTimeout: _commandTimeout);
-            }
+            return DBConn.Query(sql, map, param, commandTimeout: _commandTimeout);
         }
 
         ///// <summary>
@@ -299,7 +262,7 @@ namespace ZeKi.Frame.DAL
         //{
         //    using (var _conn = GetConnection())
         //    {
-        //        return _conn.QueryMultiple(sql, param, commandTimeout: _commandTimeout);
+        //        return DBConnection.QueryMultiple(sql, param, commandTimeout: _commandTimeout);
         //    }
         //}
 
@@ -312,10 +275,7 @@ namespace ZeKi.Frame.DAL
         /// <returns></returns>
         public virtual PageData<T> PageList<T>(PageParameters pcp, object param = null) where T : class, new()
         {
-            using (var _conn = GetConnection())
-            {
-                return _conn.PageList<T>(pcp, param, commandTimeout: _commandTimeout);
-            }
+            return DBConn.PageList<T>(pcp, param, commandTimeout: _commandTimeout);
         }
 
         /// <summary>
@@ -339,7 +299,7 @@ namespace ZeKi.Frame.DAL
         //{
         //    using (var _conn = GetConnection())
         //    {
-        //        return _conn.PageDataSet(pcp, param);
+        //        return DBConnection.PageDataSet(pcp, param);
         //    }
         //}
 
@@ -353,7 +313,7 @@ namespace ZeKi.Frame.DAL
         //{
         //    using (var _conn = GetConnection())
         //    {
-        //        return _conn.PageDataTable(pcp, param);
+        //        return DBConnection.PageDataTable(pcp, param);
         //    }
         //}
         #endregion
@@ -369,10 +329,7 @@ namespace ZeKi.Frame.DAL
         /// <returns>返回集合</returns>
         public virtual IEnumerable<T> QueryProcedure<T>(string proceName, object param = null)
         {
-            using (var _conn = GetConnection())
-            {
-                return _conn.QueryProcedure<T>(proceName, param, commandTimeout: _commandTimeout);
-            }
+            return DBConn.QueryProcedure<T>(proceName, param, commandTimeout: _commandTimeout);
         }
 
         /// <summary>
@@ -386,10 +343,7 @@ namespace ZeKi.Frame.DAL
         /// <returns></returns>
         public virtual void ExecProcedure(string proceName, object param = null)
         {
-            using (var _conn = GetConnection())
-            {
-                _conn.ExecProcedure(proceName, param, commandTimeout: _commandTimeout);
-            }
+            DBConn.ExecProcedure(proceName, param, commandTimeout: _commandTimeout);
         }
         #endregion
 
@@ -403,10 +357,7 @@ namespace ZeKi.Frame.DAL
         /// <returns></returns>
         public virtual int Count(string sqlWhere, object param = null)
         {
-            using (var _conn = GetConnection())
-            {
-                return _conn.Count<TModel>(sqlWhere, param, commandTimeout: _commandTimeout);
-            }
+            return DBConn.Count<TModel>(sqlWhere, param, commandTimeout: _commandTimeout);
         }
 
         /// <summary>
@@ -416,10 +367,7 @@ namespace ZeKi.Frame.DAL
         /// <returns></returns>
         public virtual int Count(object whereObj = null)
         {
-            using (var _conn = GetConnection())
-            {
-                return _conn.Count<TModel>(whereObj, commandTimeout: _commandTimeout);
-            }
+            return DBConn.Count<TModel>(whereObj, commandTimeout: _commandTimeout);
         }
 
         /// <summary>
@@ -432,10 +380,7 @@ namespace ZeKi.Frame.DAL
         /// <returns></returns>
         public virtual TResult Sum<TResult>(string field, string sqlWhere, object param = null)
         {
-            using (var _conn = GetConnection())
-            {
-                return _conn.Sum<TModel, TResult>(field, sqlWhere, param, commandTimeout: _commandTimeout);
-            }
+            return DBConn.Sum<TModel, TResult>(field, sqlWhere, param, commandTimeout: _commandTimeout);
         }
         #endregion
 
@@ -446,10 +391,7 @@ namespace ZeKi.Frame.DAL
         /// <param name="action"></param>
         public virtual void DbAction(Action<IDbConnection> action)
         {
-            using (var _conn = GetConnection())
-            {
-                action(_conn);
-            }
+            action(DBConn);
         }
         #endregion
 
@@ -461,10 +403,7 @@ namespace ZeKi.Frame.DAL
         /// <param name="isolation"></param>
         public virtual void ExecTransaction(Action<IDbConnection, IDbTransaction> action, IsolationLevel isolation = IsolationLevel.ReadCommitted)
         {
-            using (var _conn = GetConnection())
-            {
-                _conn.ExecTransaction(action, isolation);
-            }
+            DBConn.ExecTransaction(action, isolation);
         }
 
         /// <summary>
@@ -476,10 +415,7 @@ namespace ZeKi.Frame.DAL
         /// <returns></returns>
         public virtual T ExecTransaction<T>(Func<IDbConnection, IDbTransaction, T> func, IsolationLevel isolation = IsolationLevel.ReadCommitted)
         {
-            using (var _conn = GetConnection())
-            {
-                return _conn.ExecTransaction(func, isolation);
-            }
+            return DBConn.ExecTransaction(func, isolation);
         }
 
         /// <summary>
@@ -490,10 +426,7 @@ namespace ZeKi.Frame.DAL
         /// <returns></returns>
         public virtual int ExecTransaction(string strSqls, object param = null)
         {
-            using (var _conn = GetConnection())
-            {
-                return _conn.ExecTransaction(strSqls, param);
-            }
+            return DBConn.ExecTransaction(strSqls, param);
         }
 
         #endregion
@@ -508,10 +441,7 @@ namespace ZeKi.Frame.DAL
         ///// <returns></returns>
         //public virtual DataTable ExecDataTable(string commandText, object param = null, CommandType commandType = CommandType.Text)
         //{
-        //    using (var _conn = GetConnection())
-        //    {
-        //        return _conn.ExecDataTable(commandText, param, commandType);
-        //    }
+        //   return DBConnection.ExecDataTable(commandText, param, commandType);
         //}
         #endregion
 
@@ -525,38 +455,12 @@ namespace ZeKi.Frame.DAL
         ///// <returns></returns>
         //public virtual DataSet ExecDataSet(string commandText, object param = null, CommandType commandType = CommandType.Text)
         //{
-        //    using (var _conn = GetConnection())
-        //    {
-        //        return _conn.ExecDataSet(commandText, param, commandType);
-        //    }
+        //   return DBConnection.ExecDataSet(commandText, param, commandType);
         //}
         #endregion
 
         #region 内部帮助/受保护类型 方法
-        /// <summary>
-        /// 获取连接对象
-        /// </summary>
-        /// <returns></returns>
-        private IDbConnection GetConnection()
-        {
-            IDbConnection _conn = null;
-            switch (_dbType)
-            {
-                case DBType.MSSQL:
-                    _conn = new SqlConnection(AppConfig.SqlConnStr);
-                    break;
-                case DBType.MYSQL:
 
-                    break;
-            }
-            if (_conn == null)
-                throw new NotImplementedException($"未实现该数据库");
-            if (MiniProfiler.Current != null) //MiniProfiler初始化
-                _conn = new StackExchange.Profiling.Data.ProfiledDbConnection((DbConnection)_conn, MiniProfiler.Current);
-            if (_conn.State == ConnectionState.Closed)
-                _conn.Open();
-            return _conn;
-        }
         #endregion
     }
 }

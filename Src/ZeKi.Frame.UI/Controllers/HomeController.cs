@@ -23,16 +23,16 @@ namespace ZeKi.Frame.UI.Controllers
         public ICurrencyClient Client { set; get; }
 
 
-        //public IDbConnection DBConnection { set; get; }
+        public IDbConnection DBConnection { set; get; }
 
-        //[HttpGet]
-        //public ActionResult<string> Test()
-        //{
-        //    var dbConn = HttpContext.RequestServices.GetService<IDbConnection>();
-        //    var t1 = ((SqlConnection)dbConn).ClientConnectionId;
-        //    var t2 = ((SqlConnection)DBConnection).ClientConnectionId;
-        //    return Ok(new { t1, t2 });
-        //}
+        [HttpGet]
+        public ActionResult<string> Test()
+        {
+            var dbConn = HttpContext.RequestServices.GetService<IDbConnection>();
+            var t1 = ((SqlConnection)dbConn).ClientConnectionId;
+            var t2 = ((SqlConnection)DBConnection).ClientConnectionId;
+            return Ok(new { t1, t2 });
+        }
 
         [HttpGet]
         public ActionResult<string> Index()
