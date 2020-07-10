@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System.Data;
+using System.Data.SqlClient;
+using System.Linq;
 using System.Reflection;
 using Autofac;
 using Microsoft.AspNetCore.Mvc;
@@ -40,6 +42,19 @@ namespace ZeKi.Frame.UI
             //不是抽象类 并且 公开 并且 是class 并且 (后缀为BLL 或者 后缀为DAL)
             builder.RegisterAssemblyTypes(bllAsmService, dalAsmService).Where(t => !t.IsAbstract && t.IsPublic && t.IsClass && (t.Name.EndsWith("BLL") || t.Name.EndsWith("DAL")))
                 .AsImplementedInterfaces().InstancePerDependency().PropertiesAutowired();  //允许属性注入
+
+            //注册数据库连接对象(每个请求共用一个连接实例)
+            //builder.Register<IDbConnection>(componentContext =>
+            //{
+            //    var sqlCon = new SqlConnection(AppConfig.SqlConnStr);
+            //    sqlCon.Open();
+            //    return sqlCon;
+            //}).PropertiesAutowired().InstancePerLifetimeScope()
+            //.OnRelease(conn =>
+            //{
+            //    //释放时调用,有此方法时框架不会自动调用Dispose方法(默认会调用,所以注释OnRelease方法)
+            //})
+            ;
         }
     }
 }

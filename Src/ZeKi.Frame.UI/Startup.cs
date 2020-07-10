@@ -37,7 +37,7 @@ namespace ZeKi.Frame.UI
             services.AddControllers((mvcOption) =>
             {
                 //AddService需要在DI容器注册,Add则不需要,所以不能使用DI
-                mvcOption.Filters.AddService<GlobalErrorFilterAttribute>();
+                //mvcOption.Filters.AddService<GlobalErrorFilterAttribute>();
                 mvcOption.Filters.AddService<ProfilingFilterAttribute>();
                 //mvcOption.Filters.AddService<ExampleFilterAttribute>();
             });

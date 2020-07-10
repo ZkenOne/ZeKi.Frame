@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
 using ZeKi.Frame.Common;
 using ZeKi.Frame.IBLL;
+using System.Data.SqlClient;
 
 namespace ZeKi.Frame.UI.Controllers
 {
@@ -18,6 +21,18 @@ namespace ZeKi.Frame.UI.Controllers
         public ISysPermissionBLL SysPermissionBLL { set; get; }
         public ILogger<HomeController> Logger { set; get; }
         public ICurrencyClient Client { set; get; }
+
+
+        //public IDbConnection DBConnection { set; get; }
+
+        //[HttpGet]
+        //public ActionResult<string> Test()
+        //{
+        //    var dbConn = HttpContext.RequestServices.GetService<IDbConnection>();
+        //    var t1 = ((SqlConnection)dbConn).ClientConnectionId;
+        //    var t2 = ((SqlConnection)DBConnection).ClientConnectionId;
+        //    return Ok(new { t1, t2 });
+        //}
 
         [HttpGet]
         public ActionResult<string> Index()
