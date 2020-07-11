@@ -513,67 +513,7 @@ namespace ZeKi.Frame.DB
 
         #region Transaction
         /// <summary>
-        /// 执行事务(每次执行数据库操作需要将tran对象传入)
-        /// </summary>
-        /// <param name="connection"></param>
-        /// <param name="action">参数:连接对象</param>
-        /// <param name="isolation">事务级别</param>
-        public static void ExecTransaction(this IDbConnection connection, Action<IDbConnection, IDbTransaction> action, IsolationLevel isolation = IsolationLevel.ReadCommitted)
-        {
-            var _transaction = (connection as DbConnection).BeginTransaction(isolation);
-            try
-            {
-                action(connection, _transaction);
-                if (_transaction != null)
-                {
-                    _transaction.Commit();
-                    _transaction = null;
-                }
-            }
-            catch (Exception ex)
-            {
-                if (_transaction != null)
-                {
-                    _transaction.Rollback();
-                    _transaction = null;
-                }
-                throw ex;
-            }
-        }
-
-        /// <summary>
-        /// 执行事务(每次执行数据库操作需要将tran对象传入)
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="func">参数:连接对象</param>
-        /// <param name="isolation">事务级别</param>
-        /// <returns></returns>
-        public static T ExecTransaction<T>(this IDbConnection connection, Func<IDbConnection, IDbTransaction, T> func, IsolationLevel isolation = IsolationLevel.ReadCommitted)
-        {
-            var _transaction = (connection as DbConnection).BeginTransaction(isolation);
-            try
-            {
-                T result = func(connection, _transaction);
-                if (_transaction != null)
-                {
-                    _transaction.Commit();
-                    _transaction = null;
-                }
-                return result;
-            }
-            catch (Exception ex)
-            {
-                if (_transaction != null)
-                {
-                    _transaction.Rollback();
-                    _transaction = null;
-                }
-                throw ex;
-            }
-        }
-
-        /// <summary>
-        /// 批量数据事务提交(与dapper无关)
+        /// 批量数据事务提交
         /// </summary>
         /// <param name="strSqls">T-SQL语句</param>
         /// <param name="param">参数</param>

@@ -3,7 +3,7 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:14065/api/home/test",
+      "applicationUrl": "http://localhost:14065/api/home/index",
       "sslPort": 0
     }
   },
@@ -12,7 +12,7 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "api/home/test",
+      "launchUrl": "api/home/index",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
@@ -20,7 +20,7 @@
     "ZeKi.Frame.UI": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "api/home/test",
+      "launchUrl": "api/home/testTran",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

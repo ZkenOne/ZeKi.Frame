@@ -324,7 +324,7 @@
 
 //        #region Transaction
 //        /// <summary>
-//        /// 批量数据事务提交(与dapper无关)
+//        /// 批量数据事务提交
 //        /// </summary>
 //        /// <param name="strSqls">T-SQL语句</param>
 //        /// <param name="param">参数</param>

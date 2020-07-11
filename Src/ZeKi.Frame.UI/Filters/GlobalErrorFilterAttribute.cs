@@ -17,8 +17,8 @@ namespace ZeKi.Frame.UI.Filters
 
         public override Task OnExceptionAsync(ExceptionContext context)
         {
-            //if (WebHostEnvironment.IsDevelopment())
-            //    return base.OnExceptionAsync(context);
+            if (WebHostEnvironment.IsDevelopment())
+                return base.OnExceptionAsync(context);
 
             context.ExceptionHandled = true;
             context.Result = new OkObjectResult(new { msg = "请求出现错误！！" });

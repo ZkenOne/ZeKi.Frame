@@ -9,6 +9,7 @@ namespace ZeKi.Frame.Model
     [Table("sysRole_1")]
     public class SysRole
     {
+        [Property(true, true, DbIgnore.InsertAndUpdate)]
         public int rId { get; set; }
 
         public int rDepId { get; set; }

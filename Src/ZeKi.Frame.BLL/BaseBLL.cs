@@ -6,6 +6,7 @@ using ZeKi.Frame.Model;
 using ZeKi.Frame.Common;
 using ZeKi.Frame.IDAL;
 using ZeKi.Frame.IBLL;
+using System.Data;
 
 namespace ZeKi.Frame.BLL
 {
@@ -114,6 +115,18 @@ namespace ZeKi.Frame.BLL
         public virtual TModel QueryModel(object whereObj, string orderStr = null, string selectFields = "*")
         {
             return QueryModel<TModel>(whereObj, orderStr, selectFields);
+        }
+        #endregion
+
+        #region Transaction
+        /// <summary>
+        /// 执行事务
+        /// </summary>
+        /// <param name="action"></param>
+        /// <param name="isolation"></param>
+        public virtual void ExecTransaction(Action action, IsolationLevel isolation = IsolationLevel.ReadCommitted)
+        {
+            DAL.ExecTransaction(action, isolation);
         }
         #endregion
 

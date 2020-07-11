@@ -7,15 +7,11 @@ using System.Reflection;
 using Autofac;
 using Microsoft.AspNetCore.Mvc;
 using StackExchange.Profiling;
-using ZeKi.Frame.BLL;
 using ZeKi.Frame.Common;
-using ZeKi.Frame.DAL;
-using ZeKi.Frame.IBLL;
-using ZeKi.Frame.IDAL;
+using ZeKi.Frame.DB;
 using ZeKi.Frame.Model;
 using ZeKi.Frame.UI.Filters;
 using ZeKi.Frame.UI.Handler;
-using ZeKi.Frame.UI.Middleware;
 
 namespace ZeKi.Frame.UI
 {
@@ -47,32 +43,34 @@ namespace ZeKi.Frame.UI
             builder.RegisterAssemblyTypes(bllAsmService, dalAsmService).Where(t => !t.IsAbstract && t.IsPublic && t.IsClass && (t.Name.EndsWith("BLL") || t.Name.EndsWith("DAL")))
                 .AsImplementedInterfaces().InstancePerDependency().PropertiesAutowired();  //允许属性注入
 
-            //注册数据库连接对象(相同请求共用一个连接实例)
-            builder.Register(componentContext =>
-            {
-                IDbConnection _conn = null;
-                switch (AppConfig.DBType)
-                {
-                    case DBEnums.DBType.MSSQL:
-                        _conn = new SqlConnection(AppConfig.SqlConnStr);
-                        break;
-                    case DBEnums.DBType.MYSQL:
+            //注册 数据库上下文,并设置 同一请求共用一个连接实例
+            builder.RegisterType<DbContext>().AsSelf().InstancePerLifetimeScope().PropertiesAutowired();
 
-                        break;
-                }
-                if (_conn == null)
-                    throw new NotImplementedException($"未实现该数据库");
-                if (MiniProfiler.Current != null) //MiniProfiler初始化
-                    _conn = new StackExchange.Profiling.Data.ProfiledDbConnection((DbConnection)_conn, MiniProfiler.Current);
-                if (_conn.State == ConnectionState.Closed)
-                    _conn.Open();
-                return _conn;
-            }).PropertiesAutowired().InstancePerLifetimeScope();
-            //.OnRelease(conn =>
+            //注册数据库连接对象(同一请求共用一个连接实例)[MiniProfiler.Current在此时为空...]
+            //builder.Register(componentContext =>
             //{
-            //    //释放时调用,有此方法时框架不会自动调用Dispose方法(默认会调用,没有其他特殊操作不需要写OnRelease方法)
-            //})
+            //    IDbConnection _conn = null;
+            //    switch (AppConfig.DBType)
+            //    {
+            //        case DBEnums.DBType.MSSQL:
+            //            _conn = new SqlConnection(AppConfig.SqlConnStr);
+            //            break;
+            //        case DBEnums.DBType.MYSQL:
 
+            //            break;
+            //    }
+            //    if (_conn == null)
+            //        throw new NotImplementedException($"未实现该数据库");
+            //    if (MiniProfiler.Current != null) //MiniProfiler初始化
+            //        _conn = new StackExchange.Profiling.Data.ProfiledDbConnection((DbConnection)_conn, MiniProfiler.Current);
+            //    if (_conn.State == ConnectionState.Closed)
+            //        _conn.Open();
+            //    return _conn;
+            //}).PropertiesAutowired().InstancePerLifetimeScope();
+            ////.OnRelease(conn =>
+            ////{
+            ////    //释放时调用,有此方法时框架不会自动调用Dispose方法(默认会调用,没有其他特殊操作不需要写OnRelease方法)
+            ////})
         }
     }
 }

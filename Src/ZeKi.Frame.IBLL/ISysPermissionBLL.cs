@@ -13,5 +13,10 @@ namespace ZeKi.Frame.IBLL
         /// 展示调用
         /// </summary>
         void Example();
+        
+        /// <summary>
+        /// 展示特性方式使用事务
+        /// </summary>
+        void TestTran();
     }
 }

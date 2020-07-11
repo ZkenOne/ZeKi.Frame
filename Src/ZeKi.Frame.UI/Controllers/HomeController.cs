@@ -22,16 +22,10 @@ namespace ZeKi.Frame.UI.Controllers
         public ILogger<HomeController> Logger { set; get; }
         public ICurrencyClient Client { set; get; }
 
-
-        public IDbConnection DBConnection { set; get; }
-
-        [HttpGet]
-        public ActionResult<string> Test()
+        public IActionResult TestTran()
         {
-            var dbConn = HttpContext.RequestServices.GetService<IDbConnection>();
-            var t1 = ((SqlConnection)dbConn).ClientConnectionId;
-            var t2 = ((SqlConnection)DBConnection).ClientConnectionId;
-            return Ok(new { t1, t2 });
+            SysPermissionBLL.TestTran();
+            return Ok();
         }
 
         [HttpGet]

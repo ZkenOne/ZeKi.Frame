@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using ZeKi.Frame.Model;
 using ZeKi.Frame.Common;
+using System.Data;
 
 namespace ZeKi.Frame.IBLL
 {
@@ -87,6 +88,15 @@ namespace ZeKi.Frame.IBLL
         /// <param name="selectFields">,分隔</param>
         /// <returns></returns>
         TModel QueryModel(object whereObj, string orderStr = null, string selectFields = "*");
+        #endregion
+
+        #region Transaction
+        /// <summary>
+        /// 执行事务
+        /// </summary>
+        /// <param name="action"></param>
+        /// <param name="isolation"></param>
+        void ExecTransaction(Action action, IsolationLevel isolation = IsolationLevel.ReadCommitted);
         #endregion
 
     }

@@ -2,16 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Common;
-using System.Data.SqlClient;
 using System.Linq;
 using Dapper;
-using StackExchange.Profiling;
 using ZeKi.Frame.DB;
 using ZeKi.Frame.IDAL;
 using ZeKi.Frame.Model;
 using ZeKi.Frame.Common;
-using static ZeKi.Frame.Model.DBEnums;
 
 namespace ZeKi.Frame.DAL
 {
@@ -21,10 +17,7 @@ namespace ZeKi.Frame.DAL
     /// <typeparam name="TModel">模型实体类</typeparam>
     public class BaseDAL<TModel> : IBaseDAL<TModel> where TModel : class, new()
     {
-        public IDbConnection DBConn { set; get; }
-
-
-        private static readonly int _commandTimeout = 0;
+        public DbContext DBContext { set; get; }
 
         #region 构造函数
         /// <summary>
@@ -44,7 +37,7 @@ namespace ZeKi.Frame.DAL
         /// <returns>getId为true并且有自增列则返回插入的id值,否则为影响行数</returns>
         public virtual int Insert(TModel model, bool getId = false)
         {
-            return DBConn.Insert(model, getId, commandTimeout: _commandTimeout);
+            return DBContext.Insert(model, getId);
         }
 
         /// <summary>
@@ -55,7 +48,7 @@ namespace ZeKi.Frame.DAL
         /// <returns>返回总影响行数</returns>
         public virtual int BatchInsert(IEnumerable<TModel> list, int ps = 500)
         {
-            return DBConn.BatchInsert(list, ps, commandTimeout: _commandTimeout);
+            return DBContext.BatchInsert(list, ps);
         }
         #endregion
 
@@ -67,7 +60,7 @@ namespace ZeKi.Frame.DAL
         /// <returns></returns>
         public virtual bool Update(TModel model)
         {
-            return DBConn.Update(model, commandTimeout: _commandTimeout);
+            return DBContext.Update(model);
         }
 
         /// <summary>
@@ -83,7 +76,7 @@ namespace ZeKi.Frame.DAL
         /// <returns></returns>
         public virtual int Update(object setAndWhere)
         {
-            return DBConn.Update<TModel>(setAndWhere, commandTimeout: _commandTimeout);
+            return DBContext.Update<TModel>(setAndWhere);
         }
         #endregion
 
@@ -95,7 +88,7 @@ namespace ZeKi.Frame.DAL
         /// <returns></returns>
         public virtual bool Delete(TModel model)
         {
-            return DBConn.Delete(model, commandTimeout: _commandTimeout);
+            return DBContext.Delete(model);
         }
         #endregion
 
@@ -109,7 +102,7 @@ namespace ZeKi.Frame.DAL
         /// <returns>返回集合</returns>
         public virtual IEnumerable<T> QueryList<T>(string sql, object param = null)
         {
-            return DBConn.QueryList<T>(sql, param, transaction: null, commandTimeout: _commandTimeout);
+            return DBContext.QueryList<T>(sql, param);
         }
 
         /// <summary>
@@ -133,7 +126,7 @@ namespace ZeKi.Frame.DAL
         /// <returns></returns>
         public virtual IEnumerable<T> QueryList<T>(object whereObj = null, string orderStr = null, string selectFields = "*")
         {
-            return DBConn.QueryList<T>(whereObj, orderStr, selectFields, commandTimeout: _commandTimeout);
+            return DBContext.QueryList<T>(whereObj, orderStr, selectFields);
         }
 
         /// <summary>
@@ -157,7 +150,7 @@ namespace ZeKi.Frame.DAL
         /// <returns></returns>
         public virtual IEnumerable<T> QueryList<T>(string sqlNoWhere, object whereObj = null, string orderStr = null)
         {
-            return DBConn.QueryList<T>(sqlNoWhere, whereObj, orderStr, commandTimeout: _commandTimeout);
+            return DBContext.QueryList<T>(sqlNoWhere, whereObj, orderStr);
         }
 
         /// <summary>
@@ -169,7 +162,7 @@ namespace ZeKi.Frame.DAL
         /// <returns>返回单个</returns>
         public virtual T QueryModel<T>(string sql, object param = null)
         {
-            return DBConn.QueryModel<T>(sql, param, transaction: null, commandTimeout: _commandTimeout);
+            return DBContext.QueryModel<T>(sql, param);
         }
 
         /// <summary>
@@ -193,7 +186,7 @@ namespace ZeKi.Frame.DAL
         /// <returns></returns>
         public virtual T QueryModel<T>(object whereObj, string orderStr = null, string selectFields = "*")
         {
-            return DBConn.QueryModel<T>(whereObj, orderStr, selectFields, commandTimeout: _commandTimeout);
+            return DBContext.QueryModel<T>(whereObj, orderStr, selectFields);
         }
 
         /// <summary>
@@ -217,7 +210,7 @@ namespace ZeKi.Frame.DAL
         /// <returns></returns>
         public virtual T QueryModel<T>(string sqlNoWhere, object whereObj = null, string orderStr = null)
         {
-            return DBConn.QueryModel<T>(sqlNoWhere, whereObj, orderStr, null, commandTimeout: _commandTimeout);
+            return DBContext.QueryModel<T>(sqlNoWhere, whereObj, orderStr);
         }
 
         /// <summary>
@@ -233,7 +226,7 @@ namespace ZeKi.Frame.DAL
         /// <returns></returns>
         public virtual IEnumerable<TReturn> QueryList<TFirst, TSecond, TReturn>(string sql, Func<TFirst, TSecond, TReturn> map, object param = null)
         {
-            return DBConn.Query(sql, map, param, commandTimeout: _commandTimeout);
+            return DBContext.QueryList(sql, map, param);
         }
 
         /// <summary>
@@ -249,22 +242,8 @@ namespace ZeKi.Frame.DAL
         /// <returns></returns>
         public virtual IEnumerable<TReturn> QueryList<TFirst, TSecond, TThird, TReturn>(string sql, Func<TFirst, TSecond, TThird, TReturn> map, object param = null)
         {
-            return DBConn.Query(sql, map, param, commandTimeout: _commandTimeout);
+            return DBContext.QueryList(sql, map, param);
         }
-
-        ///// <summary>
-        ///// 查询返回多个结果集 (using之后在外面无法获取数据,可以在外部使用DbAction方法来完成)
-        ///// </summary>
-        ///// <param name="sql">需要输入全sql</param>
-        ///// <param name="param"></param>
-        ///// <returns></returns>
-        //public GridReader QueryMultiple(string sql, object param = null)
-        //{
-        //    using (var _conn = GetConnection())
-        //    {
-        //        return DBConnection.QueryMultiple(sql, param, commandTimeout: _commandTimeout);
-        //    }
-        //}
 
         /// <summary>
         /// 分页查询返回集合
@@ -275,7 +254,7 @@ namespace ZeKi.Frame.DAL
         /// <returns></returns>
         public virtual PageData<T> PageList<T>(PageParameters pcp, object param = null) where T : class, new()
         {
-            return DBConn.PageList<T>(pcp, param, commandTimeout: _commandTimeout);
+            return DBContext.PageList<T>(pcp, param);
         }
 
         /// <summary>
@@ -329,7 +308,7 @@ namespace ZeKi.Frame.DAL
         /// <returns>返回集合</returns>
         public virtual IEnumerable<T> QueryProcedure<T>(string proceName, object param = null)
         {
-            return DBConn.QueryProcedure<T>(proceName, param, commandTimeout: _commandTimeout);
+            return DBContext.QueryProcedure<T>(proceName, param);
         }
 
         /// <summary>
@@ -343,7 +322,7 @@ namespace ZeKi.Frame.DAL
         /// <returns></returns>
         public virtual void ExecProcedure(string proceName, object param = null)
         {
-            DBConn.ExecProcedure(proceName, param, commandTimeout: _commandTimeout);
+            DBContext.ExecProcedure(proceName, param);
         }
         #endregion
 
@@ -357,7 +336,7 @@ namespace ZeKi.Frame.DAL
         /// <returns></returns>
         public virtual int Count(string sqlWhere, object param = null)
         {
-            return DBConn.Count<TModel>(sqlWhere, param, commandTimeout: _commandTimeout);
+            return DBContext.Count<TModel>(sqlWhere, param);
         }
 
         /// <summary>
@@ -367,7 +346,7 @@ namespace ZeKi.Frame.DAL
         /// <returns></returns>
         public virtual int Count(object whereObj = null)
         {
-            return DBConn.Count<TModel>(whereObj, commandTimeout: _commandTimeout);
+            return DBContext.Count<TModel>(whereObj);
         }
 
         /// <summary>
@@ -380,53 +359,51 @@ namespace ZeKi.Frame.DAL
         /// <returns></returns>
         public virtual TResult Sum<TResult>(string field, string sqlWhere, object param = null)
         {
-            return DBConn.Sum<TModel, TResult>(field, sqlWhere, param, commandTimeout: _commandTimeout);
+            return DBContext.Sum<TModel, TResult>(field, sqlWhere, param);
         }
         #endregion
 
         #region Dapper原生
-        /// <summary>
-        /// 执行数据库操作,会自动释放,操作QueryMultiple可以用这个
-        /// </summary>
-        /// <param name="action"></param>
-        public virtual void DbAction(Action<IDbConnection> action)
-        {
-            action(DBConn);
-        }
+        ///// <summary>
+        ///// 执行数据库操作,会自动释放,操作QueryMultiple可以用这个
+        ///// </summary>
+        ///// <param name="action"></param>
+        //public virtual void DbAction(Action<IDbConnection> action)
+        //{
+        //    action(DBConn);
+        //}
         #endregion
 
         #region Transaction
         /// <summary>
-        /// 执行事务(每次执行数据库操作需要将tran对象传入)
+        /// 执行事务
         /// </summary>
         /// <param name="action"></param>
         /// <param name="isolation"></param>
-        public virtual void ExecTransaction(Action<IDbConnection, IDbTransaction> action, IsolationLevel isolation = IsolationLevel.ReadCommitted)
+        public virtual void ExecTransaction(Action action, IsolationLevel isolation = IsolationLevel.ReadCommitted)
         {
-            DBConn.ExecTransaction(action, isolation);
+            try
+            {
+                DBContext.BeginTransaction(isolation);
+                action();
+                DBContext.CommitTransaction();
+            }
+            catch (Exception ex)
+            {
+                DBContext.RollbackTransaction();
+                throw ex;
+            }
         }
 
         /// <summary>
-        /// 执行事务(每次执行数据库操作需要将tran对象传入)
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="func"></param>
-        /// <param name="isolation">事务级别</param>
-        /// <returns></returns>
-        public virtual T ExecTransaction<T>(Func<IDbConnection, IDbTransaction, T> func, IsolationLevel isolation = IsolationLevel.ReadCommitted)
-        {
-            return DBConn.ExecTransaction(func, isolation);
-        }
-
-        /// <summary>
-        /// 批量数据事务提交(与dapper无关)
+        /// 批量数据事务提交
         /// </summary>
         /// <param name="strSqls">T-SQL语句</param>
         /// <param name="param">参数</param>
         /// <returns></returns>
         public virtual int ExecTransaction(string strSqls, object param = null)
         {
-            return DBConn.ExecTransaction(strSqls, param);
+            return DBContext.ExecTransaction(strSqls, param);
         }
 
         #endregion

@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AspectCore.DependencyInjection;
+using AspectCore.Extensions.Autofac;
+using AspectCore.Extensions.DependencyInjection;
 using Autofac;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -11,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
+using StackExchange.Profiling;
 using ZeKi.Frame.Common;
 using ZeKi.Frame.IBLL;
 using ZeKi.Frame.UI.Filters;
@@ -36,8 +40,8 @@ namespace ZeKi.Frame.UI
 
             services.AddControllers((mvcOption) =>
             {
-                //AddService需要在DI容器注册,Add则不需要,所以不能使用DI
-                //mvcOption.Filters.AddService<GlobalErrorFilterAttribute>();
+                //AddService需要在DI容器注册(Add则不需要,所以不能使用DI)
+                mvcOption.Filters.AddService<GlobalErrorFilterAttribute>();
                 mvcOption.Filters.AddService<ProfilingFilterAttribute>();
                 //mvcOption.Filters.AddService<ExampleFilterAttribute>();
             });
@@ -45,6 +49,9 @@ namespace ZeKi.Frame.UI
             //注册CurrencyClient 且 添加一个出站请求中间件
             services.AddHttpClient<ICurrencyClient, CurrencyClient>()
                 .AddHttpMessageHandler<GlobalHttpHandler>();
+
+            ////注册配置动态代理(AspectCore)[AutoFac和AspectCore共存时 在ConfigureContainer配置]
+            //services.ConfigureDynamicProxy();
         }
 
         // ConfigureContainer is where you can register things directly
@@ -53,6 +60,22 @@ namespace ZeKi.Frame.UI
         // Don't build the container; that gets done for you by the factory.
         public void ConfigureContainer(ContainerBuilder builder)
         {
+            #region 配置AspectCore
+            //var serviceContext = new ServiceContext();
+            //builder.Populate(serviceContext);
+            //var configuration = serviceContext.Configuration;
+            ////调用RegisterDynamicProxy扩展方法在Autofac中注册动态代理服务和动态代理配置
+            //builder.RegisterDynamicProxy(configuration, config =>
+            //{
+            //    //全局注册后不需要在方法上贴特性
+            //    //config.Interceptors.AddTyped<MethodExecuteLoggerInterceptor>(Predicates.ForService("*Service"));
+            //});
+
+            //调用RegisterDynamicProxy扩展方法在Autofac中注册动态代理服务
+            //不配置全局需要 手动在方法上打特性
+            builder.RegisterDynamicProxy();
+            #endregion
+
             // Register your own things directly with Autofac, like:
             builder.RegisterModule(new AutofacModuleRegister());
         }
