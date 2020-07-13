@@ -9,7 +9,7 @@ using ZeKi.Frame.Model;
 
 namespace ZeKi.Frame.BLL
 {
-    public class SysRoleBLL : BaseBLL<SysRole>, ISysRoleBLL
+    public class SysRoleBLL : BaseBLL, ISysRoleBLL
     {
         public string GetRoL()
         {

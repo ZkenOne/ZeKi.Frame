@@ -8,8 +8,10 @@ using ZeKi.Frame.Model;
 
 namespace ZeKi.Frame.DAL
 {
-    public class SysPermissionDAL : BaseDAL<SysPermission>, ISysPermissionDAL
-    {
+    //没特殊方法可以不写DAL
 
-    }
+    //public class SysPermissionDAL : BaseDAL, ISysPermissionDAL
+    //{
+
+    //}
 }

@@ -399,7 +399,6 @@ namespace ZeKi.Frame.DB
         //}
         #endregion
 
-
         #region 内部帮助/受保护类型 方法
         /// <summary>
         /// 获取连接对象

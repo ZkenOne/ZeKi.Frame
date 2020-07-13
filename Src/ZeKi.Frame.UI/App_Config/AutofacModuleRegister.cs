@@ -8,7 +8,9 @@ using Autofac;
 using Microsoft.AspNetCore.Mvc;
 using StackExchange.Profiling;
 using ZeKi.Frame.Common;
+using ZeKi.Frame.DAL;
 using ZeKi.Frame.DB;
+using ZeKi.Frame.IDAL;
 using ZeKi.Frame.Model;
 using ZeKi.Frame.UI.Filters;
 using ZeKi.Frame.UI.Handler;
@@ -42,6 +44,8 @@ namespace ZeKi.Frame.UI
             //不是抽象类 并且 公开 并且 是class 并且 (后缀为BLL 或者 后缀为DAL)
             builder.RegisterAssemblyTypes(bllAsmService, dalAsmService).Where(t => !t.IsAbstract && t.IsPublic && t.IsClass && (t.Name.EndsWith("BLL") || t.Name.EndsWith("DAL")))
                 .AsImplementedInterfaces().InstancePerDependency().PropertiesAutowired();  //允许属性注入
+            //将IBaseDAL强制为BaseDAL实例
+            builder.RegisterType<BaseDAL>().As<IBaseDAL>().InstancePerDependency().PropertiesAutowired();
 
             //注册 数据库上下文,并设置 同一请求共用一个连接实例
             builder.RegisterType<DbContext>().AsSelf().InstancePerLifetimeScope().PropertiesAutowired();

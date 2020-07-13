@@ -7,7 +7,7 @@ using ZeKi.Frame.Model;
 
 namespace ZeKi.Frame.IBLL
 {
-    public interface ISysPermissionBLL : IBaseBLL<SysPermission>
+    public interface ISysPermissionBLL : IBaseBLL
     {
         /// <summary>
         /// 展示调用

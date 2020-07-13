@@ -7,7 +7,7 @@ using ZeKi.Frame.Model;
 
 namespace ZeKi.Frame.BLL
 {
-    public class SysPermissionBLL : BaseBLL<SysPermission>, ISysPermissionBLL
+    public class SysPermissionBLL : BaseBLL, ISysPermissionBLL
     {
         public ISysUserInfoBLL SysUserInfoBLL { get; set; }
         public ISysRoleBLL SysRoleBLL { get; set; }
@@ -57,7 +57,7 @@ namespace ZeKi.Frame.BLL
             var res3 = SysUserInfoBLL.Update(updateModel);
             Console.WriteLine(res3);
 
-            var r1 = SysUserInfoBLL.Update(new { uId = 97, renew_uRemark = "upa" });
+            var r1 = SysUserInfoDAL.Update<SysUserInfo>(new { uId = 97, renew_uRemark = "up7a" });
             Console.WriteLine(r1);
             #endregion
 
@@ -173,7 +173,7 @@ namespace ZeKi.Frame.BLL
             //#endregion
 
             #region 事务
-            ExecTransaction(() =>
+            DAL.ExecTransaction(() =>
             {
                 var insertModel2 = new Model.SysUserInfo()
                 {
@@ -245,7 +245,7 @@ namespace ZeKi.Frame.BLL
                 uRemark = "cces12i1ff6fdx21"
             };
             //需要加tran
-            var res12 = SysUserInfoDAL.Insert(insertModel, true);
+            var res12 = DAL.Insert(insertModel, true);
             var res22 = SysUserInfoDAL.Insert(insertModel, false);
             var res33 = SysUserInfoDAL.Delete(new Model.SysUserInfo() { uId = (int)res12 });
 

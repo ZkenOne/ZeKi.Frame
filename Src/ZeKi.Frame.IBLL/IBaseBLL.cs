@@ -11,8 +11,7 @@ namespace ZeKi.Frame.IBLL
     /// <summary>
     /// 业务层父类
     /// </summary>
-    /// <typeparam name="TModel">模型实体类</typeparam>
-    public interface IBaseBLL<TModel> where TModel : class, new()
+    public interface IBaseBLL
     {
         #region Insert
         /// <summary>
@@ -20,7 +19,7 @@ namespace ZeKi.Frame.IBLL
         /// </summary>
         /// <param name="getId">是否获取当前插入的ID,不是自增则不需要关注此值</param>
         /// <returns>getId为true并且有自增列则返回插入的id值,否则为影响行数</returns>
-        int Insert(TModel model, bool getId = false);
+        int Insert<TModel>(TModel model, bool getId = false) where TModel : class, new();
         #endregion
 
         #region Update
@@ -29,7 +28,7 @@ namespace ZeKi.Frame.IBLL
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        bool Update(TModel model);
+        bool Update<TModel>(TModel model) where TModel : class, new();
 
         /// <summary>
         /// 修改(根据自定义条件修改自定义值)
@@ -42,7 +41,7 @@ namespace ZeKi.Frame.IBLL
         /// <para>set字段能否被修改受 <see cref="PropertyAttribute"/> 特性限制</para>
         /// </param>
         /// <returns></returns>
-        int Update(object setAndWhere);
+        int Update<TModel>(object setAndWhere) where TModel : class, new();
         #endregion
 
         #region Delete
@@ -51,7 +50,7 @@ namespace ZeKi.Frame.IBLL
         /// </summary>
         /// <param name="model">传递主键字段值即可,如需统一清除缓存,可以传递所有字段值数据</param>
         /// <returns></returns>
-        bool Delete(TModel model);
+        bool Delete<TModel>(TModel model) where TModel : class, new();
         #endregion
 
         #region Query
@@ -68,35 +67,9 @@ namespace ZeKi.Frame.IBLL
         /// 查询
         /// </summary>
         /// <param name="whereObj">使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</param>
-        /// <param name="orderStr">填写：id asc / id,name desc</param>
-        /// <param name="selectFields">,分隔</param>
-        /// <returns></returns>
-        IEnumerable<TModel> QueryList(object whereObj = null, string orderStr = null, string selectFields = "*");
-
-        /// <summary>
-        /// 查询
-        /// </summary>
-        /// <param name="whereObj">使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</param>
         /// <param name="selectFields">,分隔</param>
         /// <returns></returns>
         T QueryModel<T>(object whereObj, string orderStr = null, string selectFields = "*");
-
-        /// <summary>
-        /// 查询
-        /// </summary>
-        /// <param name="whereObj">使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</param>
-        /// <param name="selectFields">,分隔</param>
-        /// <returns></returns>
-        TModel QueryModel(object whereObj, string orderStr = null, string selectFields = "*");
-        #endregion
-
-        #region Transaction
-        /// <summary>
-        /// 执行事务
-        /// </summary>
-        /// <param name="action"></param>
-        /// <param name="isolation"></param>
-        void ExecTransaction(Action action, IsolationLevel isolation = IsolationLevel.ReadCommitted);
         #endregion
 
     }

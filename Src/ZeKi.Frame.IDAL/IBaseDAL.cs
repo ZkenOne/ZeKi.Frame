@@ -10,8 +10,7 @@ namespace ZeKi.Frame.IDAL
     /// <summary>
     /// 数据访问父类接口
     /// </summary>
-    /// <typeparam name="TModel">模型实体类</typeparam>
-    public interface IBaseDAL<TModel> where TModel : class, new()
+    public interface IBaseDAL
     {
         #region Insert
         /// <summary>
@@ -19,7 +18,7 @@ namespace ZeKi.Frame.IDAL
         /// </summary>
         /// <param name="getId">是否获取当前插入的ID,不是自增则不需要关注此值</param>
         /// <returns>getId为true并且有自增列则返回插入的id值,否则为影响行数</returns>
-        int Insert(TModel model, bool getId = false);
+        int Insert<TModel>(TModel model, bool getId = false) where TModel : class, new();
 
         /// <summary>
         /// 批量新增
@@ -27,7 +26,7 @@ namespace ZeKi.Frame.IDAL
         /// <param name="list"></param>
         /// <param name="ps">每批次数量,默认500</param>
         /// <returns>返回总影响行数</returns>
-        int BatchInsert(IEnumerable<TModel> list, int ps = 500);
+        int BatchInsert<TModel>(IEnumerable<TModel> list, int ps = 500) where TModel : class, new();
         #endregion
 
         #region Update
@@ -36,7 +35,7 @@ namespace ZeKi.Frame.IDAL
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        bool Update(TModel model);
+        bool Update<TModel>(TModel model) where TModel : class, new();
 
         /// <summary>
         /// 修改(根据自定义条件修改自定义值)
@@ -49,7 +48,7 @@ namespace ZeKi.Frame.IDAL
         /// <para>set字段能否被修改受 <see cref="PropertyAttribute"/> 特性限制</para>
         /// </param>
         /// <returns></returns>
-        int Update(object setAndWhere);
+        int Update<TModel>(object setAndWhere) where TModel : class, new();
         #endregion
 
         #region Delete
@@ -58,7 +57,7 @@ namespace ZeKi.Frame.IDAL
         /// </summary>
         /// <param name="model">传递主键字段值即可,如需统一清除缓存,可以传递所有字段值数据</param>
         /// <returns></returns>
-        bool Delete(TModel model);
+        bool Delete<TModel>(TModel model) where TModel : class, new();
         #endregion
 
         #region Query
@@ -72,14 +71,6 @@ namespace ZeKi.Frame.IDAL
         IEnumerable<T> QueryList<T>(string sql, object param = null);
 
         /// <summary>
-        /// 查询列表
-        /// </summary>
-        /// <param name="sql">可以书写where name=@name,会自动补全, 也可以书写 select * from tb where name=@name</param>
-        /// <param name="param"></param>
-        /// <returns>返回集合</returns>
-        IEnumerable<TModel> QueryList(string sql, object param = null);
-
-        /// <summary>
         /// 查询
         /// </summary>
         /// <typeparam name="T">返回模型</typeparam>
@@ -88,15 +79,6 @@ namespace ZeKi.Frame.IDAL
         /// <param name="selectFields">,分隔</param>
         /// <returns></returns>
         IEnumerable<T> QueryList<T>(object whereObj = null, string orderStr = null, string selectFields = "*");
-
-        /// <summary>
-        /// 查询
-        /// </summary>
-        /// <param name="whereObj">使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</param>
-        /// <param name="orderStr">填写：id asc / id,name desc</param>
-        /// <param name="selectFields">,分隔</param>
-        /// <returns></returns>
-        IEnumerable<TModel> QueryList(object whereObj, string orderStr = null, string selectFields = "*");
 
         /// <summary>
         /// 查询
@@ -119,14 +101,6 @@ namespace ZeKi.Frame.IDAL
         T QueryModel<T>(string sql, object param = null);
 
         /// <summary>
-        /// 查询单个
-        /// </summary>
-        /// <param name="sql">可以书写where name=@name,会自动补全, 也可以书写 select * from tb where name=@name</param>
-        /// <param name="param"></param>
-        /// <returns>返回集合</returns>
-        TModel QueryModel(string sql, object param = null);
-
-        /// <summary>
         /// 查询
         /// </summary>
         /// <typeparam name="T">返回模型</typeparam>
@@ -145,15 +119,6 @@ namespace ZeKi.Frame.IDAL
         /// <param name="orderStr">填写：id asc / id,name desc</param>
         /// <returns></returns>
         T QueryModel<T>(object whereObj, string orderStr = null, string selectFields = "*");
-
-        /// <summary>
-        /// 查询
-        /// </summary>
-        /// <param name="whereObj">使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</param>
-        /// <param name="selectFields">,分隔</param>
-        /// <param name="orderStr">填写：id asc / id,name desc</param>
-        /// <returns></returns>
-        TModel QueryModel(object whereObj, string orderStr = null, string selectFields = "*");
 
         /// <summary>
         /// 查询(可以对多个返回结果进行操作,最终返回一个)
@@ -189,14 +154,6 @@ namespace ZeKi.Frame.IDAL
         /// <param name="param">同dapper参数传值</param>
         /// <returns></returns>
         PageData<T> PageList<T>(PageParameters pcp, object param = null) where T : class, new();
-
-        /// <summary>
-        /// 分页查询返回集合
-        /// </summary>
-        /// <param name="sql">可以书写where name=@name,会自动补全, 也可以书写 select * from tb where name=@name</param>
-        /// <param name="param"></param>
-        /// <returns>返回集合</returns>
-        PageData<TModel> PageList(PageParameters pcp, object param = null);
 
         ///// <summary>
         ///// 分页查询返回数据集
@@ -246,14 +203,14 @@ namespace ZeKi.Frame.IDAL
         /// <param name="param"></param>
         /// <typeparam name="T">模型对象(获取表名)</typeparam>
         /// <returns></returns>
-        int Count(string sqlWhere, object param = null);
+        int Count<TModel>(string sqlWhere, object param = null) where TModel : class, new();
 
         /// <summary>
         /// Count统计
         /// </summary>
         /// <param name="whereObj">使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</param>
         /// <returns></returns>
-        int Count(object whereObj = null);
+        int Count<TModel>(object whereObj = null) where TModel : class, new();
 
         /// <summary>
         /// Sum统计
@@ -263,7 +220,7 @@ namespace ZeKi.Frame.IDAL
         /// <param name="sqlWhere">1=1,省略where</param>
         /// <param name="param"></param>
         /// <returns></returns>
-        TResult Sum<TResult>(string field, string sqlWhere, object param = null);
+        TResult Sum<TModel, TResult>(string field, string sqlWhere, object param = null) where TModel : class, new();
         #endregion
 
         #region Dapper原生

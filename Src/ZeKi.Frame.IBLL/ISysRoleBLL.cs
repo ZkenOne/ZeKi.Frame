@@ -7,7 +7,7 @@ using ZeKi.Frame.Model;
 
 namespace ZeKi.Frame.IBLL
 {
-    public interface ISysRoleBLL : IBaseBLL<SysRole>
+    public interface ISysRoleBLL : IBaseBLL
     {
         string GetRoL();
     }

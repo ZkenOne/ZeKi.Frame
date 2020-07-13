@@ -7,7 +7,7 @@ using ZeKi.Frame.Model;
 
 namespace ZeKi.Frame.IDAL
 {
-    public interface ISysUserInfoDAL : IBaseDAL<SysUserInfo>
+    public interface ISysUserInfoDAL : IBaseDAL
     {
         string GetUserNameById(int id);
     }

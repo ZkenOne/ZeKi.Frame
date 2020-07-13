@@ -7,7 +7,7 @@ using ZeKi.Frame.Model;
 
 namespace ZeKi.Frame.IDAL
 {
-    public interface ISysRoleDAL : IBaseDAL<SysRole>
+    public interface ISysRoleDAL : IBaseDAL
     {
         string GetRoleNameById(int id);
     }

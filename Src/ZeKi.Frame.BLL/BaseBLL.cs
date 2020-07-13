@@ -13,10 +13,9 @@ namespace ZeKi.Frame.BLL
     /// <summary>
     /// 业务层父类
     /// </summary>
-    /// <typeparam name="TModel">模型实体类</typeparam>
-    public class BaseBLL<TModel> : IBaseBLL<TModel> where TModel : class, new()
+    public abstract class BaseBLL : IBaseBLL
     {
-        public IBaseDAL<TModel> DAL { set; get; }
+        public IBaseDAL DAL { set; get; }
 
         #region Insert
         /// <summary>
@@ -24,9 +23,9 @@ namespace ZeKi.Frame.BLL
         /// </summary>
         /// <param name="getId">是否获取当前插入的ID,不是自增则不需要关注此值</param>
         /// <returns>getId为true并且有自增列则返回插入的id值,否则为影响行数</returns>
-        public virtual int Insert(TModel model, bool getId = false)
+        public virtual int Insert<TModel>(TModel model, bool getId = false) where TModel : class, new()
         {
-            return DAL.Insert(model, getId);
+            return DAL.Insert<TModel>(model, getId);
         }
         #endregion
 
@@ -36,9 +35,9 @@ namespace ZeKi.Frame.BLL
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public virtual bool Update(TModel model)
+        public virtual bool Update<TModel>(TModel model) where TModel : class, new()
         {
-            return DAL.Update(model);
+            return DAL.Update<TModel>(model);
         }
 
         /// <summary>
@@ -52,9 +51,9 @@ namespace ZeKi.Frame.BLL
         /// <para>set字段能否被修改受 <see cref="PropertyAttribute"/> 特性限制</para>
         /// </param>
         /// <returns></returns>
-        public virtual int Update(object setAndWhere)
+        public virtual int Update<TModel>(object setAndWhere) where TModel : class, new()
         {
-            return DAL.Update(setAndWhere);
+            return DAL.Update<TModel>(setAndWhere);
         }
         #endregion
 
@@ -64,9 +63,9 @@ namespace ZeKi.Frame.BLL
         /// </summary>
         /// <param name="model">传递主键字段值即可,如需统一清除缓存,可以传递所有字段值数据</param>
         /// <returns></returns>
-        public virtual bool Delete(TModel model)
+        public virtual bool Delete<TModel>(TModel model) where TModel : class, new()
         {
-            return DAL.Delete(model);
+            return DAL.Delete<TModel>(model);
         }
         #endregion
 
@@ -87,46 +86,11 @@ namespace ZeKi.Frame.BLL
         /// 查询
         /// </summary>
         /// <param name="whereObj">使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</param>
-        /// <param name="orderStr">填写：id asc / id,name desc</param>
-        /// <param name="selectFields">,分隔</param>
-        /// <returns></returns>
-        public virtual IEnumerable<TModel> QueryList(object whereObj = null, string orderStr = null, string selectFields = "*")
-        {
-            return QueryList<TModel>(whereObj, orderStr, selectFields);
-        }
-
-        /// <summary>
-        /// 查询
-        /// </summary>
-        /// <param name="whereObj">使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</param>
         /// <param name="selectFields">,分隔</param>
         /// <returns></returns>
         public virtual T QueryModel<T>(object whereObj, string orderStr = null, string selectFields = "*")
         {
             return DAL.QueryModel<T>(whereObj, orderStr, selectFields);
-        }
-
-        /// <summary>
-        /// 查询
-        /// </summary>
-        /// <param name="whereObj">使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</param>
-        /// <param name="selectFields">,分隔</param>
-        /// <returns></returns>
-        public virtual TModel QueryModel(object whereObj, string orderStr = null, string selectFields = "*")
-        {
-            return QueryModel<TModel>(whereObj, orderStr, selectFields);
-        }
-        #endregion
-
-        #region Transaction
-        /// <summary>
-        /// 执行事务
-        /// </summary>
-        /// <param name="action"></param>
-        /// <param name="isolation"></param>
-        public virtual void ExecTransaction(Action action, IsolationLevel isolation = IsolationLevel.ReadCommitted)
-        {
-            DAL.ExecTransaction(action, isolation);
         }
         #endregion
 

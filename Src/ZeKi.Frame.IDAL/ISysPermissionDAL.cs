@@ -7,8 +7,10 @@ using ZeKi.Frame.Model;
 
 namespace ZeKi.Frame.IDAL
 {
-    public interface ISysPermissionDAL : IBaseDAL<SysPermission>
-    {
+    //没特殊方法可以不写IDAL
 
-    }
+    //public interface ISysPermissionDAL : IBaseDAL
+    //{
+
+    //}
 }

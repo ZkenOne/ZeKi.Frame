@@ -7,7 +7,7 @@ using ZeKi.Frame.Model;
 
 namespace ZeKi.Frame.IBLL
 {
-    public interface ISysUserInfoBLL : IBaseBLL<SysUserInfo>
+    public interface ISysUserInfoBLL : IBaseBLL
     {
         string GetTName();
         string GetUserNameById(int id);

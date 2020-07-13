@@ -49,7 +49,7 @@ namespace ZeKi.Frame.UI.Controllers
             var t2 = SysUserInfoBLL.GetTName();
             var t3 = SysUserInfoBLL.Insert(new Model.SysUserInfo() { uId = 1, uDepId = 2, uLoginName = "f", uPwd = "1234", uAddTime = DateTime.Now });
             var t4 = SysUserInfoBLL.Update(new Model.SysUserInfo() { uId = 22, uEmail = "2222" });
-            var t5 = SysRoleBLL.QueryModel(new { rId = 1 });
+            var t5 = SysRoleBLL.QueryModel<Model.SysRole>(new { rId = 1 });
             return Ok(new { t1, t2, t3, t4, t5 });
         }
 

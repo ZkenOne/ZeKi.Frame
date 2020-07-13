@@ -11,7 +11,7 @@ using ZeKi.Frame.Model;
 
 namespace ZeKi.Frame.BLL
 {
-    public class SysUserInfoBLL : BaseBLL<SysUserInfo>, ISysUserInfoBLL
+    public class SysUserInfoBLL : BaseBLL, ISysUserInfoBLL
     {
         //使用DAL和BLL
         public ISysUserInfoDAL SysUserInfoDAL { set; get; }
@@ -33,21 +33,21 @@ namespace ZeKi.Frame.BLL
             return $"{t2}->{SysRoleBLL.GetRoL()}";
         }
 
-        public override int Insert(SysUserInfo model, bool getId = false)
+        public override int Insert<SysUserInfo>(SysUserInfo model, bool getId = false)
         {
             //重写父类方法,可以在此进行清除缓存等
             Console.WriteLine("Insert");
             return SysUserInfoDAL.Insert(model, getId);
         }
 
-        public override bool Update(SysUserInfo model)
+        public override bool Update<SysUserInfo>(SysUserInfo model)
         {
             //重写父类方法,可以在此进行清除缓存等
             Console.WriteLine("Update");
             return base.Update(model);
         }
 
-        public override bool Delete(SysUserInfo model)
+        public override bool Delete<SysUserInfo>(SysUserInfo model)
         {
             //重写父类方法,可以在此进行清除缓存等
             Console.WriteLine("Delete");
