@@ -20,7 +20,7 @@ namespace ZeKi.Frame.DB
         private IDbTransaction tran = null;
         private readonly int commandTimeout = 0;
 
-        public IDbConnection Connection
+        private IDbConnection Connection
         {
             get
             {
@@ -443,8 +443,8 @@ namespace ZeKi.Frame.DB
         #region 释放链接(请求完后容器会调用)
         public void Dispose()
         {
-            if (Connection != null)
-                Connection.Dispose();
+            if (conn != null)
+                conn.Dispose();
             if (tran != null)
                 tran.Dispose();
         }
