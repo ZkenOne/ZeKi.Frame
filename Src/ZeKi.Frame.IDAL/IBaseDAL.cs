@@ -223,6 +223,14 @@ namespace ZeKi.Frame.IDAL
         TResult Sum<TModel, TResult>(string field, string sqlWhere, object param = null) where TModel : class, new();
         #endregion
 
+        #region Excute
+        /// <summary>
+        /// 执行sql(非查询)
+        /// </summary>
+        /// <returns></returns>
+        int Execute(string sql, object param = null);
+        #endregion
+
         #region Dapper原生
         ///// <summary>
         ///// 执行数据库操作,会自动释放,操作QueryMultiple可以用这个

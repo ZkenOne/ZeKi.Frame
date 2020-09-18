@@ -324,6 +324,17 @@ namespace ZeKi.Frame.DB
         }
         #endregion
 
+        #region Excute
+        /// <summary>
+        /// 执行sql(非查询)
+        /// </summary>
+        /// <returns></returns>
+        public int Execute(string sql, object param = null)
+        {
+            return Connection.Execute(sql, param, tran, commandTimeout: commandTimeout);
+        }
+        #endregion
+
         #region Dapper原生
         ///// <summary>
         ///// 执行数据库操作,会自动释放,操作QueryMultiple可以用这个
