@@ -18,5 +18,12 @@ namespace ZeKi.Frame.IBLL
         /// 展示特性方式使用事务
         /// </summary>
         void TestTran();
+
+        /// <summary>
+        /// 展示缓存
+        /// </summary>
+        /// <param name="id_user"></param>
+        /// <returns></returns>
+        string TestCache(string id_user);
     }
 }

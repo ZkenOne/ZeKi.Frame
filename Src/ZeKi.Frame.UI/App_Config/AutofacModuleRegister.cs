@@ -39,8 +39,8 @@ namespace ZeKi.Frame.UI
             //builder.RegisterGeneric(typeof(BaseBLL<>)).As(typeof(IBaseBLL<>)).InstancePerDependency().PropertiesAutowired();
 
             //ZeKi.Frame.BLL.dll/ZeKi.Frame.DAL.dll中的所有类注册给它的全部实现接口，并且把实现类中的属性也进行注册
-            Assembly bllAsmService = Assembly.Load(AppConfig.BLLFullName);
-            Assembly dalAsmService = Assembly.Load(AppConfig.DALFullName);
+            Assembly bllAsmService = Assembly.Load(AppSettings.GetValue("BLLFullName"));
+            Assembly dalAsmService = Assembly.Load(AppSettings.GetValue("DALFullName"));
             //不是抽象类 并且 公开 并且 是class 并且 (后缀为BLL 或者 后缀为DAL)
             builder.RegisterAssemblyTypes(bllAsmService, dalAsmService).Where(t => !t.IsAbstract && t.IsPublic && t.IsClass && (t.Name.EndsWith("BLL") || t.Name.EndsWith("DAL")))
                 .AsImplementedInterfaces().InstancePerDependency().PropertiesAutowired();  //允许属性注入
@@ -49,6 +49,9 @@ namespace ZeKi.Frame.UI
 
             //注册 数据库上下文,并设置 同一请求共用一个连接实例
             builder.RegisterType<DbContext>().AsSelf().InstancePerLifetimeScope().PropertiesAutowired();
+            
+            //注册 缓存 允许属性注入
+            builder.RegisterType<MemoryCaching>().As<ICaching>().PropertiesAutowired();
 
             //注册数据库连接对象(同一请求共用一个连接实例)[MiniProfiler.Current在此时为空...]
             //builder.Register(componentContext =>

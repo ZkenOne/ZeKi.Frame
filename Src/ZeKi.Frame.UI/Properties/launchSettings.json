@@ -20,7 +20,7 @@
     "ZeKi.Frame.UI": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "api/home/testTran",
+      "launchUrl": "api/home/index",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

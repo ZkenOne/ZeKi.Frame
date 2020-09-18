@@ -28,6 +28,12 @@ namespace ZeKi.Frame.UI.Controllers
             return Ok();
         }
 
+        public IActionResult TestCache(string id_user)
+        {
+            var res = SysPermissionBLL.TestCache(id_user);
+            return Ok(res);
+        }
+
         [HttpGet]
         public ActionResult<string> Index()
         {
@@ -39,6 +45,7 @@ namespace ZeKi.Frame.UI.Controllers
             //Logger.LogCritical("LogCritical");
 
             SysPermissionBLL.Example();
+
             return Ok();
         }
 

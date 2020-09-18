@@ -267,5 +267,11 @@ namespace ZeKi.Frame.BLL
             insertModel.uDepId = 1 / i;  //模拟出错
 
         }
+
+        [Cache(AbsoluteExpiration = 20)]
+        public string TestCache(string id_user)
+        {
+            return $"{DateTime.Now}__{id_user}";
+        }
     }
 }

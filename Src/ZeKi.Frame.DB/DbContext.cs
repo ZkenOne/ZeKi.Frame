@@ -407,10 +407,10 @@ namespace ZeKi.Frame.DB
         private IDbConnection GetConnection()
         {
             IDbConnection _conn = null;
-            switch (AppConfig.DBType)
+            switch ((DBEnums.DBType)AppSettings.GetValue<int>("DBType"))
             {
                 case DBEnums.DBType.MSSQL:
-                    _conn = new SqlConnection(AppConfig.SqlConnStr);
+                    _conn = new SqlConnection(AppSettings.GetValue("ConnectionString"));
                     break;
                 case DBEnums.DBType.MYSQL:
 
@@ -418,6 +418,8 @@ namespace ZeKi.Frame.DB
             }
             if (_conn == null)
                 throw new NotImplementedException($"未实现该数据库");
+            //core在此类的构造函数中获取不到MiniProfiler.Current其值
+            //因为还没执行ProfilingFilterAttribute.OnActionExecutionAsync方法的StartNew,所以为null
             if (MiniProfiler.Current != null) //MiniProfiler初始化
                 _conn = new StackExchange.Profiling.Data.ProfiledDbConnection((DbConnection)_conn, MiniProfiler.Current);
             if (_conn.State == ConnectionState.Closed)

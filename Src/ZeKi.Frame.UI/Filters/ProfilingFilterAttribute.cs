@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -75,6 +76,8 @@ namespace ZeKi.Frame.UI.Filters
 
                     //也可以将这些存入数据库,不记录日志
                     Logger.LogTrace(sbStr.ToString());
+                    //debug
+                    Trace.WriteLine(sbStr.ToString());
                 }
             }
 
