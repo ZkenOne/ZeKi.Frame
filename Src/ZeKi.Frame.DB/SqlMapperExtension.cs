@@ -617,7 +617,12 @@ namespace ZeKi.Frame.DB
         {
             IDictionary<string, object> dict = new Dictionary<string, object>();
             if (obj is IDictionary<string, object>)
-                dict = (IDictionary<string, object>)obj;
+            {
+                foreach (var item in (IDictionary<string, object>)obj)
+                {
+                    dict.Add(item.Key, item.Value);
+                }
+            }
             else if (obj is Hashtable)
             {
                 foreach (DictionaryEntry item in (Hashtable)(obj))
