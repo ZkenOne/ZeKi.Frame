@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using ZeKi.Frame.BLL.Interceptor;
+using ZeKi.Frame.Common;
 using ZeKi.Frame.IBLL;
 using ZeKi.Frame.IDAL;
 using ZeKi.Frame.Model;
@@ -57,7 +59,7 @@ namespace ZeKi.Frame.BLL
             var res3 = SysUserInfoBLL.Update(updateModel);
             Console.WriteLine(res3);
 
-            var r1 = SysUserInfoDAL.Update<SysUserInfo>(new { uId = 97, renew_uRemark = "up7a" });
+            var r1 = SysUserInfoDAL.Update<SysUserInfo>(new { uId = 97, _new_uId = "up7a" });
             Console.WriteLine(r1);
             #endregion
 
@@ -70,15 +72,34 @@ namespace ZeKi.Frame.BLL
             //var res4 = SysUserInfoDAL.Count("");
             //var res5 = SysUserInfoDAL.Count("udepid=@udepid", new { udepid = 2 });
             //var res6 = SysUserInfoDAL.Sum<int>("udepid", "udepid=@udepid", new { udepid = 2 });
-            //var res7 = SysUserInfoDAL.Count(new { udepid = 2 });
+            var res7 = SysUserInfoDAL.Count<SysUserInfo>(new { udepid = 2 });
             //Console.WriteLine(res4);
             //Console.WriteLine(res5);
             //Console.WriteLine(res6);
-            //Console.WriteLine(res7);
+            Console.WriteLine(res7);
             //#endregion
 
             //#region Query
 
+            var dataParms = new DataParameters();
+            dataParms.Add("uloginname", "zzq");
+            dataParms.Add("uRemark", SCBuild.Like("良"));
+            dataParms.Add("uId", SCBuild.Like("良"));
+            dataParms.Add("uRemark", SCBuild.NotIn(new string[] { "78", "333" }));
+            var list_1 = DAL.QueryList<SysUserInfo>(dataParms, selectFields: "uloginname");
+            dataParms.Clear();
+            dataParms.Add("uloginname", "zzq");
+            dataParms.Add("uEmail", "123", DbType.AnsiString);
+            dataParms.Add("uRemark", SCBuild.Like("良"), DbType.String, 200);
+            dataParms.Add("uId", SCBuild.Between(1, 2000), DbType.Int32);
+            var list_2 = DAL.QueryList<SysUserInfo>(dataParms, selectFields: "uloginname");
+            dataParms.Clear();
+            dataParms.Add("uloginname", "zzq");
+            dataParms.Add("uEmail", SCBuild.In(new List<string> { "7@8", "33@3" }), DbType.AnsiString, 40);
+            dataParms.Add("uId", SCBuild.Like("良"));
+            var list_3 = DAL.QueryList<SysUserInfo>(dataParms, selectFields: "uloginname");
+
+            var ss = 1;
             //var model1 = SysUserInfoDAL.QueryModel("where uemail=@uemail", new { uemail = "1269021626@qq.com" });
             //var list1 = SysUserInfoDAL.QueryList<Model.SysUserInfo>("select uId,uLoginName from SysUserInfo where udepid=@udepid", new { udepid = 2 });
 
@@ -126,7 +147,6 @@ namespace ZeKi.Frame.BLL
             //    { "uRemark" , SCBuild.Like("良") },
             //    { "uId" , SCBuild.NotIn(new string[]{"78","333"}) },
             //    { "__" , SCBuild.Text("(uEmail=@uEmail1 or uEmail=@uEmail2)",new {uEmail1="12@qq.com",uEmail2="902@qq.com"}) },
-            //    { "uDepId" , SCBuild.Combin(SCBuild.Equal(3),SCBuild.GtEqual(100)) },
             //    { "uAddTime" , SCBuild.Between(DateTime.Now.AddDays(-30),DateTime.Now) }
             //};
             //var list11 = SysUserInfoDAL.QueryList(dictParm);
@@ -142,22 +162,37 @@ namespace ZeKi.Frame.BLL
             //var list12 = SysUserInfoDAL.QueryList<UserInfoWithDep>(sql_111, dictParm, "u.uAddTime DESC");
 
             ////分页____
-            //var pcp_n = new PageParameters()
-            //{
-            //    PageIndex = 1,
-            //    PageSize = 20,
-            //    ShowField = "*",
-            //    KeyFiled = "u.uAddTime DESC",
-            //    Sql = @"u.*,d.depName from sysUserInfo as u left join sysDepartment as d on u.uDepId=d.depId",
-            //    Where = new Dictionary<string, object>()
-            //    {
-            //        { "u.uloginname" , "zz1q" },
-            //        //{ "u.uRemark" , SCBuild.Like("良") },
-            //        { "u.uId" , SCBuild.NotIn(new string[] { "7599", "333"} ) },
-            //        //{ "d.depName" , "公司" }
-            //    }
-            //};
-            //var pageList = SysUserInfoDAL.PageList<UserInfoWithDep>(pcp_n);
+            var pcp_n = new PageParameters()
+            {
+                PageIndex = 1,
+                PageSize = 20,
+                ShowField = "*",
+                KeyFiled = "u.uAddTime DESC",
+                Sql = @"u.*,d.depName from sysUserInfo as u left join sysDepartment as d on u.uDepId=d.depId",
+                Where = new Dictionary<string, object>()
+                {
+                    { "u.uloginname" , "zz1q" },
+                    //{ "u.uRemark" , SCBuild.Like("良") },
+                    { "u.uId" , SCBuild.NotIn(new string[] { "7599", "333"} ) },
+                    //{ "d.depName" , "公司" }
+                }
+            };
+            var pageList = SysUserInfoDAL.PageList<UserInfoWithDep>(pcp_n);
+
+            var whereDataParam = new DataParameters();
+            whereDataParam.Add("u.uloginname", "zz1q");
+            whereDataParam.Add("u.uEmail", SCBuild.In(new List<string> { "7@8", "33@3" }), DbType.AnsiString, 40);
+            whereDataParam.Add("u.uId", SCBuild.Like("良"));
+            var pcp_n_1 = new PageParameters()
+            {
+                PageIndex = 1,
+                PageSize = 20,
+                ShowField = "*",
+                KeyFiled = "u.uAddTime DESC",
+                Sql = @"u.*,d.depName from sysUserInfo as u left join sysDepartment as d on u.uDepId=d.depId",
+                Where = whereDataParam
+            };
+            var pageList_1 = SysUserInfoDAL.PageList<UserInfoWithDep>(pcp_n_1);
 
             //#endregion
 
@@ -230,7 +265,7 @@ namespace ZeKi.Frame.BLL
             #endregion
         }
 
-        [Transaction(IsolationLevel.ReadCommitted)]
+        [Transaction(IsolationLevel.ReadUncommitted)]
         public void TestTran()
         {
             var insertModel = new Model.SysUserInfo()

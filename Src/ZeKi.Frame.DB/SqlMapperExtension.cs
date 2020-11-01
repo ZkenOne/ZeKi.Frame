@@ -39,7 +39,7 @@ namespace ZeKi.Frame.DB
         /// <summary>
         /// 修改字段的前缀(代表此字段为修改)
         /// </summary>
-        private static readonly string _upset_prefix = "renew_";
+        private static readonly string _upset_prefix = "_new_";
 
         #region Insert
         /// <summary>
@@ -58,7 +58,7 @@ namespace ZeKi.Frame.DB
             List<string> propertyNames = GetPropertyNames(type);
             string cols = string.Join(",", propertyNames);
             string colsParams = string.Join(",", propertyNames.Select(p => "@" + p));
-            var sql = "insert " + GetTableName(type) + " (" + cols + ") values (" + colsParams + ");";
+            var sql = "insert into " + GetTableName(type) + " (" + cols + ") values (" + colsParams + ");";
             if (getIncId)
             {
                 sql += GetInsertIncSql(connection);
@@ -92,7 +92,7 @@ namespace ZeKi.Frame.DB
             for (int i = 0; i < totalPage; i++)
             {
                 var tpEntitys = entitysToInsert.Skip((pi - 1) * ps).Take(ps);
-                //dapper支持 : connection.Execute(@"insert MyTable(colA, colB) values (@a, @b)",new[] { new { a=1, b=1 }, new { a=2, b=2 }, new { a=3, b=3 } });
+                //dapper支持 : connection.Execute(@"insert into MyTable(colA, colB) values (@a, @b)",new[] { new { a=1, b=1 }, new { a=2, b=2 }, new { a=3, b=3 } });
                 effectRow += connection.Execute(sql, tpEntitys, transaction, commandTimeout);
                 pi++;
             }
@@ -114,7 +114,7 @@ namespace ZeKi.Frame.DB
         {
             var type = typeof(T);
             List<string> paramNames = GetPropertyNames(type, 1);
-            var builder = new StringBuilder();
+            var builder = new StringBuilder(30);
             builder.Append("update ").Append(GetTableName(type)).Append(" set ");
             builder.Append(string.Join(",", paramNames.Select(p => p + "= @" + p)));
             var pk = GetPrimaryKey(type);
@@ -127,7 +127,7 @@ namespace ZeKi.Frame.DB
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="connection"></param>
-        /// <param name="setAndWhere">set和where的键值对,使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类
+        /// <param name="setAndWhere">set和where的键值对,使用 匿名类、指定数据类型类<see cref="DataParameters"/>、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类
         /// <para>格式:new {renew_name="u",id=1},解析:set字段为renew_name="u",where条件为id=1</para>
         /// <para>修改值必须以renew_开头,如数据库字段名有此开头需要叠加</para>
         /// <para>如 where值中有集合/数组,则生成 in @Key ,sql: in ('','')</para>
@@ -139,13 +139,12 @@ namespace ZeKi.Frame.DB
         public static int Update<T>(this IDbConnection connection, object setAndWhere, IDbTransaction transaction = null, int? commandTimeout = null) where T : class
         {
             var model_type = typeof(T);
-            var dictPar = PackingObjToDict(setAndWhere);
-            var setFields = dictPar.Keys.Where(p => p.StartsWith(_upset_prefix));
+            var dataParams = PackingToDataParams(setAndWhere);
+            var setFields = dataParams.ParameterNames.Where(p => p.StartsWith(_upset_prefix));
             if (setFields == null || !setFields.Any())
-                throw new Exception("未设置修改值");
-            var whereFields = dictPar.Keys.Where(p => !p.StartsWith(_upset_prefix));
-            if (whereFields == null || !whereFields.Any())
-                throw new Exception("未设置条件值");
+                throw new ArgumentException("未设置修改值");
+            if (!dataParams.ParameterNames.Any(p => !p.StartsWith(_upset_prefix)))
+                throw new ArgumentException("未设置条件值");
             var allowUpFieldList = GetPropertyNames(model_type, 1);
             var forbidUpFieldList = new List<string>();
             foreach (var itemField in setFields)
@@ -158,18 +157,19 @@ namespace ZeKi.Frame.DB
             }
             if (forbidUpFieldList.Any())
             {
-                throw new Exception($"字段[{string.Join(",", forbidUpFieldList)}]已设置为不允许修改");
+                throw new ArgumentException($"字段[{string.Join(",", forbidUpFieldList)}]已设置为不允许修改");
             }
             var builder = new StringBuilder();
             builder.Append("update ").Append(GetTableName(model_type)).Append(" set ");
-            //name=@renew_name,flag_style=@renew_flag_style
+            //name=@new_name,flag_style=@new_flag_style
             foreach (var itemField in setFields)
             {
                 builder.Append($"{itemField.Remove(0, _upset_prefix.Length)} = @{itemField},");
             }
             builder = builder.Remove(builder.Length - 1, 1);  //去掉多余的,
-            builder.Append(BuildConditionSql(dictPar, whereFields));
-            return connection.Execute(builder.ToString(), dictPar, transaction, commandTimeout);
+            var paramPacket = BuildSqlWithParams(dataParams, false);
+            builder.Append(paramPacket.SqlWhere);
+            return connection.Execute(builder.ToString(), paramPacket.DynamicParameters, transaction, commandTimeout);
         }
         #endregion
 
@@ -206,14 +206,14 @@ namespace ZeKi.Frame.DB
         {
             var type = typeof(T);
             sql = BuildSqlStart(type, sql, 0);
-            return connection.Query<T>(sql, param, transaction, commandTimeout: commandTimeout);
+            return connection.Query<T>(sql, AdapterParams(param), transaction, commandTimeout: commandTimeout);
         }
 
         /// <summary>
         /// 查询(分页使用PageList方法)
         /// </summary>
         /// <typeparam name="T">返回模型</typeparam>
-        /// <param name="whereObj">使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</param>
+        /// <param name="whereObj">使用 匿名类、指定数据类型类<see cref="DataParameters"/>、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</param>
         /// <param name="orderStr">填写：id asc / id,name desc</param>
         /// <param name="selectFields">,分隔</param>
         /// <param name="transaction"></param>
@@ -222,14 +222,13 @@ namespace ZeKi.Frame.DB
         public static IEnumerable<T> QueryList<T>(this IDbConnection connection, object whereObj = null, string orderStr = null, string selectFields = "*", IDbTransaction transaction = null, int? commandTimeout = null)
         {
             var type = typeof(T);
-            var builder = new StringBuilder();
-            var dictPar = PackingObjToDict(whereObj);
+            var builder = new StringBuilder(50);
             builder.Append($"select {selectFields} from {GetTableName(type)} ");
-            if (dictPar != null && dictPar.Any())
-                builder.Append(BuildConditionSql(dictPar, dictPar.Keys));
+            var paramPacket = BuildSqlWithParams(whereObj);
+            builder.Append(paramPacket.SqlWhere);
             if (!string.IsNullOrEmpty(orderStr))
                 builder.Append($" order by {orderStr}");
-            return connection.Query<T>(builder.ToString(), dictPar, transaction, commandTimeout: commandTimeout);
+            return connection.Query<T>(builder.ToString(), paramPacket.DynamicParameters, transaction, commandTimeout: commandTimeout);
         }
 
         /// <summary>
@@ -237,21 +236,20 @@ namespace ZeKi.Frame.DB
         /// </summary>
         /// <typeparam name="T">返回模型</typeparam>
         /// <param name="sqlNoWhere">sql语句,不包括where,如:select * from sysUserInfo as u left join sysDepartment as d on u.uDepId=d.depId</param>
-        /// <param name="whereObj">使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</param>
+        /// <param name="whereObj">使用 匿名类、指定数据类型类<see cref="DataParameters"/>、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</param>
         /// <param name="orderStr">填写：id asc / id,name desc</param>
         /// <param name="transaction"></param>
         /// <param name="commandTimeout"></param>
         /// <returns>返回集合</returns>
         public static IEnumerable<T> QueryList<T>(this IDbConnection connection, string sqlNoWhere, object whereObj = null, string orderStr = "", IDbTransaction transaction = null, int? commandTimeout = null)
         {
-            var builder = new StringBuilder();
-            var dictPar = PackingObjToDict(whereObj);
+            var builder = new StringBuilder(50);
             builder.Append(sqlNoWhere);
-            if (dictPar != null && dictPar.Any())
-                builder.Append(BuildConditionSql(dictPar, dictPar.Keys));
+            var paramPacket = BuildSqlWithParams(whereObj);
+            builder.Append(paramPacket.SqlWhere);
             if (!string.IsNullOrEmpty(orderStr))
                 builder.Append($" order by {orderStr}");
-            return connection.Query<T>(builder.ToString(), dictPar, transaction, commandTimeout: commandTimeout);
+            return connection.Query<T>(builder.ToString(), paramPacket.DynamicParameters, transaction, commandTimeout: commandTimeout);
         }
 
         /// <summary>
@@ -268,14 +266,14 @@ namespace ZeKi.Frame.DB
             var type = typeof(T);
             sql = BuildSqlStart(type, sql, 1);
             //QueryFirstOrDefault,查询如果是很多条记录,只会取其中的一条,所以需要自己写top 1
-            return connection.QueryFirstOrDefault<T>(sql, param, transaction, commandTimeout: commandTimeout);
+            return connection.QueryFirstOrDefault<T>(sql, AdapterParams(param), transaction, commandTimeout: commandTimeout);
         }
 
         /// <summary>
         /// 查询(查询语句注意只写查询一条)
         /// </summary>
         /// <typeparam name="T">返回模型</typeparam>
-        /// <param name="whereObj">使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</param>
+        /// <param name="whereObj">使用 匿名类、指定数据类型类<see cref="DataParameters"/>、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</param>
         /// <param name="selectFields">,分隔</param>
         /// <param name="orderStr">填写：id asc / id,name desc</param>
         /// <param name="transaction"></param>
@@ -284,14 +282,13 @@ namespace ZeKi.Frame.DB
         public static T QueryModel<T>(this IDbConnection connection, object whereObj, string orderStr = null, string selectFields = "*", IDbTransaction transaction = null, int? commandTimeout = null)
         {
             var type = typeof(T);
-            var builder = new StringBuilder();
-            var dictPar = PackingObjToDict(whereObj);
+            var builder = new StringBuilder(50);
             builder.Append($"select top 1 {selectFields} from {GetTableName(type)} ");
-            if (dictPar != null && dictPar.Any())
-                builder.Append(BuildConditionSql(dictPar, dictPar.Keys));
+            var paramPacket = BuildSqlWithParams(whereObj);
+            builder.Append(paramPacket.SqlWhere);
             if (!string.IsNullOrEmpty(orderStr))
                 builder.Append($" order by {orderStr}");
-            return connection.QueryFirstOrDefault<T>(builder.ToString(), dictPar, transaction, commandTimeout: commandTimeout);
+            return connection.QueryFirstOrDefault<T>(builder.ToString(), paramPacket.DynamicParameters, transaction, commandTimeout: commandTimeout);
         }
 
         /// <summary>
@@ -299,36 +296,35 @@ namespace ZeKi.Frame.DB
         /// </summary>
         /// <typeparam name="T">返回模型</typeparam>
         /// <param name="sqlNoWhere">sql语句,不包括where,如:select top 1 * from sysUserInfo as u left join sysDepartment as d on u.uDepId=d.depId</param>
-        /// <param name="whereObj">使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</param>
+        /// <param name="whereObj">使用 匿名类、指定数据类型类<see cref="DataParameters"/>、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</param>
         /// <param name="orderStr">填写：id asc / id,name desc</param>
         /// <param name="transaction"></param>
         /// <param name="commandTimeout"></param>
         /// <returns>返回集合</returns>
         public static T QueryModel<T>(this IDbConnection connection, string sqlNoWhere, object whereObj = null, string orderStr = "", IDbTransaction transaction = null, int? commandTimeout = null)
         {
-            var builder = new StringBuilder();
-            var dictPar = PackingObjToDict(whereObj);
+            var builder = new StringBuilder(50);
             builder.Append(sqlNoWhere);
-            if (dictPar != null && dictPar.Any())
-                builder.Append(BuildConditionSql(dictPar, dictPar.Keys));
+            var paramPacket = BuildSqlWithParams(whereObj);
+            builder.Append(paramPacket.SqlWhere);
             if (!string.IsNullOrEmpty(orderStr))
                 builder.Append($" order by {orderStr}");
-            return connection.QueryFirstOrDefault<T>(builder.ToString(), dictPar, transaction, commandTimeout: commandTimeout);
+            return connection.QueryFirstOrDefault<T>(builder.ToString(), paramPacket.DynamicParameters, transaction, commandTimeout: commandTimeout);
         }
 
         /// <summary>
         /// 分页查询
         /// </summary>
         /// <typeparam name="T">返回模型</typeparam>
-        /// <param name="pcp">分页模型(参数传递查看PageParameters字段注解)</param>
-        /// <param name="param">同dapper参数传值</param>
+        /// <param name="pcp">分页模型(参数传递查看<see cref="PageParameters"/>类字段注解)</param>
+        /// <param name="param">查看<see cref="PageParameters"/>.Where字段注解</param>
         /// <param name="transaction"></param>
         /// <param name="commandTimeout"></param>
         /// <returns></returns>
         public static PageData<T> PageList<T>(this IDbConnection connection, PageParameters pcp, object param = null, IDbTransaction transaction = null, int? commandTimeout = null) where T : class, new()
         {
-            var sql = CreatePageSql(connection, typeof(T), pcp);
-            var multi = connection.QueryMultiple(sql, pcp.IsWhereTwo ? pcp.Where : param, transaction, commandTimeout);
+            var sql = CreatePageSql<T>(connection, pcp, ref param);
+            var multi = connection.QueryMultiple(sql, param, transaction, commandTimeout);
             var pageData = new PageData<T>()
             {
                 Data = multi.Read<T>(),
@@ -369,13 +365,14 @@ namespace ZeKi.Frame.DB
         /// </summary>
         /// <param name="pcp"></param>
         /// <returns></returns>
-        private static string CreatePageSql(IDbConnection connection, Type type, PageParameters pcp)
+        private static string CreatePageSql<T>(IDbConnection connection, PageParameters pcp, ref object param)
         {
+            var type = typeof(T);
             if (IsMsSqlConnection(connection))
             {
                 if (type == null && string.IsNullOrEmpty(pcp.TableName))
                     throw new NotImplementedException("pcp中需要传递TableName");
-                return CreatePageByMSSQL(type, pcp);
+                return CreatePageByMSSQL<T>(pcp, ref param);
             }
             throw new NotImplementedException("未实现该数据库操作");
         }
@@ -383,23 +380,22 @@ namespace ZeKi.Frame.DB
         /// <summary>
         /// 生成mssql分页sql
         /// </summary>
-        /// <param name="type"></param>
-        /// <param name="pcp"></param>
         /// <returns></returns>
-        private static string CreatePageByMSSQL(Type type, PageParameters pcp)
+        private static string CreatePageByMSSQL<T>(PageParameters pcp, ref object param)
         {
             //处理
-            var strWhere = string.Empty;
+            string strWhere;
             if (pcp.IsWhereTwo)
             {
-                var dictPar = PackingObjToDict(pcp.Where);
-                if (dictPar != null && dictPar.Any())
-                    strWhere = BuildConditionSql(dictPar, dictPar.Keys);
-                pcp.Where = dictPar;
+                var paramPacket = BuildSqlWithParams(pcp.Where);
+                strWhere = paramPacket.SqlWhere;
+                //pcp.Where赋值后外部就变化了,所以这里不能赋值
+                param = paramPacket.DynamicParameters;
             }
             else
             {
                 strWhere = pcp.Where as string;
+                param = AdapterParams(param);
             }
 
             //开始
@@ -418,7 +414,7 @@ namespace ZeKi.Frame.DB
 
             //此值为空则使用BaseDAL传入的TModel映射的表名
             if (string.IsNullOrWhiteSpace(pcp.TableName))
-                pcp.TableName = GetTableName(type);
+                pcp.TableName = GetTableName(typeof(T));
             if (string.IsNullOrWhiteSpace(pcp.OrderBy))
                 pcp.OrderBy = pcp.KeyFiled;
 
@@ -436,14 +432,13 @@ namespace ZeKi.Frame.DB
         /// </summary>
         /// <typeparam name="T">返回模型,如果没有对应模型类接收,可以传入dynamic,然后序列化再反序列化成List泛型参数:Hashtable</typeparam>
         /// <param name="proceName">存储过程名</param>
-        /// <param name="param">特定键值字典/Hashtable/匿名类/自定义类,过程中有OutPut或者Return参数,使用<see cref="DbParameters"/></param>
+        /// <param name="param">特定键值字典/Hashtable/匿名类/自定义类,过程中有OutPut或者Return参数,使用<see cref="DataParameters"/></param>
         /// <param name="transaction"></param>
         /// <param name="commandTimeout"></param>
         /// <returns>返回集合</returns>
         public static IEnumerable<T> QueryProcedure<T>(this IDbConnection connection, string proceName, object param = null, IDbTransaction transaction = null, int? commandTimeout = null)
         {
-            var objParam = param is DbParameters ? param : ToDictionary(param);
-            return connection.Query<T>(proceName, objParam, transaction, commandTimeout: commandTimeout, commandType: CommandType.StoredProcedure);
+            return connection.Query<T>(proceName, AdapterParams(param), transaction, commandTimeout: commandTimeout, commandType: CommandType.StoredProcedure);
         }
 
         /// <summary>
@@ -451,14 +446,13 @@ namespace ZeKi.Frame.DB
         /// <para>参数传递参考：https://github.com/StackExchange/Dapper#stored-procedures </para>
         /// </summary>
         /// <param name="proceName">存储过程名</param>
-        /// <param name="param">特定键值字典/Hashtable/匿名类/自定义类,过程中有OutPut或者Return参数,使用<see cref="DbParameters"/></param>
+        /// <param name="param">特定键值字典/Hashtable/匿名类/自定义类,过程中有OutPut或者Return参数,使用<see cref="DataParameters"/></param>
         /// <param name="transaction"></param>
         /// <param name="commandTimeout"></param>
         /// <returns></returns>
         public static void ExecProcedure(this IDbConnection connection, string proceName, object param = null, IDbTransaction transaction = null, int? commandTimeout = null)
         {
-            var objParam = param is DbParameters ? param : ToDictionary(param);
-            connection.Execute(proceName, objParam, transaction, commandTimeout, commandType: CommandType.StoredProcedure);
+            connection.Execute(proceName, AdapterParams(param), transaction, commandTimeout, commandType: CommandType.StoredProcedure);
         }
         #endregion
 
@@ -475,22 +469,21 @@ namespace ZeKi.Frame.DB
             var builder = new StringBuilder($"SELECT COUNT(0) FROM [{GetTableName(type)}]");
             if (!string.IsNullOrWhiteSpace(sqlWhere))
                 builder.Append($" where {sqlWhere};");
-            return connection.ExecuteScalar<int>(builder.ToString(), param, transaction, commandTimeout);
+            return connection.ExecuteScalar<int>(builder.ToString(), AdapterParams(param), transaction, commandTimeout);
         }
 
         /// <summary>
         /// Count统计
         /// </summary>
-        /// <param name="whereObj">使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</param>
+        /// <param name="whereObj">使用 匿名类、指定数据类型类<see cref="DataParameters"/>、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</param>
         /// <returns></returns>
         public static int Count<T>(this IDbConnection connection, object whereObj = null, IDbTransaction transaction = null, int? commandTimeout = null) where T : class
         {
             var type = typeof(T);
             var builder = new StringBuilder($"SELECT COUNT(0) FROM [{GetTableName(type)}]");
-            var dictPar = PackingObjToDict(whereObj);
-            if (dictPar != null && dictPar.Any())
-                builder.Append(BuildConditionSql(dictPar, dictPar.Keys));
-            return connection.ExecuteScalar<int>(builder.ToString(), dictPar, transaction, commandTimeout);
+            var paramPacket = BuildSqlWithParams(whereObj);
+            builder.Append(paramPacket.SqlWhere);
+            return connection.ExecuteScalar<int>(builder.ToString(), paramPacket.DynamicParameters, transaction, commandTimeout);
         }
 
         /// <summary>
@@ -507,7 +500,7 @@ namespace ZeKi.Frame.DB
             var sql = new StringBuilder($"SELECT SUM({field}) FROM [{GetTableName(type)}]");
             if (!string.IsNullOrWhiteSpace(sqlWhere))
                 sql.Append($" where {sqlWhere};");
-            return connection.ExecuteScalar<TResult>(sql.ToString(), param, transaction, commandTimeout);
+            return connection.ExecuteScalar<TResult>(sql.ToString(), AdapterParams(param), transaction, commandTimeout);
         }
         #endregion
 
@@ -609,145 +602,173 @@ namespace ZeKi.Frame.DB
 
         #region 内部帮助/受保护类型 方法
         /// <summary>
-        /// 转换成键为string,值为object的字典类型
+        /// 适配参数化：DataParameters、Hashtable
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        private static IDictionary<string, object> ToDictionary(object obj)
+        private static object AdapterParams(object obj)
         {
-            IDictionary<string, object> dict = new Dictionary<string, object>();
-            if (obj is IDictionary<string, object>)
+            object objParam = null;
+            if (obj is DataParameters parameters)
+                objParam = parameters.ToDynamicParameters();
+            else if (obj is Hashtable hashtable)
+                objParam = hashtable.ToDictionary();
+            return objParam ?? obj;
+        }
+
+        /// <summary>
+        /// 将参数param转换成DataParameters类型
+        /// </summary>
+        /// <param name="param">查询参数</param>
+        /// <returns></returns>
+        private static DataParameters PackingToDataParams(object param)
+        {
+            var dataParm = new DataParameters();
+            if (param is IDictionary<string, object>)
             {
-                foreach (var item in (IDictionary<string, object>)obj)
+                foreach (var item in (IDictionary<string, object>)param)
                 {
-                    dict.Add(item.Key, item.Value);
+                    AddToDataParameters(dataParm, item.Key, item.Value);
                 }
             }
-            else if (obj is Hashtable)
+            else if (param is Hashtable)
             {
-                foreach (DictionaryEntry item in (Hashtable)(obj))
+                foreach (DictionaryEntry item in (Hashtable)(param))
                 {
-                    dict.Add(item.Key.ToString(), item.Value);
+                    AddToDataParameters(dataParm, item.Key.ToString(), item.Value);
+                }
+            }
+            else if (param is DataParameters)
+            {
+                foreach (var item in ((DataParameters)param).GetParameters())
+                {
+                    AddToDataParameters(dataParm, item.Key, item.Value);
                 }
             }
             else
             {
-                var props = obj.GetType().GetProperties();
+                var props = param.GetType().GetProperties();
                 foreach (var itemProp in props)
                 {
-                    dict.Add(itemProp.Name, itemProp.GetValue(obj));
+                    AddToDataParameters(dataParm, itemProp.Name, itemProp.GetValue(param));
                 }
             }
-            return dict;
-        }
+            return dataParm;
 
-        /// <summary>
-        /// 转换成键为string,值为object的字典类型,并将字典值进行包装
-        /// </summary>
-        /// <param name="obj"></param>
-        /// <returns></returns>
-        private static IDictionary<string, object> PackingObjToDict(object obj)
-        {
-            var dict = ToDictionary(obj);
-            for (int i = 0; i < dict.Count; i++)
+            static void AddToDataParameters(DataParameters dataParm, string key, object objVal)
             {
-                var item = dict.ElementAt(i);
-                if (item.Key.StartsWith(_upset_prefix) || item.Value is SqlBaseCondition || item.Value is SqlBaseCondition[])
-                    continue;
-                if (IsAssemble(item.Value))
-                    dict[item.Key] = SCBuild.In(item.Value);
+                DataParameters.ParamInfo parmInfo = null;
+                object obj;
+                if (objVal is DataParameters.ParamInfo)
+                {
+                    parmInfo = (DataParameters.ParamInfo)objVal;
+                    objVal = parmInfo.Value;
+                }
+                if (key.StartsWith(_upset_prefix) || objVal is SqlBaseCondition)
+                    obj = objVal;  //不进行包装
+                else if (IsAssemble(objVal))
+                    obj = SCBuild.In(objVal);
                 else  //默认为=
-                    dict[item.Key] = SCBuild.Equal(item.Value);
+                    obj = SCBuild.Equal(objVal);
+                dataParm.Add(key, obj, parmInfo?.DbType, parmInfo?.Size, parmInfo?.ParameterDirection, parmInfo?.Precision, parmInfo?.Scale);
             }
-            return dict;
         }
 
         /// <summary>
-        /// 拼装成sql字符串
+        /// 生成sql条件字符串以及参数化
         /// </summary>
-        /// <param name="dictPar">键值对字典</param>
-        /// <param name="whereFields">要拼接的字段Key</param>
+        /// <param name="param">查询参数化</param>
+        /// <param name="packingParams">是否要调用包装 PackingToDataParams</param>
         /// <returns></returns>
-        private static string BuildConditionSql(IDictionary<string, object> dictPar, IEnumerable<string> whereFields)
+        private static DynamicParametersWithSql BuildSqlWithParams(object param, bool packingParams = true)
         {
-            var fields = whereFields.ToArray();  //生成新的数组,不受字典改变影响
-            if (dictPar.Count <= 0 || fields.Length <= 0)
-                return string.Empty;
+            var dataParams = packingParams ? PackingToDataParams(param) : (DataParameters)param;
+            var paramPacket = new DynamicParametersWithSql();
+            var fields = dataParams.ParameterNames.ToList();
+            if (fields == null || fields.Count <= 0)
+                return paramPacket;
 
             int index = 0;
-            var sqlStr = " where ";
-            for (int i = 0; i < fields.Length; i++)
+            var sbSql = new StringBuilder(" where ", 50);
+            for (int i = 0; i < fields.Count; i++)
             {
-                var itemField = fields.ElementAt(i);
-                var obj = dictPar[itemField];
+                var paramInfo = dataParams.Get(fields[i]);
+                sbSql.Append(BuildPart(paramInfo, paramPacket.DynamicParameters, ref index));
+            }
+            sbSql.Remove(sbSql.Length - 3, 3);//去掉多余的and
+            paramPacket.SqlWhere = sbSql.ToString();
+            return paramPacket;
 
-                if (obj is SqlBaseCondition)
+            static string BuildPart(DataParameters.ParamInfo paramInfo, DynamicParameters dynamicParams, ref int index)
+            {
+                string sqlParam = string.Empty, partStr = string.Empty;
+                var field = paramInfo.Name;
+                var objVal = paramInfo.Value;
+                if (!(objVal is SqlTextCondition))
                 {
-                    sqlStr += BuildSqlPart(dictPar, (SqlBaseCondition)obj, itemField, ref index);
+                    sqlParam = $"{_sqlParamPrefix}{++index}";
                 }
-                else if (obj is SqlBaseCondition[])
+                if (objVal is SqlBasicCondition)
                 {
-                    foreach (var item in (obj as SqlBaseCondition[]))
+                    var actualCond = (SqlBasicCondition)objVal;
+                    partStr = $" {field} {actualCond.SqlOpt} @{sqlParam} and";
+                    dynamicParams.Add(sqlParam, actualCond.Value, paramInfo.DbType, paramInfo.ParameterDirection, paramInfo.Size, paramInfo.Precision, paramInfo.Scale);
+                }
+                else if (objVal is SqlInCondition)
+                {
+                    var actualCond = (SqlInCondition)objVal;
+                    //in的时候如果指定了DbType,则拆分成一个个的参数化
+                    if (paramInfo.DbType != null)
                     {
-                        sqlStr += BuildSqlPart(dictPar, item, itemField, ref index);
+                        var inSbStr = new StringBuilder(100);
+                        inSbStr.Append($" {field} {actualCond.SqlOpt} (");
+                        var inList = actualCond.Value as IList;
+                        if (inList == null || inList.Count <= 0)
+                            throw new ArgumentNullException("In参数为空或无数据");
+                        for (int i = 0; i < inList.Count; i++)
+                        {
+                            var tp_key = $"{sqlParam}__{i + 1}";
+                            inSbStr.Append($"@{tp_key},");
+                            dynamicParams.Add(tp_key, inList[i], paramInfo.DbType, paramInfo.ParameterDirection, paramInfo.Size, paramInfo.Precision, paramInfo.Scale);
+                        }
+                        inSbStr.Remove(inSbStr.Length - 1, 1).Append(" ) and");
+                        partStr = inSbStr.ToString();
+                    }
+                    else
+                    {
+                        partStr = $" {field} {actualCond.SqlOpt} @{sqlParam} and";
+                        dynamicParams.Add(sqlParam, actualCond.Value, paramInfo.DbType, paramInfo.ParameterDirection, paramInfo.Size, paramInfo.Precision, paramInfo.Scale);
                     }
                 }
-            }
-            sqlStr = sqlStr.Remove(sqlStr.Length - 3, 3);//去掉多余的and
-            return sqlStr;
-        }
-
-        /// <summary>
-        /// 生成sql片段
-        /// </summary>
-        /// <param name="dictPar"></param>
-        /// <param name="baseCond"></param>
-        /// <param name="field"></param>
-        /// <param name="index"></param>
-        /// <returns></returns>
-        private static string BuildSqlPart(IDictionary<string, object> dictPar, SqlBaseCondition baseCond, string field, ref int index)
-        {
-            var partStr = string.Empty;
-            var sqlParam = string.Empty;
-            if (!(baseCond is SqlTextCondition))
-                sqlParam = $"{_sqlParamPrefix}{++index}";
-            if (baseCond is SqlBasicCondition)
-            {
-                partStr = $" {field} {baseCond.SqlOpt} @{sqlParam} and";
-                dictPar.Add(sqlParam, ((SqlBasicCondition)baseCond).Value);
-            }
-            else if (baseCond is SqlInCondition)
-            {
-                partStr = $" {field} {baseCond.SqlOpt} @{sqlParam} and";
-                dictPar.Add(sqlParam, ((SqlInCondition)baseCond).Value);
-            }
-            else if (baseCond is SqlLikeCondition)
-            {
-                partStr = $" {field} {baseCond.SqlOpt} @{sqlParam} and";
-                dictPar.Add(sqlParam, $"%{((SqlLikeCondition)baseCond).Value}%");
-            }
-            else if (baseCond is SqlBtCondition)
-            {
-                var btCond = (SqlBtCondition)baseCond;
-                partStr = $" {field} {btCond.SqlOpt} @{sqlParam}#1 and @{sqlParam}#2 and";
-                dictPar.Add($"{sqlParam}#1", btCond.Value1);
-                dictPar.Add($"{sqlParam}#2", btCond.Value2);
-            }
-            else if (baseCond is SqlTextCondition)
-            {
-                var txtCond = (SqlTextCondition)baseCond;
-                partStr = $" {txtCond.SqlWhere} and";
-                if (txtCond.Parameters != null)
+                else if (objVal is SqlLikeCondition)
                 {
-                    foreach (var item in ToDictionary(txtCond.Parameters))
+                    var actualCond = (SqlLikeCondition)objVal;
+                    partStr = $" {field} {actualCond.SqlOpt} @{sqlParam} and";
+                    dynamicParams.Add(sqlParam, $"%{actualCond.Value}%", paramInfo.DbType, paramInfo.ParameterDirection, paramInfo.Size, paramInfo.Precision, paramInfo.Scale);
+                }
+                else if (objVal is SqlBtCondition)
+                {
+                    var actualCond = (SqlBtCondition)objVal;
+                    partStr = $" {field} {actualCond.SqlOpt} @{sqlParam}__1 and @{sqlParam}__2 and";
+                    dynamicParams.Add($"{sqlParam}__1", actualCond.Value1, paramInfo.DbType, paramInfo.ParameterDirection, paramInfo.Size, paramInfo.Precision, paramInfo.Scale);
+                    dynamicParams.Add($"{sqlParam}__2", actualCond.Value2, paramInfo.DbType, paramInfo.ParameterDirection, paramInfo.Size, paramInfo.Precision, paramInfo.Scale);
+                }
+                else if (objVal is SqlTextCondition)
+                {
+                    var actualCond = (SqlTextCondition)objVal;
+                    partStr = $" {actualCond.SqlWhere} and";
+                    if (actualCond.Parameters != null)
                     {
-                        dictPar.Add(item.Key, item.Value);
+                        dynamicParams.AddDynamicParams(AdapterParams(actualCond.Parameters));
                     }
                 }
+                else
+                {
+                    //是修改字段
+                    dynamicParams.Add(field, objVal, paramInfo.DbType, paramInfo.ParameterDirection, paramInfo.Size, paramInfo.Precision, paramInfo.Scale);
+                }
+                return partStr;
             }
-            //删除旧的键
-            dictPar.Remove(field);
-            return partStr;
         }
 
         /// <summary>
@@ -802,14 +823,14 @@ namespace ZeKi.Frame.DB
         /// </summary>
         /// <param name="type">类型</param>
         /// <param name="sql"></param>
-        /// <param name="falg">0:所有 1:单个模型</param>
+        /// <param name="flag">0:所有 1:单个模型</param>
         /// <returns></returns>
-        private static string BuildSqlStart(Type type, string sql, int falg = 0)
+        private static string BuildSqlStart(Type type, string sql, int flag = 0)
         {
             //开头为where 则自动补全
             if (sql.Trim(' ').StartsWith("where".ToLower()))
             {
-                var topStr = falg == 0 ? "" : " top 1 ";
+                var topStr = flag == 0 ? "" : " top 1 ";
                 return $"select {topStr} * from {GetTableName(type)} {sql}";
             }
             return sql;
@@ -825,7 +846,7 @@ namespace ZeKi.Frame.DB
             var parmPrefix = string.Empty;
             if (IsMsSqlConnection(connection))
                 parmPrefix = "@";
-            else if (IsMsSqlConnection(connection))
+            else if (IsMySqlConnection(connection))
                 parmPrefix = "?";
             else if (IsOracleConnection(connection))
                 parmPrefix = ":";

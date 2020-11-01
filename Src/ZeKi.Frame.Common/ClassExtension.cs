@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using Dapper;
 
 namespace ZeKi.Frame.Common
 {
@@ -179,6 +182,41 @@ namespace ZeKi.Frame.Common
         {
             TimeSpan ts = thisValue - new DateTime(1970, 1, 1, 0, 0, 0, 0);
             return Convert.ToInt64(ts.TotalSeconds).ToString();
+        }
+
+        /// <summary>
+        /// 转换成dapper需要的参数化
+        /// </summary>
+        /// <param name="thisValue"></param>
+        /// <returns></returns>
+        public static DynamicParameters ToDynamicParameters(this DataParameters dataParams)
+        {
+            if (dataParams == null)
+                return null;
+            var dynamicParameters = new DynamicParameters();
+            foreach (var item in dataParams.GetParameters())
+            {
+                var val = item.Value;
+                dynamicParameters.Add(item.Key, val.Value, val.DbType, val.ParameterDirection, val.Size, val.Precision, val.Scale);
+            }
+            return dynamicParameters;
+        }
+
+        /// <summary>
+        /// 转换成Dictionary
+        /// </summary>
+        /// <param name="thisValue"></param>
+        /// <returns></returns>
+        public static IDictionary<string, object> ToDictionary(this Hashtable ht)
+        {
+            if (ht == null)
+                return null;
+            IDictionary<string, object> dict = new Dictionary<string, object>();
+            foreach (DictionaryEntry item in ht)
+            {
+                dict.Add(item.Key.ToString(), item.Value);
+            }
+            return dict;
         }
     }
 }

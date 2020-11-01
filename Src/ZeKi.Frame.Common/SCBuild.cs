@@ -68,18 +68,6 @@ namespace ZeKi.Frame.Common
         {
             return new SqlTextCondition(string.Empty, sqlWhere, parameters);
         }
-
-        /// <summary>
-        /// 组合条件,用于一个字段需要多个条件的情况
-        /// </summary>
-        /// <param name="conditions"></param>
-        /// <returns></returns>
-        public static object Combin(params SqlBaseCondition[] conditions)
-        {
-            if (!(conditions is SqlBaseCondition[]))
-                throw new InvalidCastException("传入类型有误");
-            return conditions;
-        }
     }
 
 }
