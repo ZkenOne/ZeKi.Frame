@@ -21,7 +21,7 @@ namespace ZeKi.Frame.Model
         /// <summary>
         /// 条件 
         /// <para>第一种: Where name=@name 参数键值对传入 param 参数</para>
-        /// <para>第二种: 特定字典键值对/hashtable/匿名类/自定义类,param 参数不要赋值</para>
+        /// <para>第二种: 特定字典键值对/hashtable/匿名类/自定义类/指定数据类型类DataParameters, param 参数不要赋值</para>
         /// </summary>
         public object Where { get; set; }
 

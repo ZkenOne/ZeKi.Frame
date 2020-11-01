@@ -18,7 +18,7 @@ namespace ZeKi.Frame.DB
     {
         private IDbConnection conn = null;
         private IDbTransaction tran = null;
-        private readonly int commandTimeout = 0;
+        private readonly int commandTimeout = 5 * 60;   //单位：秒
 
         private IDbConnection Connection
         {
@@ -71,7 +71,7 @@ namespace ZeKi.Frame.DB
         /// 修改(根据自定义条件修改自定义值)
         /// </summary>
         /// <param name="model"></param>
-        /// <param name="setAndWhere">set和where的键值对,使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类
+        /// <param name="setAndWhere">set和where的键值对,使用 匿名类、指定数据类型类<see cref="DataParameters"/>、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类
         /// <para>格式:new {renew_name="u",id=1},解析:set字段为renew_name="u",where条件为id=1</para>
         /// <para>修改值必须以renew_开头,如数据库字段名有此开头需要叠加</para>
         /// <para>如 where值中有集合/数组,则生成 in @Key ,sql: in ('','')</para>
@@ -113,7 +113,7 @@ namespace ZeKi.Frame.DB
         /// 查询
         /// </summary>
         /// <typeparam name="T">返回模型</typeparam>
-        /// <param name="whereObj">使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</param>
+        /// <param name="whereObj">使用 匿名类、指定数据类型类<see cref="DataParameters"/>、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</param>
         /// <param name="orderStr">填写：id asc / id,name desc</param>
         /// <param name="selectFields">,分隔</param>
         /// <returns></returns>
@@ -126,7 +126,7 @@ namespace ZeKi.Frame.DB
         /// 查询
         /// </summary>
         /// <typeparam name="T">返回模型</typeparam>
-        /// <param name="whereObj">使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</param>
+        /// <param name="whereObj">使用 匿名类、指定数据类型类<see cref="DataParameters"/>、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</param>
         /// <param name="orderStr">填写：id asc / id,name desc</param>
         /// <returns></returns>
         public IEnumerable<T> QueryList<T>(string sqlNoWhere, object whereObj = null, string orderStr = null)
@@ -150,7 +150,7 @@ namespace ZeKi.Frame.DB
         /// 查询
         /// </summary>
         /// <typeparam name="T">返回模型</typeparam>
-        /// <param name="whereObj">使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</param>
+        /// <param name="whereObj">使用 匿名类、指定数据类型类<see cref="DataParameters"/>、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</param>
         /// <param name="selectFields">,分隔</param>
         /// <param name="orderStr">填写：id asc / id,name desc</param>
         /// <returns></returns>
@@ -163,7 +163,7 @@ namespace ZeKi.Frame.DB
         /// 查询
         /// </summary>
         /// <typeparam name="T">返回模型</typeparam>
-        /// <param name="whereObj">使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</param>
+        /// <param name="whereObj">使用 匿名类、指定数据类型类<see cref="DataParameters"/>、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</param>
         /// <param name="orderStr">填写：id asc / id,name desc</param>
         /// <returns></returns>
         public T QueryModel<T>(string sqlNoWhere, object whereObj = null, string orderStr = null)
@@ -265,7 +265,7 @@ namespace ZeKi.Frame.DB
         /// </summary>
         /// <typeparam name="T">返回模型,如果没有对应模型类接收,可以传入dynamic,然后序列化再反序列化成List泛型参数:Hashtable</typeparam>
         /// <param name="proceName">存储过程名</param>
-        /// <param name="param">特定键值字典/Hashtable/匿名类/自定义类,过程中有OutPut或者Return参数,使用<see cref="DbParameters"/></param>
+        /// <param name="param">特定键值字典/Hashtable/匿名类/自定义类,过程中有OutPut或者Return参数,使用<see cref="DataParameters"/></param>
         /// <returns>返回集合</returns>
         public IEnumerable<T> QueryProcedure<T>(string proceName, object param = null)
         {
@@ -277,7 +277,7 @@ namespace ZeKi.Frame.DB
         /// <para>参数传递参考：https://github.com/StackExchange/Dapper#stored-procedures </para>
         /// </summary>
         /// <param name="proceName">存储过程名</param>
-        /// <param name="param">特定键值字典/Hashtable/匿名类/自定义类,过程中有OutPut或者Return参数,使用<see cref="DbParameters"/></param>
+        /// <param name="param">特定键值字典/Hashtable/匿名类/自定义类,过程中有OutPut或者Return参数,使用<see cref="DataParameters"/></param>
         /// <param name="transaction"></param>
         /// <param name="commandTimeout"></param>
         /// <returns></returns>
@@ -303,7 +303,7 @@ namespace ZeKi.Frame.DB
         /// <summary>
         /// Count统计
         /// </summary>
-        /// <param name="whereObj">使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</param>
+        /// <param name="whereObj">使用 匿名类、指定数据类型类<see cref="DataParameters"/>、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</param>
         /// <returns></returns>
         public int Count<TModel>(object whereObj = null) where TModel : class
         {
