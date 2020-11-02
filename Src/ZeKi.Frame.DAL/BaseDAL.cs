@@ -8,6 +8,7 @@ using ZeKi.Frame.DB;
 using ZeKi.Frame.IDAL;
 using ZeKi.Frame.Model;
 using ZeKi.Frame.Common;
+using System.Data.SqlClient;
 
 namespace ZeKi.Frame.DAL
 {
@@ -48,6 +49,18 @@ namespace ZeKi.Frame.DAL
         public virtual int BatchInsert<TModel>(IEnumerable<TModel> list, int ps = 500) where TModel : class, new()
         {
             return DBContext.BatchInsert(list, ps);
+        }
+
+        /// <summary>
+        /// bulkcopy,仅支持myssql数据库
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <param name="connection"></param>
+        /// <param name="entitysToInsert"></param>
+        /// <param name="timeOut">超时时间,单位：秒</param>
+        public void BulkCopyToInsert<TModel>(IEnumerable<TModel> entitysToInsert, SqlBulkCopyOptions copyOptions = SqlBulkCopyOptions.Default, int timeOut = 60 * 10) where TModel : class, new()
+        {
+            DBContext.BulkCopyToInsert(entitysToInsert, copyOptions, timeOut);
         }
         #endregion
 

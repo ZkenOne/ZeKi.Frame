@@ -81,5 +81,67 @@ namespace ZeKi.Frame.Common
             return list.ToList();
 
         }
+
+        public static DataTable ToDataTable<T>(IEnumerable<T> list)
+        {
+            if (list == null || list.Count() <= 0)
+            {
+                return new DataTable();
+            }
+            var tb = new DataTable(typeof(T).Name);
+            PropertyInfo[] props = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            foreach (PropertyInfo prop in props)
+            {
+                Type t = GetCoreType(prop.PropertyType);
+                tb.Columns.Add(prop.Name, t);
+            }
+            foreach (T item in list)
+            {
+                var values = new object[props.Length];
+                for (int i = 0; i < props.Length; i++)
+                {
+                    values[i] = props[i].GetValue(item, null);
+                }
+                tb.Rows.Add(values);
+            }
+            return tb;
+
+            Type GetCoreType(Type t)
+            {
+                if (t != null && IsNullable(t))
+                {
+                    if (!t.IsValueType)
+                    {
+                        return t;
+                    }
+                    else
+                    {
+                        return Nullable.GetUnderlyingType(t);
+                    }
+                }
+                else
+                {
+                    return t;
+                }
+            }
+
+            bool IsNullable(Type t)
+            {
+                return !t.IsValueType || (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Nullable<>));
+            }
+        }
+
+        ///// <summary>
+        ///// 将一个object转换成指定类型
+        ///// </summary>
+        ///// <typeparam name="T"></typeparam>
+        ///// <param name="str"></param>
+        ///// <returns></returns>
+        //public static T To<T>(object obj)
+        //{
+        //    if (obj == null)
+        //        return default;
+        //    return JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(obj));
+        //}
     }
 }

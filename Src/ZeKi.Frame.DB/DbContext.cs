@@ -54,6 +54,18 @@ namespace ZeKi.Frame.DB
         {
             return Connection.BatchInsert(list, ps, tran, commandTimeout: commandTimeout);
         }
+
+        /// <summary>
+        /// bulkcopy,仅支持myssql数据库
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <param name="connection"></param>
+        /// <param name="entitysToInsert"></param>
+        /// <param name="timeOut">超时时间,单位：秒</param>
+        public void BulkCopyToInsert<TModel>(IEnumerable<TModel> entitysToInsert, SqlBulkCopyOptions copyOptions = SqlBulkCopyOptions.Default, int timeOut = 60 * 10) where TModel : class, new()
+        {
+            Connection.BulkCopyToInsert(entitysToInsert, copyOptions, tran, timeOut);
+        }
         #endregion
 
         #region Update

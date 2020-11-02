@@ -98,6 +98,43 @@ namespace ZeKi.Frame.DB
             }
             return effectRow;
         }
+
+        /// <summary>
+        /// bulkcopy,仅支持myssql数据库
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="connection"></param>
+        /// <param name="entitysToInsert"></param>
+        /// <param name="timeOut">超时时间,单位：秒</param>
+        public static void BulkCopyToInsert<T>(this IDbConnection connection, IEnumerable<T> entitysToInsert, SqlBulkCopyOptions copyOptions = SqlBulkCopyOptions.Default, IDbTransaction transaction = null, int timeOut = 60 * 10) where T : class, new()
+        {
+            if (!IsMsSqlConnection(connection))
+                throw new NotSupportedException("只有mssql数据库支持");
+            if (entitysToInsert == null || !entitysToInsert.Any())
+                return;
+            var sqlCon = (SqlConnection)ToActualConnetction(connection);
+            SqlTransaction sqlTran = null;
+            if (transaction != null)
+                sqlTran = (SqlTransaction)ToActualTransaction(transaction);
+            using (SqlBulkCopy sqlbulkcopy = new SqlBulkCopy(sqlCon, copyOptions, sqlTran))
+            {
+                try
+                {
+                    sqlbulkcopy.DestinationTableName = GetTableName(typeof(T));
+                    var table = ConvertUtil.ToDataTable(entitysToInsert);
+                    for (int i = 0; i < table.Columns.Count; i++)
+                    {
+                        sqlbulkcopy.ColumnMappings.Add(table.Columns[i].ColumnName, table.Columns[i].ColumnName);
+                    }
+                    sqlbulkcopy.BulkCopyTimeout = timeOut;
+                    sqlbulkcopy.WriteToServer(table);
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+        }
         #endregion
 
         #region Update
@@ -623,26 +660,26 @@ namespace ZeKi.Frame.DB
         /// <returns></returns>
         private static DataParameters PackingToDataParams(object param)
         {
-            var dataParm = new DataParameters();
+            var dataParams = new DataParameters();
             if (param is IDictionary<string, object>)
             {
                 foreach (var item in (IDictionary<string, object>)param)
                 {
-                    AddToDataParameters(dataParm, item.Key, item.Value);
+                    AddToDataParameters(dataParams, item.Key, item.Value);
                 }
             }
             else if (param is Hashtable)
             {
                 foreach (DictionaryEntry item in (Hashtable)(param))
                 {
-                    AddToDataParameters(dataParm, item.Key.ToString(), item.Value);
+                    AddToDataParameters(dataParams, item.Key.ToString(), item.Value);
                 }
             }
             else if (param is DataParameters)
             {
                 foreach (var item in ((DataParameters)param).GetParameters())
                 {
-                    AddToDataParameters(dataParm, item.Key, item.Value);
+                    AddToDataParameters(dataParams, item.Key, item.Value);
                 }
             }
             else
@@ -650,12 +687,12 @@ namespace ZeKi.Frame.DB
                 var props = param.GetType().GetProperties();
                 foreach (var itemProp in props)
                 {
-                    AddToDataParameters(dataParm, itemProp.Name, itemProp.GetValue(param));
+                    AddToDataParameters(dataParams, itemProp.Name, itemProp.GetValue(param));
                 }
             }
-            return dataParm;
+            return dataParams;
 
-            static void AddToDataParameters(DataParameters dataParm, string key, object objVal)
+            static void AddToDataParameters(DataParameters dataParams, string key, object objVal)
             {
                 DataParameters.ParamInfo parmInfo = null;
                 object obj;
@@ -670,7 +707,7 @@ namespace ZeKi.Frame.DB
                     obj = SCBuild.In(objVal);
                 else  //默认为=
                     obj = SCBuild.Equal(objVal);
-                dataParm.Add(key, obj, parmInfo?.DbType, parmInfo?.Size, parmInfo?.ParameterDirection, parmInfo?.Precision, parmInfo?.Scale);
+                dataParams.Add(key, obj, parmInfo?.DbType, parmInfo?.Size, parmInfo?.ParameterDirection, parmInfo?.Precision, parmInfo?.Scale);
             }
         }
 
@@ -912,6 +949,18 @@ namespace ZeKi.Frame.DB
             if (connection is ProfiledDbConnection)
                 return ((ProfiledDbConnection)connection).WrappedConnection;
             return connection;
+        }
+
+        /// <summary>
+        /// 转换成真实的Transaction对象(ProfiledDbTransaction)
+        /// </summary>
+        /// <param name="tran"></param>
+        /// <returns></returns>
+        private static IDbTransaction ToActualTransaction(IDbTransaction tran)
+        {
+            if (tran is ProfiledDbTransaction)
+                return ((ProfiledDbTransaction)tran).WrappedTransaction;
+            return tran;
         }
 
         /// <summary>

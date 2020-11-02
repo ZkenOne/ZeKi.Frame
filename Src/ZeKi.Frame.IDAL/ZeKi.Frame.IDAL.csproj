@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ZeKi.Frame.Common\ZeKi.Frame.Common.csproj" />
     <ProjectReference Include="..\ZeKi.Frame.Model\ZeKi.Frame.Model.csproj" />
   </ItemGroup>

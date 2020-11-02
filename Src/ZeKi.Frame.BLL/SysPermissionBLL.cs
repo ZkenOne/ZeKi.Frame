@@ -99,7 +99,12 @@ namespace ZeKi.Frame.BLL
             dataParms.Add("uId", SCBuild.Like("良"));
             var list_3 = DAL.QueryList<SysUserInfo>(dataParms, selectFields: "uloginname");
 
-            var ss = 1;
+
+            var user_list = new List<SysUserInfo>();
+            user_list.Add(new SysUserInfo() { uId = 11, uAddTime = DateTime.Now, uDepId = 1, uLoginName = "3", uPwd = "1" });
+            user_list.Add(new SysUserInfo() { uId = 22, uAddTime = DateTime.Now, uDepId = 1, uLoginName = "1", uPwd = "2" });
+            user_list.Add(new SysUserInfo() { uId = 33, uAddTime = DateTime.Now, uDepId = 1, uLoginName = "2", uPwd = "2" });
+            DAL.BulkCopyToInsert(user_list);
             //var model1 = SysUserInfoDAL.QueryModel("where uemail=@uemail", new { uemail = "1269021626@qq.com" });
             //var list1 = SysUserInfoDAL.QueryList<Model.SysUserInfo>("select uId,uLoginName from SysUserInfo where udepid=@udepid", new { udepid = 2 });
 
