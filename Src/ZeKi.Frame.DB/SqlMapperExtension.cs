@@ -475,7 +475,17 @@ namespace ZeKi.Frame.DB
         /// <returns>返回集合</returns>
         public static IEnumerable<T> QueryProcedure<T>(this IDbConnection connection, string proceName, object param = null, IDbTransaction transaction = null, int? commandTimeout = null)
         {
-            return connection.Query<T>(proceName, AdapterParams(param), transaction, commandTimeout: commandTimeout, commandType: CommandType.StoredProcedure);
+            var packetParam = AdapterParams(param);
+            var resList = connection.Query<T>(proceName, packetParam, transaction, commandTimeout: commandTimeout, commandType: CommandType.StoredProcedure);
+            if (param is DataParameters dataParams && packetParam is DynamicParameters dynamicParam)
+            {
+                //将output参数赋值给param
+                foreach (var item in dataParams.OutPutParameterNames)
+                {
+                    dataParams.SetParamVal(item, dynamicParam.Get<dynamic>(item));
+                }
+            }
+            return resList;
         }
 
         /// <summary>
@@ -489,7 +499,16 @@ namespace ZeKi.Frame.DB
         /// <returns></returns>
         public static void ExecProcedure(this IDbConnection connection, string proceName, object param = null, IDbTransaction transaction = null, int? commandTimeout = null)
         {
-            connection.Execute(proceName, AdapterParams(param), transaction, commandTimeout, commandType: CommandType.StoredProcedure);
+            var packetParam = AdapterParams(param);
+            connection.Execute(proceName, packetParam, transaction, commandTimeout, commandType: CommandType.StoredProcedure);
+            if (param is DataParameters dataParams && packetParam is DynamicParameters dynamicParam)
+            {
+                //将output参数赋值给param
+                foreach (var item in dataParams.OutPutParameterNames)
+                {
+                    dataParams.SetParamVal(item, dynamicParam.Get<dynamic>(item));
+                }
+            }
         }
         #endregion
 
@@ -699,11 +718,13 @@ namespace ZeKi.Frame.DB
                 if (objVal is DataParameters.ParamInfo)
                 {
                     parmInfo = (DataParameters.ParamInfo)objVal;
+                    if (parmInfo.ParameterDirection != ParameterDirection.Input && (parmInfo.Value is SqlBaseCondition || objVal.IsAssemble()))
+                        throw new NotSupportedException("当设置为输出参数不允许使用SqlBaseCondition或者集合/数组形式");
                     objVal = parmInfo.Value;
                 }
                 if (key.StartsWith(_upset_prefix) || objVal is SqlBaseCondition)
                     obj = objVal;  //不进行包装
-                else if (IsAssemble(objVal))
+                else if (objVal.IsAssemble())
                     obj = SCBuild.In(objVal);
                 else  //默认为=
                     obj = SCBuild.Equal(objVal);
@@ -729,7 +750,7 @@ namespace ZeKi.Frame.DB
             var sbSql = new StringBuilder(" where ", 50);
             for (int i = 0; i < fields.Count; i++)
             {
-                var paramInfo = dataParams.Get(fields[i]);
+                var paramInfo = dataParams.GetParamInfo(fields[i]);
                 sbSql.Append(BuildPart(paramInfo, paramPacket.DynamicParameters, ref index));
             }
             sbSql.Remove(sbSql.Length - 3, 3);//去掉多余的and
@@ -806,16 +827,6 @@ namespace ZeKi.Frame.DB
                 }
                 return partStr;
             }
-        }
-
-        /// <summary>
-        /// 是否 数组和集合
-        /// </summary>
-        /// <param name="obj"></param>
-        /// <returns></returns>
-        private static bool IsAssemble(object obj)
-        {
-            return (obj is IEnumerable) && !(obj is string);
         }
 
         /// <summary>

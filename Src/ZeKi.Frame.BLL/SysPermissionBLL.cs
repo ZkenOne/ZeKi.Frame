@@ -212,6 +212,19 @@ namespace ZeKi.Frame.BLL
             //});
             //#endregion
 
+            #region 存储过程
+            //var dbParameters = new DataParameters();
+            ////@sl_digit|@dj_digit|@je_digit|@barcode_isrepeat
+            //dbParameters.Add("str", $"{digit["sl_digit"]}|{digit["dj_digit"]}|{digit["je_digit"]}|{digit["barcode_isrepeat"]}");
+            //dbParameters.Add("id_bill", sp_tz_1.id);
+            //dbParameters.Add("id_user", receiveModel.id_user);
+            //dbParameters.Add("errorid", "-1", System.Data.DbType.String, direction: System.Data.ParameterDirection.Output);
+            //dbParameters.Add("errormessage", "未知错误", System.Data.DbType.String, direction: System.Data.ParameterDirection.Output);
+            //DAL.ExecProcedure("p_sp_tz_sh", dbParameters);
+            //var errorid = dbParameters.GetParamVal<string>("errorid");
+            //var errormessage = dbParameters.GetParamVal<string>("errormessage");
+            #endregion
+
             #region 事务
             DAL.ExecTransaction(() =>
             {

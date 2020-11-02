@@ -38,9 +38,45 @@ namespace ZeKi.Frame.Common
 
         public IEnumerable<string> ParameterNames => parameters.Select(p => p.Key);
 
-        public ParamInfo Get(string name)
+        /// <summary>
+        /// 返回需要返回值的参数列表
+        /// </summary>
+        public IEnumerable<string> OutPutParameterNames
+        {
+            get
+            {
+                return parameters.Where(p => p.Value.ParameterDirection == ParameterDirection.InputOutput
+                                        || p.Value.ParameterDirection == ParameterDirection.Output
+                                        || p.Value.ParameterDirection == ParameterDirection.ReturnValue
+                       ).Select(p => p.Key);
+            }
+        }
+
+        public ParamInfo GetParamInfo(string name)
         {
             return parameters[name];
+        }
+
+        /// <summary>
+        /// 设置参数化中的value
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public void SetParamVal<T>(string name, T objValue)
+        {
+            parameters[name].Value = objValue;
+        }
+
+        /// <summary>
+        /// 获取参数化中的value
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public T GetParamVal<T>(string name)
+        {
+            return (T)parameters[name].Value;
         }
 
         public void Clear()

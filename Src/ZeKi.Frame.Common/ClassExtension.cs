@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using Dapper;
+using ZeKi.Frame.Model;
 
 namespace ZeKi.Frame.Common
 {
@@ -185,6 +187,16 @@ namespace ZeKi.Frame.Common
         }
 
         /// <summary>
+        /// 是否 数组和集合
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public static bool IsAssemble(this object obj)
+        {
+            return (obj is IEnumerable) && !(obj is string);
+        }
+
+        /// <summary>
         /// 转换成dapper需要的参数化
         /// </summary>
         /// <param name="thisValue"></param>
@@ -196,8 +208,10 @@ namespace ZeKi.Frame.Common
             var dynamicParameters = new DynamicParameters();
             foreach (var item in dataParams.GetParameters())
             {
-                var val = item.Value;
-                dynamicParameters.Add(item.Key, val.Value, val.DbType, val.ParameterDirection, val.Size, val.Precision, val.Scale);
+                var parmInfo = item.Value;
+                if (parmInfo.ParameterDirection != ParameterDirection.Input && (parmInfo.Value is SqlBaseCondition || parmInfo.Value.IsAssemble()))
+                    throw new NotSupportedException("当设置为输出参数不允许使用SqlBaseCondition或者集合/数组形式");
+                dynamicParameters.Add(item.Key, parmInfo.Value, parmInfo.DbType, parmInfo.ParameterDirection, parmInfo.Size, parmInfo.Precision, parmInfo.Scale);
             }
             return dynamicParameters;
         }
