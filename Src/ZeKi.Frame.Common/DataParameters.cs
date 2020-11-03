@@ -19,7 +19,7 @@ namespace ZeKi.Frame.Common
         /// <param name="value">可以是普通值,也可以是存储SCBuild.XXX方法返回值</param>
         /// <param name="dbType"></param>
         /// <param name="direction"></param>
-        /// <param name="size"></param>
+        /// <param name="size">size如果比实际字段内容小,则会截取文本,设置和数据库字段值一致或者大于</param>
         /// <param name="precision"></param>
         /// <param name="scale"></param>
         public void Add(string name, object value, DbType? dbType = null, int? size = null, ParameterDirection? direction = null, byte? precision = null, byte? scale = null)
@@ -99,6 +99,9 @@ namespace ZeKi.Frame.Common
             public object Value { get; set; }
             public ParameterDirection ParameterDirection { get; set; }
             public DbType? DbType { get; set; }
+            /// <summary>
+            /// size如果比实际字段内容小,则会截取文本,设置和数据库字段值一致或者大于
+            /// </summary>
             public int? Size { get; set; }
             public byte? Precision { get; set; }
             public byte? Scale { get; set; }

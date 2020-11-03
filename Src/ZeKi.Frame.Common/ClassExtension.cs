@@ -209,8 +209,8 @@ namespace ZeKi.Frame.Common
             foreach (var item in dataParams.GetParameters())
             {
                 var parmInfo = item.Value;
-                if (parmInfo.ParameterDirection != ParameterDirection.Input && (parmInfo.Value is SqlBaseCondition || parmInfo.Value.IsAssemble()))
-                    throw new NotSupportedException("当设置为输出参数不允许使用SqlBaseCondition或者集合/数组形式");
+                if (parmInfo.Value is SqlBaseCondition)
+                    throw new NotSupportedException("不允许使用SqlBaseCondition形式作为Value,Dapper本身不支持");
                 dynamicParameters.Add(item.Key, parmInfo.Value, parmInfo.DbType, parmInfo.ParameterDirection, parmInfo.Size, parmInfo.Precision, parmInfo.Scale);
             }
             return dynamicParameters;

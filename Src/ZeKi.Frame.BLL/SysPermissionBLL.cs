@@ -98,6 +98,11 @@ namespace ZeKi.Frame.BLL
             dataParms.Add("uEmail", SCBuild.In(new List<string> { "7@8", "33@3" }), DbType.AnsiString, 40);
             dataParms.Add("uId", SCBuild.Like("良"));
             var list_3 = DAL.QueryList<SysUserInfo>(dataParms, selectFields: "uloginname");
+            var dict = new Dictionary<string, object>();
+            dict.Add("uloginname", "1zzq");
+            dict.Add("uEmail", SCBuild.In(new List<string> { "7@8", "33@3" }));
+            dict.Add("uRemark", "nv100"); //有设置uRemark属性指定数据库类型和size
+            var list_1_1 = DAL.QueryList<SysUserInfo>(dict, selectFields: "uRemark");
 
 
             var user_list = new List<SysUserInfo>();

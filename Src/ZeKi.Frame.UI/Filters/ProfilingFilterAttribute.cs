@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
 using StackExchange.Profiling;
+using StackExchange.Profiling.SqlFormatters;
 
 namespace ZeKi.Frame.UI.Filters
 {
@@ -21,6 +22,7 @@ namespace ZeKi.Frame.UI.Filters
         public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
             var mp = MiniProfiler.StartNew();
+            mp.Options.SqlFormatter = new SqlServerFormatter();  //输出格式：SqlServerFormatter、InlineFormatter
             if (mp != null)
             {
                 var ad = context.ActionDescriptor as ControllerActionDescriptor;
