@@ -34,7 +34,7 @@ namespace ZeKi.Frame.UI
             //注册httpclient出站请求中间件
             builder.RegisterType<GlobalHttpHandler>().AsSelf().InstancePerDependency().PropertiesAutowired();
 
-            //不注册也可以
+            //如果是泛型类可以这么注册
             //builder.RegisterGeneric(typeof(BaseDAL<>)).As(typeof(IBaseDAL<>)).InstancePerDependency().PropertiesAutowired();
             //builder.RegisterGeneric(typeof(BaseBLL<>)).As(typeof(IBaseBLL<>)).InstancePerDependency().PropertiesAutowired();
 
@@ -49,7 +49,7 @@ namespace ZeKi.Frame.UI
 
             //注册 数据库上下文,并设置 同一请求共用一个连接实例
             builder.RegisterType<DbContext>().AsSelf().InstancePerLifetimeScope().PropertiesAutowired();
-            
+
             //注册 缓存 允许属性注入
             builder.RegisterType<MemoryCaching>().As<ICaching>().PropertiesAutowired();
 

@@ -23,9 +23,9 @@ namespace ZeKi.Frame.DAL
             return $"User_{uModel?.uLoginName}_{res_count}";
         }
 
-        public override int Insert<SysUserInfo>(SysUserInfo model, bool getId = false)
+        public override int Insert<TModel>(TModel model, bool getId = false)
         {
-            //做些其他操作
+            //清空缓存等
             return base.Insert(model, getId);
         }
 

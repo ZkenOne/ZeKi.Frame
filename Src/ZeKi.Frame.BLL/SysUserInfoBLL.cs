@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using ZeKi.Frame.Common;
 using ZeKi.Frame.IBLL;
 using ZeKi.Frame.IDAL;
-using ZeKi.Frame.Model;
 
 namespace ZeKi.Frame.BLL
 {
@@ -33,23 +28,20 @@ namespace ZeKi.Frame.BLL
             return $"{t2}->{SysRoleBLL.GetRoL()}";
         }
 
-        public override int Insert<SysUserInfo>(SysUserInfo model, bool getId = false)
+        public override int Insert<TModel>(TModel model, bool getId = false)
         {
-            //重写父类方法,可以在此进行清除缓存等
             Console.WriteLine("Insert");
             return SysUserInfoDAL.Insert(model, getId);
         }
 
-        public override bool Update<SysUserInfo>(SysUserInfo model)
+        public override bool Update<TModel>(TModel model)
         {
-            //重写父类方法,可以在此进行清除缓存等
             Console.WriteLine("Update");
             return base.Update(model);
         }
 
-        public override bool Delete<SysUserInfo>(SysUserInfo model)
+        public override bool Delete<TModel>(TModel model)
         {
-            //重写父类方法,可以在此进行清除缓存等
             Console.WriteLine("Delete");
             return base.Delete(model);
         }

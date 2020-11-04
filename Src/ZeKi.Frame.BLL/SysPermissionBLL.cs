@@ -59,8 +59,8 @@ namespace ZeKi.Frame.BLL
             var res3 = SysUserInfoBLL.Update(updateModel);
             Console.WriteLine(res3);
 
-            var r1 = SysUserInfoDAL.Update<SysUserInfo>(new { uId = 97, _new_uId = "up7a" });
-            Console.WriteLine(r1);
+            //var r1 = SysUserInfoDAL.Update<SysUserInfo>(new { uId = 97, _new_uId = "up7a" });
+            //Console.WriteLine(r1);
             #endregion
 
             #region Delete

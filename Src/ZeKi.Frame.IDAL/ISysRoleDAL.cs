@@ -9,6 +9,6 @@ namespace ZeKi.Frame.IDAL
 {
     public interface ISysRoleDAL : IBaseDAL
     {
-        string GetRoleNameById(int id);
+       
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -143,5 +144,46 @@ namespace ZeKi.Frame.Common
         //        return default;
         //    return JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(obj));
         //}
+
+        /// <summary>
+        /// 将参数对象转换为字典形式
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        public static Dictionary<string, object> ParamsToDictionary(object param)
+        {
+            var dict = new Dictionary<string, object>();
+            if (param is IDictionary<string, object>)
+            {
+                foreach (var item in (IDictionary<string, object>)param)
+                {
+                    dict.Add(item.Key, item.Value);
+                }
+            }
+            else if (param is Hashtable)
+            {
+                foreach (DictionaryEntry item in (Hashtable)(param))
+                {
+                    dict.Add(item.Key.ToString(), item.Value);
+                }
+            }
+            else if (param is DataParameters)
+            {
+                foreach (var item in ((DataParameters)param).GetParameters())
+                {
+                    dict.Add(item.Key, item.Value);
+                }
+            }
+            else
+            {
+                var props = param.GetType().GetProperties();
+                foreach (var itemProp in props)
+                {
+                    dict.Add(itemProp.Name, itemProp.GetValue(param));
+                }
+            }
+            return dict;
+        }
     }
 }

@@ -58,7 +58,7 @@ namespace ZeKi.Frame.DAL
         /// <param name="connection"></param>
         /// <param name="entitysToInsert"></param>
         /// <param name="timeOut">超时时间,单位：秒</param>
-        public void BulkCopyToInsert<TModel>(IEnumerable<TModel> entitysToInsert, SqlBulkCopyOptions copyOptions = SqlBulkCopyOptions.Default, int timeOut = 60 * 10) where TModel : class, new()
+        public virtual void BulkCopyToInsert<TModel>(IEnumerable<TModel> entitysToInsert, SqlBulkCopyOptions copyOptions = SqlBulkCopyOptions.Default, int timeOut = 60 * 10) where TModel : class, new()
         {
             DBContext.BulkCopyToInsert(entitysToInsert, copyOptions, timeOut);
         }
@@ -323,7 +323,7 @@ namespace ZeKi.Frame.DAL
         /// 执行sql(非查询)
         /// </summary>
         /// <returns></returns>
-        public int Execute(string sql, object param = null)
+        public virtual int Execute(string sql, object param = null)
         {
             return DBContext.Execute(sql, param);
         }

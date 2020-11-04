@@ -58,6 +58,8 @@ namespace ZeKi.Frame.DB
         /// <returns>getId为true并且有自增列则返回插入的id值,否则为影响行数</returns>
         public static int Insert<T>(this IDbConnection connection, T entityToInsert, bool getIncId = false, IDbTransaction transaction = null, int? commandTimeout = null) where T : class
         {
+            if (entityToInsert == null)
+                return 0;
             List<string> propertyNames = GetPropertyNames<T>();
             string cols = string.Join(",", propertyNames);
             string colsParams = string.Join(",", propertyNames.Select(p => "@" + p));
@@ -85,7 +87,8 @@ namespace ZeKi.Frame.DB
         /// <returns>影响行数</returns>
         public static int BatchInsert<T>(this IDbConnection connection, IEnumerable<T> entitysToInsert, int ps = 500, IDbTransaction transaction = null, int? commandTimeout = null) where T : class
         {
-            var type = typeof(T);
+            if (entitysToInsert == null || !entitysToInsert.Any())
+                return 0;
             List<string> propertyNames = GetPropertyNames<T>();
             string cols = string.Join(",", propertyNames);
             string colsParams = string.Join(",", propertyNames.Select(p => "@" + p));
@@ -111,6 +114,8 @@ namespace ZeKi.Frame.DB
         /// <param name="timeOut">超时时间,单位：秒</param>
         public static void BulkCopyToInsert<T>(this IDbConnection connection, IEnumerable<T> entitysToInsert, SqlBulkCopyOptions copyOptions = SqlBulkCopyOptions.Default, IDbTransaction transaction = null, int timeOut = 60 * 10) where T : class, new()
         {
+            if (entitysToInsert == null || !entitysToInsert.Any())
+                return;
             if (!IsMsSqlConnection(connection))
                 throw new NotSupportedException("只有mssql数据库支持");
             if (entitysToInsert == null || !entitysToInsert.Any())
