@@ -16,9 +16,12 @@ namespace ZeKi.Frame.DB
     /// </summary>
     public class DbContext : IDisposable
     {
+        private static readonly string connStr = AppSettings.GetValue("ConnectionString");
+        private static readonly DBEnums.DBType dbType = (DBEnums.DBType)AppSettings.GetValue<int>("DBType");
+        private static readonly int commandTimeout = AppSettings.GetValue<int>("CommandTimeout");   //单位：秒
+
         private IDbConnection conn = null;
         private IDbTransaction tran = null;
-        private readonly int commandTimeout = 5 * 60;   //单位：秒
 
         private IDbConnection Connection
         {
@@ -430,10 +433,10 @@ namespace ZeKi.Frame.DB
         private IDbConnection GetConnection()
         {
             IDbConnection _conn = null;
-            switch ((DBEnums.DBType)AppSettings.GetValue<int>("DBType"))
+            switch (dbType)
             {
                 case DBEnums.DBType.MSSQL:
-                    _conn = new SqlConnection(AppSettings.GetValue("ConnectionString"));
+                    _conn = new SqlConnection(connStr);
                     break;
                 case DBEnums.DBType.MYSQL:
 
