@@ -46,7 +46,7 @@ namespace ZeKi.Frame.UI.Controllers
 
             SysPermissionBLL.Example();
 
-            return Ok();
+            return Ok("ok");
         }
 
         [HttpGet]

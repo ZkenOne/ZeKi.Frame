@@ -41,6 +41,13 @@ namespace ZeKi.Frame.BLL
             var res2 = SysUserInfoBLL.Insert(insertModel, false);
             Console.WriteLine(res1);
             Console.WriteLine(res2);
+            var user_list = new List<SysUserInfo>
+            {
+                new SysUserInfo() { uId = 11, uAddTime = DateTime.Now, uDepId = 1, uLoginName = "3", uPwd = "1" },
+                new SysUserInfo() { uId = 22, uAddTime = DateTime.Now, uDepId = 1, uLoginName = "1", uPwd = "2" },
+                new SysUserInfo() { uId = 33, uAddTime = DateTime.Now, uDepId = 1, uLoginName = "2", uPwd = "2" }
+            };
+            DAL.BulkCopyToInsert(user_list);
             #endregion
 
             #region Update
@@ -50,7 +57,7 @@ namespace ZeKi.Frame.BLL
                 uDepId = 21,
                 uEmail = "12@qq.com",
                 uGender = false,
-                uId = 205,
+                uId = 102,
                 uIsDel = true,
                 uLoginName = "zzq23",
                 uPwd = "123456",
@@ -59,175 +66,79 @@ namespace ZeKi.Frame.BLL
             var res3 = SysUserInfoBLL.Update(updateModel);
             Console.WriteLine(res3);
 
-            //var r1 = SysUserInfoDAL.Update<SysUserInfo>(new { uId = 97, _new_uId = "up7a" });
-            //Console.WriteLine(r1);
+            var dataParams = new DataParameters();
+            dataParams.Add<SysUserInfo>(p => p.uId, 3);
+            dataParams.Add<SysUserInfo>(p => p.uLoginName, "cwjl");
+            dataParams.Add<SysUserInfo>(p => p.uEmail, "902@qq.com");
+            dataParams.AddUpdate<SysUserInfo>(p => p.uEmail, "1219114@qq.com");
+            var r1 = SysUserInfoDAL.UpdatePart<SysUserInfo>(dataParams);
+            Console.WriteLine(r1);
             #endregion
 
             #region Delete
-            var isOk1 = SysUserInfoBLL.Delete(new Model.SysUserInfo() { uId = 206 });
+            var isOk1 = SysUserInfoBLL.Delete(new Model.SysUserInfo() { uId = 4 });
             Console.WriteLine(isOk1);
             #endregion
 
-            //#region Statistics
-            //var res4 = SysUserInfoDAL.Count("");
-            //var res5 = SysUserInfoDAL.Count("udepid=@udepid", new { udepid = 2 });
-            //var res6 = SysUserInfoDAL.Sum<int>("udepid", "udepid=@udepid", new { udepid = 2 });
+            #region Statistics
             var res7 = SysUserInfoDAL.Count<SysUserInfo>(new { udepid = 2 });
-            //Console.WriteLine(res4);
-            //Console.WriteLine(res5);
-            //Console.WriteLine(res6);
             Console.WriteLine(res7);
-            //#endregion
+            #endregion
 
-            //#region Query
+            #region Query
+            //匿名类查询
+            var list_0 = DAL.QueryList<SysUserInfo>(new { uId = 2 });
+            //dataParamseters多功能的使用
+            dataParams.Clear();
+            dataParams.Add<SysUserInfo>(p => p.uLoginName, "zzq");
+            dataParams.Add<SysUserInfo>(p => p.uRemark, "良", ConditionOperator.Like);
+            var list_1 = DAL.QueryList<SysUserInfo>(dataParams);
+            dataParams.Clear();
+            dataParams.Add<SysUserInfo>(p => p.uLoginName, "zzq");
+            dataParams.Add<SysUserInfo>(p => p.uLoginName, "zzq", ConditionOperator.NotEqual); //可以多个同字段条件
+            dataParams.Add<SysUserInfo>(p => p.uEmail, "123");
+            dataParams.Add<SysUserInfo>(p => p.uRemark, "良", ConditionOperator.Like);
+            dataParams.AddBetween<SysUserInfo>(p => p.uId, 1, 2000);
+            var list_2 = DAL.QueryList<SysUserInfo>(dataParams, selectFields: "uloginname");
+            var dict = new Dictionary<string, object>
+            {
+                { "uloginname", "1zzq" },
+                { "uEmail", "126@qq.com" },
+                { "uRemark", "nv100" }
+            };
+            var list_1_1 = DAL.QueryList<SysUserInfo>(dict, selectFields: "uloginname,uRemark");
+            //连表使用
+            var mainSql = "select u.*,dep.depName from sysUserInfo as u join sysDepartment as dep on dep.depId=u.uDepId";
+            dataParams.Clear();
+            dataParams.Add<SysUserInfo>(p => p.uId, 2, tablePrefix: "u");
+            dataParams.Add<SysUserInfo>(p => p.uRemark, "hi", ConditionOperator.Like, tablePrefix: "u");
+            dataParams.Add<SysDepartment>(p => p.depId, 6, tablePrefix: "dep");
+            var list_2_1 = DAL.QueryJoinList<UserInfoWithDep>(mainSql, dataParams, "u.uId asc");
 
-            var dataParms = new DataParameters();
-            dataParms.Add("uloginname", "zzq");
-            dataParms.Add("uRemark", SCBuild.Like("良"));
-            dataParms.Add("uId", SCBuild.Like("良"));
-            dataParms.Add("uRemark", SCBuild.NotIn(new string[] { "78", "333" }));
-            var list_1 = DAL.QueryList<SysUserInfo>(dataParms, selectFields: "uloginname");
-            dataParms.Clear();
-            dataParms.Add("uloginname", "zzq");
-            dataParms.Add("uEmail", "123", DbType.AnsiString);
-            dataParms.Add("uRemark", SCBuild.Like("良"), DbType.String, 200);
-            dataParms.Add("uId", SCBuild.Between(1, 2000), DbType.Int32);
-            var list_2 = DAL.QueryList<SysUserInfo>(dataParms, selectFields: "uloginname");
-            dataParms.Clear();
-            dataParms.Add("uloginname", "zzq");
-            dataParms.Add("uEmail", SCBuild.In(new List<string> { "7@8", "33@3" }), DbType.AnsiString, 40);
-            dataParms.Add("uId", SCBuild.Like("良"));
-            var list_3 = DAL.QueryList<SysUserInfo>(dataParms, selectFields: "uloginname");
-            var dict = new Dictionary<string, object>();
-            dict.Add("uloginname", "1zzq");
-            dict.Add("uEmail", SCBuild.In(new List<string> { "7@8", "33@3" }));
-            dict.Add("uRemark", "nv100"); //有设置uRemark属性指定数据库类型和size
-            var list_1_1 = DAL.QueryList<SysUserInfo>(dict, selectFields: "uRemark");
-
-
-            var user_list = new List<SysUserInfo>();
-            user_list.Add(new SysUserInfo() { uId = 11, uAddTime = DateTime.Now, uDepId = 1, uLoginName = "3", uPwd = "1" });
-            user_list.Add(new SysUserInfo() { uId = 22, uAddTime = DateTime.Now, uDepId = 1, uLoginName = "1", uPwd = "2" });
-            user_list.Add(new SysUserInfo() { uId = 33, uAddTime = DateTime.Now, uDepId = 1, uLoginName = "2", uPwd = "2" });
-            DAL.BulkCopyToInsert(user_list);
-            //var model1 = SysUserInfoDAL.QueryModel("where uemail=@uemail", new { uemail = "1269021626@qq.com" });
-            //var list1 = SysUserInfoDAL.QueryList<Model.SysUserInfo>("select uId,uLoginName from SysUserInfo where udepid=@udepid", new { udepid = 2 });
-
-            ////使用QueryMultiple--能自动释放
-            //var sql1 = "select * from SysUserInfo where uloginname=@uloginname;select * from SysRole_1;";
-            //SysUserInfoDAL.DbAction((conn) =>
-            //{
-            //    var multModel = conn.QueryMultiple(sql1, new { uloginname = "zzq" });
-            //    var userList = multModel.Read<Model.SysUserInfo>();
-            //    var roleList = multModel.Read<Model.SysRole>();
-            //});
-
-            ////List<SqlParameter> pars = new List<SqlParameter>
-            ////{
-            ////    new SqlParameter("@uloginname", "zzq")
-            ////};
-            ////var dataSet = SysUserInfoDAL.ExecDataSet(sql1, pars);
-            ////var table = SysUserInfoDAL.ExecDataTable("select * from SysUserInfo where uloginname=@uloginname", pars.ToList());
-
-            //var pcp = new PageParameters()
-            //{
-            //    PageIndex = 1,
-            //    PageSize = 10,
-            //    ShowField = "*",
-            //    KeyFiled = "ro.rId DESC",
-            //    Sql = @"ro.*,dep.depName from sysRole_1 as ro join sysDepartment as dep on dep.depId=ro.rdepId",
-            //    Where = "where rName<>'liis'"
-            //};
-            //var dt1 = SysUserInfoDAL.PageList(pcp);
-            //pcp = new PageParameters()
-            //{
-            //    PageIndex = 1,
-            //    PageSize = 10,
-            //    ShowField = "*",
-            //    KeyFiled = "rId DESC",     // 不传 Order 则用KeyFiled
-            //    TableName = "sysRole_1",   //与映射的表名一样可以不赋值
-            //    Where = "where rName=@rName"
-            //};
-            //var pData = SysRoleDAL.PageList<Model.SysRole>(pcp, new { rName = "项目经理" });
-
-            ////不写sql方式
-            //var dictParm = new Dictionary<string, object>()
-            //{
-            //    { "uloginname" , "zzq" },
-            //    { "uRemark" , SCBuild.Like("良") },
-            //    { "uId" , SCBuild.NotIn(new string[]{"78","333"}) },
-            //    { "__" , SCBuild.Text("(uEmail=@uEmail1 or uEmail=@uEmail2)",new {uEmail1="12@qq.com",uEmail2="902@qq.com"}) },
-            //    { "uAddTime" , SCBuild.Between(DateTime.Now.AddDays(-30),DateTime.Now) }
-            //};
-            //var list11 = SysUserInfoDAL.QueryList(dictParm);
-
-            //dictParm = new Dictionary<string, object>()
-            //{
-            //    { "u.uloginname" , "zzq" },
-            //    { "u.uRemark" , SCBuild.Like("良") },
-            //    { "u.uId" , SCBuild.NotIn(new string[]{"78","333"}) },
-            //    { "d.depName" , "公司" }
-            //};
-            //var sql_111 = "select u.*,d.depName from sysUserInfo as u left join sysDepartment as d on u.uDepId=d.depId";
-            //var list12 = SysUserInfoDAL.QueryList<UserInfoWithDep>(sql_111, dictParm, "u.uAddTime DESC");
-
-            ////分页____
+            //分页
+            dataParams.Clear();
+            dataParams.Add<SysUserInfo>(p => p.uId, 5, ConditionOperator.GreaterThan, tablePrefix: "u");
+            //dataParams.Add<SysUserInfo>(p => p.uRemark, "hi", ConditionOperator.Like, tablePrefix: "u");
+            //dataParams.Add<SysDepartment>(p => p.depId, 2, tablePrefix: "dep");
             var pcp_n = new PageParameters()
             {
                 PageIndex = 1,
-                PageSize = 20,
-                ShowField = "*",
-                KeyFiled = "u.uAddTime DESC",
-                Sql = @"u.*,d.depName from sysUserInfo as u left join sysDepartment as d on u.uDepId=d.depId",
-                Where = new Dictionary<string, object>()
-                {
-                    { "u.uloginname" , "zz1q" },
-                    //{ "u.uRemark" , SCBuild.Like("良") },
-                    { "u.uId" , SCBuild.NotIn(new string[] { "7599", "333"} ) },
-                    //{ "d.depName" , "公司" }
-                }
+                PageSize = 10,
+                Select = "u.*,dep.depName",
+                Order = "u.uId asc",
+                Table = @"sysUserInfo as u join sysDepartment as dep on dep.depId=u.uDepId",
+                WhereParam = dataParams
             };
-            var pageList = SysUserInfoDAL.PageList<UserInfoWithDep>(pcp_n);
-
-            var whereDataParam = new DataParameters();
-            whereDataParam.Add("u.uloginname", "zz1q");
-            whereDataParam.Add("u.uEmail", SCBuild.In(new List<string> { "7@8", "33@3" }), DbType.AnsiString, 40);
-            whereDataParam.Add("u.uId", SCBuild.Like("良"));
-            var pcp_n_1 = new PageParameters()
-            {
-                PageIndex = 1,
-                PageSize = 20,
-                ShowField = "*",
-                KeyFiled = "u.uAddTime DESC",
-                Sql = @"u.*,d.depName from sysUserInfo as u left join sysDepartment as d on u.uDepId=d.depId",
-                Where = whereDataParam
-            };
-            var pageList_1 = SysUserInfoDAL.PageList<UserInfoWithDep>(pcp_n_1);
-
-            //#endregion
-
-            //#region Dapper原生
-            //SysUserInfoDAL.DbAction((conn) =>
-            //{
-            //    var s1 = conn.Execute("delete from sysUserInfo where uid=89");
-            //    var sql2 = "select count(0) from sysUserInfo where uloginname=@uloginname";
-            //    var s2 = conn.ExecuteScalar<int>(sql2, new { uloginname = "zzq" });
-            //    Console.WriteLine(s1);
-            //    Console.WriteLine(s2);
-            //});
-            //#endregion
+            var pageData = DAL.PageList<UserInfoWithDep>(pcp_n);
+            #endregion
 
             #region 存储过程
-            //var dbParameters = new DataParameters();
-            ////@sl_digit|@dj_digit|@je_digit|@barcode_isrepeat
-            //dbParameters.Add("str", $"{digit["sl_digit"]}|{digit["dj_digit"]}|{digit["je_digit"]}|{digit["barcode_isrepeat"]}");
-            //dbParameters.Add("id_bill", sp_tz_1.id);
-            //dbParameters.Add("id_user", receiveModel.id_user);
-            //dbParameters.Add("errorid", "-1", System.Data.DbType.String, direction: System.Data.ParameterDirection.Output);
-            //dbParameters.Add("errormessage", "未知错误", System.Data.DbType.String, direction: System.Data.ParameterDirection.Output);
-            //DAL.ExecProcedure("p_sp_tz_sh", dbParameters);
-            //var errorid = dbParameters.GetParamVal<string>("errorid");
-            //var errormessage = dbParameters.GetParamVal<string>("errormessage");
+            dataParams.Clear();
+            dataParams.Add("@channelId", 2, DbType.Int32);
+            dataParams.Add("outstr", "未知错误", DbType.String, direction: ParameterDirection.Output);
+            DAL.ExecProcedure("sp_test", dataParams);
+            var outstr = dataParams.GetParamVal<string>("outstr");
+            Console.WriteLine(outstr);
             #endregion
 
             #region 事务

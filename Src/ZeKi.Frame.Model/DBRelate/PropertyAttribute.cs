@@ -12,7 +12,7 @@ namespace ZeKi.Frame.Model
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public class PropertyAttribute : Attribute
     {
-        public PropertyAttribute(DbIgnore _ignore = DbIgnore.No)
+        public PropertyAttribute(DbIgnore _ignore)
         {
             Ignore = _ignore;
         }
@@ -38,10 +38,11 @@ namespace ZeKi.Frame.Model
         /// </summary>
         /// <param name="_dbType"></param>
         /// <param name="_size">size如果比实际字段内容小,则会截取文本,设置和数据库字段值一致或者大于</param>
-        public PropertyAttribute(DbType _dbType, int _size)
+        public PropertyAttribute(DbType _dbType, int _size, DbIgnore _ignore = DbIgnore.No)
         {
             DbType = _dbType;
             Size = _size;
+            Ignore = _ignore;
         }
 
         /// <summary>
@@ -90,7 +91,7 @@ namespace ZeKi.Frame.Model
         public bool IsInc { get; set; }
 
         /// <summary>
-        /// 新增/修改忽略标识
+        /// 查询/新增/修改忽略标识
         /// </summary>
         public DbIgnore Ignore { get; set; }
 
@@ -99,7 +100,7 @@ namespace ZeKi.Frame.Model
         /// </summary>
         public string Name { get; set; }
 
-        #region 指定字段类型(只有不手写where条件才起效)
+        #region 指定字段类型(只有不手写where条件并且为单表才起效)
         public DbType? DbType { get; set; }
         public int? Size { get; set; }
         public byte? Precision { get; set; }
@@ -108,25 +109,34 @@ namespace ZeKi.Frame.Model
     }
 
     /// <summary>
-    /// 忽略新增/修改字段
+    /// 忽略查询/新增/修改字段,多个用|分隔
     /// </summary>
+    [Flags]
     public enum DbIgnore
     {
+        /*/
+        * 枚举的每一项值, 用2的n次方来赋值,参考系统自带的 AttributeTargets
+        */
+
         /// <summary>
         /// 不忽略
         /// </summary>
-        No = 0,
+        No = 1,
         /// <summary>
-        /// 新增数据时不添加此标注字段
+        /// 忽略新增
         /// </summary>
-        Insert = 1,
+        Insert = 2,
         /// <summary>
-        /// 修改数据时不添加此标注字段
+        /// 忽略修改
         /// </summary>
-        Update = 2,
+        Update = 4,
         /// <summary>
-        /// 新增或修改数据时不添加此标注字段
+        /// 忽略查询
         /// </summary>
-        InsertAndUpdate = 3
+        Select = 8,
+        /// <summary>
+        /// 忽略所有
+        /// </summary>
+        All = 16
     }
 }

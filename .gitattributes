@@ -15,6 +15,15 @@
 *.bat text
 *.markdown text
 *.msbuild text
+*.html -text
+*.htm -text
+*.css -text
+*.scss -text
+*.sass -text
+*.less -text
+*.js -text
+*.clj -text
+*.sql -text
 
 # Binary files that should not be normalized or diffed
 

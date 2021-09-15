@@ -1,9 +1,13 @@
 .vs/
+.vscode/
 obj/
 bin/
 Bin/
 Debug/
 debug/
+/*.user
+*.nupkg
+.nupkgs/
 logs/
 Logs/
 *.chw

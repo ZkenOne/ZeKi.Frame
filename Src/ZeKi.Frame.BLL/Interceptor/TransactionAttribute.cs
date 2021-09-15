@@ -26,6 +26,12 @@ namespace ZeKi.Frame.BLL.Interceptor
         {
             //获取数据库上下文(同一请求共用一个实例)
             var dbContext = context.ServiceProvider.GetService<DbContext>();
+            //有正在运行的事务则取最开始的,不再开启
+            if (dbContext.IsRunningTran)
+            {
+                await next(context);  //执行原始方法
+                return;
+            }
             try
             {
                 dbContext.BeginTransaction(isolationLevel);

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
@@ -21,7 +22,7 @@ namespace ZeKi.Frame.Common
         /// <param name="ds">一个DataSet实例，也就是数据源</param>  
         /// <param name="tableIndext">DataSet容器里table的下标，索引从0开始</param>  
         /// <returns></returns>  
-        public static List<T> DataSetToList1<T>(DataSet ds, int tableIndext)
+        public static List<T> DataSetToList<T>(DataSet ds, int tableIndext)
         {
             //确认参数有效  
             if (ds == null || ds.Tables.Count <= 0 || tableIndext < 0)
@@ -132,58 +133,18 @@ namespace ZeKi.Frame.Common
             }
         }
 
-        ///// <summary>
-        ///// 将一个object转换成指定类型
-        ///// </summary>
-        ///// <typeparam name="T"></typeparam>
-        ///// <param name="str"></param>
-        ///// <returns></returns>
-        //public static T To<T>(object obj)
-        //{
-        //    if (obj == null)
-        //        return default;
-        //    return JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(obj));
-        //}
-
         /// <summary>
-        /// 将参数对象转换为字典形式
+        /// 将一个object转换成指定类型
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="param"></param>
+        /// <param name="str"></param>
         /// <returns></returns>
-        public static Dictionary<string, object> ParamsToDictionary(object param)
+        public static T To<T>(object obj)
         {
-            var dict = new Dictionary<string, object>();
-            if (param is IDictionary<string, object>)
-            {
-                foreach (var item in (IDictionary<string, object>)param)
-                {
-                    dict.Add(item.Key, item.Value);
-                }
-            }
-            else if (param is Hashtable)
-            {
-                foreach (DictionaryEntry item in (Hashtable)(param))
-                {
-                    dict.Add(item.Key.ToString(), item.Value);
-                }
-            }
-            else if (param is DataParameters)
-            {
-                foreach (var item in ((DataParameters)param).GetParameters())
-                {
-                    dict.Add(item.Key, item.Value);
-                }
-            }
-            else
-            {
-                var props = param.GetType().GetProperties();
-                foreach (var itemProp in props)
-                {
-                    dict.Add(itemProp.Name, itemProp.GetValue(param));
-                }
-            }
-            return dict;
+            if (obj == null)
+                return default;
+            return JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(obj));
         }
+
     }
 }

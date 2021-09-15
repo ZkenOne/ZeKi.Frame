@@ -41,19 +41,17 @@ namespace ZeKi.Frame.BLL
         }
 
         /// <summary>
-        /// 修改(根据自定义条件修改自定义值)
+        /// 修改(根据自定义条件修改自定义值,where条件字段会沿用标注的属性特性)
         /// </summary>
-        /// <param name="model"></param>
-        /// <param name="setAndWhere">set和where的键值对,使用 匿名类、指定数据类型类<see cref="DataParameters"/>、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类
-        /// <para>格式:new {renew_name="u",id=1},解析:set字段为renew_name="u",where条件为id=1</para>
-        /// <para>修改值必须以renew_开头,如数据库字段名有此开头需要叠加</para>
-        /// <para>如 where值中有集合/数组,则生成 in @Key ,sql: in ('','')</para>
-        /// <para>set字段能否被修改受 <see cref="PropertyAttribute"/> 特性限制</para>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="connection"></param>
+        /// <param name="setAndWhere">使用指定数据类型类<see cref="DataParameters"/>.AddUpdate方法
+        /// <para>set字段能否被修改受 <see cref="PropertyAttribute"/> 特性影响</para>
         /// </param>
         /// <returns></returns>
-        public virtual int Update<TModel>(object setAndWhere) where TModel : class, new()
+        public virtual int UpdatePart<TModel>(object setAndWhere) where TModel : class, new()
         {
-            return DAL.Update<TModel>(setAndWhere);
+            return DAL.UpdatePart<TModel>(setAndWhere);
         }
         #endregion
 
@@ -73,11 +71,23 @@ namespace ZeKi.Frame.BLL
         /// <summary>
         /// 查询
         /// </summary>
-        /// <param name="whereObj">使用 匿名类、指定数据类型类<see cref="DataParameters"/>、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</param>
+        /// <param name="whereObj">使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</param>
         /// <param name="orderStr">填写：id asc / id,name desc</param>
         /// <param name="selectFields">,分隔</param>
         /// <returns></returns>
-        public virtual IEnumerable<T> QueryList<T>(object whereObj = null, string orderStr = null, string selectFields = "*")
+        public virtual IEnumerable<TResult> QueryList<TTable, TResult>(object whereObj = null, string orderStr = null, string selectFields = null)
+        {
+            return DAL.QueryList<TTable, TResult>(whereObj, orderStr, selectFields);
+        }
+
+        /// <summary>
+        /// 查询
+        /// </summary>
+        /// <param name="whereObj">使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</param>
+        /// <param name="orderStr">填写：id asc / id,name desc</param>
+        /// <param name="selectFields">,分隔</param>
+        /// <returns></returns>
+        public virtual IEnumerable<T> QueryList<T>(object whereObj = null, string orderStr = null, string selectFields = null)
         {
             return DAL.QueryList<T>(whereObj, orderStr, selectFields);
         }
@@ -85,10 +95,21 @@ namespace ZeKi.Frame.BLL
         /// <summary>
         /// 查询
         /// </summary>
-        /// <param name="whereObj">使用 匿名类、指定数据类型类<see cref="DataParameters"/>、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</param>
+        /// <param name="whereObj">使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</param>
         /// <param name="selectFields">,分隔</param>
         /// <returns></returns>
-        public virtual T QueryModel<T>(object whereObj, string orderStr = null, string selectFields = "*")
+        public virtual TResult QueryModel<TTable, TResult>(object whereObj, string orderStr = null, string selectFields = null)
+        {
+            return DAL.QueryModel<TTable, TResult>(whereObj, orderStr, selectFields);
+        }
+
+        /// <summary>
+        /// 查询
+        /// </summary>
+        /// <param name="whereObj">使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</param>
+        /// <param name="selectFields">,分隔</param>
+        /// <returns></returns>
+        public virtual T QueryModel<T>(object whereObj, string orderStr = null, string selectFields = null)
         {
             return DAL.QueryModel<T>(whereObj, orderStr, selectFields);
         }

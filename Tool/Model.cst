@@ -1,0 +1,58 @@
+﻿<%@ Template Language="C#" TargetLanguage="Text" %>
+<%@ Property Name="BaseNamespace" Type="String" %>
+<%@ Property Name="SourceDatabase" Type="SchemaExplorer.DatabaseSchema" Category="Context" Description="Database that the documentation should be based on." %>
+<%-- 要打印的表 --%>
+<%@ Property Name="SourceTable" Type="TableSchema" DeepLoad="True" Optional="False" Category="Context" Description="" %>
+ 
+<%@ Assembly Name="System.Design" %>
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Assembly Name="System.Data" %>
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="System.Data" %>
+<%@ Map Name="SystemCSharp" Src="System-CSharpAlias" %>
+ 
+using System;
+using System.Collections.Generic;
+using System.Data;
+ 
+namespace <%= ModelNameSpace %>
+{
+	<%	if(!String.IsNullOrEmpty(SourceTable.Description)){ %>
+	/// <summary>
+    /// <%=SourceTable.Description %>
+    /// </summary>
+	<%	} %>
+    [Serializable]
+    [Table("<%= SourceTable.Name %>")]
+	<%if(SourceTable.HasPrimaryKey)
+	{
+		MemberColumnSchemaCollection memberColumns = SourceTable.PrimaryKey.MemberColumns;	
+		string[] primaryKeys = new string[memberColumns.Count];
+		
+	   	for( int i=0;i<memberColumns.Count;i++ )//DatabaseSchema column in SourceTable.PrimaryKeys)
+		{
+			primaryKeys[i] = memberColumns[i].Name + " = {"+ memberColumns[i].Name +"}";
+		}
+	   	string primaryKeyString = String.Join(",",primaryKeys);
+		if(!String.IsNullOrEmpty(primaryKeyString))
+	{ %>
+	<% } %>
+	<% } %>
+	public class <%= ModelClassName %>
+	{	
+		public <%= ModelClassName %> Clone()
+		{
+			return (<%= ModelClassName %>)this.MemberwiseClone();
+		}
+		
+		<%foreach(ColumnSchema column in SourceTable.Columns){ %>
+        <%	if(!String.IsNullOrEmpty(GetPropertyAttrStr(column))){ %>
+        <%= SystemCSharp[GetPropertyAttrStr(column)] %>
+        <%	} %>
+		public <%= GetCanNullColumn(column) %> <%= column.Name %> { set; get; }<%= GetDefaultValueStr(column) %>
+        
+		<%} %>
+	}
+}
+
+<!-- #include file="Helper.cs" -->

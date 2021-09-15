@@ -1,4 +1,5 @@
-﻿// 注释先,不想两边都维护，这边代码存放很久了。。。。...
+﻿// ***************注释先,不想两边都维护，这边代码存放很久了。。。。...***************
+
 //using System;
 //using System.Collections;
 //using System.Collections.Generic;
@@ -109,7 +110,7 @@
 //        /// <para>格式:new {renew_name="u",id=1},解析:set字段为renew_name="u",where条件为id=1</para>
 //        /// <para>修改值必须以renew_开头,如数据库字段名有此开头需要叠加</para>
 //        /// <para>如 where值中有集合/数组,则生成 in @Key ,sql: in ('','')</para>
-//        /// <para>set字段能否被修改受 <see cref="PropertyAttribute"/> 特性限制</para>
+//        /// <para>set字段能否被修改受 <see cref="PropertyAttribute"/> 特性影响</para>
 //        /// </param>
 //        /// <param name="transaction"></param>
 //        /// <param name="commandTimeout"></param>

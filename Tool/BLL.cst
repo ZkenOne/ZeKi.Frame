@@ -1,0 +1,32 @@
+﻿<%@ Template Language="C#" TargetLanguage="Text" %>
+<%@ Property Name="BaseNamespace" Type="String" %>
+<%@ Property Name="SourceDatabase" Type="SchemaExplorer.DatabaseSchema" Category="Context" Description="Database that the documentation should be based on." %>
+<%-- 要打印的表 --%>
+<%@ Property Name="SourceTable" Type="TableSchema" DeepLoad="True" Optional="False" Category="Context" Description="" %>
+ 
+<%@ Assembly Name="System.Design" %>
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Assembly Name="System.Data" %>
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="System.Data" %>
+<%@ Map Name="SystemCSharp" Src="System-CSharpAlias" %>
+ 
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using CySoft.Model;
+using CySoft.Model.Enums;
+using CySoft.Model.Search;
+using CySoft.Utility;
+ 
+namespace <%=BLLNameSpace %>
+{
+    public class <%= ModelClassName %>BLL : BaseBLL, I<%= ModelClassName %>BLL
+    {
+        //public I<%= ModelClassName %>DAL <%= ModelClassName %>DAL { get; set; }
+
+    }
+}
+
+<!-- #include file="Helper.cs" -->

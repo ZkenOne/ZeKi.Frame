@@ -243,3 +243,12 @@ EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'邮箱' , @lev
 GO
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'备注' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'sysUserInfo', @level2type=N'COLUMN',@level2name=N'uRemark'
 GO
+
+CREATE procedure [dbo].[sp_test]
+    @channelId int,
+    @outstr nvarchar(200) output
+as
+
+set @outstr = 'test'
+
+GO

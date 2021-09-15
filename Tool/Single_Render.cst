@@ -1,0 +1,74 @@
+﻿<%@ Register Name="Model" Template="Model.cst" MergeProperties="False" ExcludeProperties="" %>
+<%@ Register Name="BLL" Template="BLL.cst" MergeProperties="False" ExcludeProperties="" %>
+<%@ Register Name="DAL" Template="DAL.cst" MergeProperties="False" ExcludeProperties="" %>
+<%@ Register Name="IBLL" Template="IBLL.cst" MergeProperties="False" ExcludeProperties="" %>
+<%@ Register Name="IDAL" Template="IDAL.cst" MergeProperties="False" ExcludeProperties="" %>
+ 
+<%@ Template Language="C#" TargetLanguage="Text" %>
+<%@ Property Name="BaseNamespace" Type="String" %>
+<%@ Property Name="OutPutDest" Type="String" %>
+<%@ Property Name="DB" Type="SchemaExplorer.DatabaseSchema" DeepLoad="True" Optional="False" Category="Context" Description="" %>
+<%@ Property Name="SourceTable" Type="SchemaExplorer.TableSchema" Category="Context" Description="Table that the mapping file is based on" %>
+ 
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Assembly Name="System.Design" %>
+<%@ Import Namespace="SchemaExplorer" %>
+ 
+<%
+CodeTemplate codeTemplate1=new Model();
+codeTemplate1.SetProperty("BaseNamespace",BaseNamespace);
+codeTemplate1.SetProperty("SourceDatabase",DB);
+CodeTemplate codeTemplate2=new BLL();
+codeTemplate2.SetProperty("BaseNamespace",BaseNamespace);
+codeTemplate2.SetProperty("SourceDatabase",DB);
+CodeTemplate codeTemplate3=new IBLL();
+codeTemplate3.SetProperty("BaseNamespace",BaseNamespace);
+codeTemplate3.SetProperty("SourceDatabase",DB);
+CodeTemplate codeTemplate4=new DAL();
+codeTemplate4.SetProperty("BaseNamespace",BaseNamespace);
+codeTemplate4.SetProperty("SourceDatabase",DB);
+CodeTemplate codeTemplate5=new IDAL();
+codeTemplate5.SetProperty("BaseNamespace",BaseNamespace);
+codeTemplate5.SetProperty("SourceDatabase",DB);
+%>
+ 
+ 
+<%
+    codeTemplate1.SetProperty("SourceTable",SourceTable);
+    codeTemplate1.RenderToFile(OutPutDest+@"\"+GetFileName(SourceTable.Name)+".cs",true);
+	codeTemplate2.SetProperty("SourceTable",SourceTable);
+    codeTemplate2.RenderToFile(OutPutDest+@"\"+GetFileName(SourceTable.Name)+"BLL.cs",true);
+	codeTemplate3.SetProperty("SourceTable",SourceTable);
+    codeTemplate3.RenderToFile(OutPutDest+@"\I"+GetFileName(SourceTable.Name)+"BLL.cs",true);
+	//DAL和IDAL如需要生成
+	//codeTemplate4.SetProperty("SourceTable",SourceTable);
+    //codeTemplate4.RenderToFile(OutPutDest+@"\"+GetFileName(SourceTable.Name)+"DAL.cs",true);
+	//codeTemplate5.SetProperty("SourceTable",SourceTable);
+    //codeTemplate5.RenderToFile(OutPutDest+@"\I"+GetFileName(SourceTable.Name)+"DAL.cs",true);
+ %>
+
+<script runat="template"> 
+
+private string GetFileName(string tableName)
+{
+	string classname = String.Empty;
+	string[] strs = tableName.Split('_');
+	foreach (string str in strs)
+	{
+		if (!String.IsNullOrEmpty(str))
+		{
+			if (!String.IsNullOrEmpty(classname))
+			{
+				classname += "_";
+			}
+			classname += str.Substring(0, 1).ToUpper();
+			if (str.Length > 1)
+			{
+				classname += str.Substring(1, str.Length - 1);
+			}
+		}
+	}
+	return classname;
+}
+
+</script>

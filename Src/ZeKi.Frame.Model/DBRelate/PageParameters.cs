@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
@@ -10,43 +11,28 @@ namespace ZeKi.Frame.Model
     public class PageParameters
     {
         /// <summary>
-        /// 多表连接时,可以用此参数
-        /// a.id,a.Name,b.sex,c.Flag from tb_a as a left join tb_b as b on b.id=a.id
-        /// 失效属性 OrderBy 
-        /// 失效属性 TableName
-        /// Where字段填写条件 如:Where 1=1
+        /// 查询字段(没有则为*)
+        /// <para>a.id,a.Name,b.sex,c.Flag</para>
         /// </summary>
-        public string Sql { get; set; }
+        public string Select { get; set; } = "*";
 
         /// <summary>
-        /// 条件 
-        /// <para>第一种: Where name=@name 参数键值对传入 param 参数</para>
-        /// <para>第二种: 特定字典键值对/hashtable/匿名类/自定义类/指定数据类型类DataParameters, param 参数不要赋值</para>
+        /// 表的sql
+        /// <para>tb_single as s</para>
+        /// <para>tb_a as a left join tb_b as b on b.id=a.id</para>
         /// </summary>
-        public object Where { get; set; }
+        public string Table { get; set; }
 
         /// <summary>
-        /// 表名(Sql为空并且此值为空则使用BaseDAL传入的TModel映射的表名)
+        /// 排序字段(省略 order by),如: id desc
         /// </summary>
-        public string TableName { get; set; }
+        public string Order { get; set; }
 
         /// <summary>
-        /// 利用某字段进行分页 一般主键 也可以先排序在分页 格式 id desc 
-        /// <para>默认ID</para>
-        /// ROW_NUMBER() OVER(ORDER BY {p.KeyFiled}) 
+        /// where条件参数
+        /// <para>使用 匿名类、指定数据类型类<see cref="DataParameters"/>、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</para>
         /// </summary>
-        public string KeyFiled { get; set; } = "ID";
-
-        /// <summary>
-        /// 需要显示的字段
-        /// <para>默认全部</para>
-        /// </summary>
-        public string ShowField { get; set; } = "*";
-
-        /// <summary>
-        /// 排序字段(省略 order by)如: id desc,没有值取 KeyFiled 属性值
-        /// </summary>
-        public string OrderBy { get; set; } = "";
+        public object WhereParam { get; set; }
 
         /// <summary>
         /// 当前第几页
@@ -59,25 +45,13 @@ namespace ZeKi.Frame.Model
         /// <para>默认10条</para>
         /// </summary>
         public int PageSize { get; set; } = 10;
-
-        /// <summary>
-        /// Where字段是否为第二种
-        /// </summary>
-        public bool IsWhereTwo
-        {
-            get
-            {
-                return (Where != null && !(Where is string));
-            }
-        }
     }
 
     /// <summary>
     /// 分页数据模型
     /// </summary>
     /// <typeparam name="T"></typeparam>
-
-    public class PageData<T> where T : class, new()
+    public class PageData<T>
     {
         /// <summary>
         /// 分页总数据
@@ -87,7 +61,7 @@ namespace ZeKi.Frame.Model
         /// <summary>
         /// 用于统计
         /// </summary>
-        public object Totals { get; set; }
+        public object Total { get; set; }
 
         /// <summary>
         /// 当前页码
@@ -107,6 +81,6 @@ namespace ZeKi.Frame.Model
         /// <summary>
         /// 数据总数
         /// </summary>
-        public long DataCount { get; set; }
+        public long TotalCount { get; set; }
     }
 }

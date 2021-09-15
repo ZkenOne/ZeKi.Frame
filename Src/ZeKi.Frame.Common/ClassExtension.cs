@@ -94,6 +94,15 @@ namespace ZeKi.Frame.Common
         /// 
         /// </summary>
         /// <param name="thisValue"></param>
+        /// <returns></returns>
+        public static bool IsNullOrWhiteSpace(this string thisValue)
+        {
+            return string.IsNullOrWhiteSpace(thisValue);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="thisValue"></param>
         /// <param name="errorValue"></param>
         /// <returns></returns>
         public static string ObjToString(this object thisValue, string errorValue)
@@ -208,10 +217,7 @@ namespace ZeKi.Frame.Common
             var dynamicParameters = new DynamicParameters();
             foreach (var item in dataParams.GetParameters())
             {
-                var parmInfo = item.Value;
-                if (parmInfo.Value is SqlBaseCondition)
-                    throw new NotSupportedException("不允许使用SqlBaseCondition形式作为Value,Dapper本身不支持");
-                dynamicParameters.Add(item.Key, parmInfo.Value, parmInfo.DbType, parmInfo.ParameterDirection, parmInfo.Size, parmInfo.Precision, parmInfo.Scale);
+                dynamicParameters.Add(item.Name, item.Value, item.DbType, item.ParameterDirection, item.Size, item.Precision, item.Scale);
             }
             return dynamicParameters;
         }

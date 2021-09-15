@@ -9,6 +9,7 @@ using ZeKi.Frame.IDAL;
 using ZeKi.Frame.Model;
 using ZeKi.Frame.Common;
 using System.Data.SqlClient;
+using Newtonsoft.Json;
 
 namespace ZeKi.Frame.DAL
 {
@@ -33,11 +34,11 @@ namespace ZeKi.Frame.DAL
         /// <summary>
         /// 新增
         /// </summary>
-        /// <param name="getId">是否获取当前插入的ID,不是自增则不需要关注此值</param>
-        /// <returns>getId为true并且有自增列则返回插入的id值,否则为影响行数</returns>
-        public virtual int Insert<TModel>(TModel model, bool getId = false) where TModel : class, new()
+        /// <param name="getIncVal">是否获取当前插入的自增值,不是自增则不需要关注此值</param>
+        /// <returns>getIncVal为true并且有自增列则返回插入自增值,否则为影响行数</returns>
+        public virtual int Insert<TModel>(TModel model, bool getIncVal = false) where TModel : class, new()
         {
-            return DBContext.Insert(model, getId);
+            return DBContext.Insert(model, getIncVal);
         }
 
         /// <summary>
@@ -52,7 +53,7 @@ namespace ZeKi.Frame.DAL
         }
 
         /// <summary>
-        /// bulkcopy,仅支持myssql数据库
+        /// bulkcopy,仅支持mssql数据库
         /// </summary>
         /// <typeparam name="TModel"></typeparam>
         /// <param name="connection"></param>
@@ -76,19 +77,17 @@ namespace ZeKi.Frame.DAL
         }
 
         /// <summary>
-        /// 修改(根据自定义条件修改自定义值)
+        /// 修改(根据自定义条件修改自定义值,where条件字段会沿用标注的属性特性)
         /// </summary>
-        /// <param name="model"></param>
-        /// <param name="setAndWhere">set和where的键值对,使用 匿名类、指定数据类型类<see cref="DataParameters"/>、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类
-        /// <para>格式:new {renew_name="u",id=1},解析:set字段为renew_name="u",where条件为id=1</para>
-        /// <para>修改值必须以renew_开头,如数据库字段名有此开头需要叠加</para>
-        /// <para>如 where值中有集合/数组,则生成 in @Key ,sql: in ('','')</para>
-        /// <para>set字段能否被修改受 <see cref="PropertyAttribute"/> 特性限制</para>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="connection"></param>
+        /// <param name="setAndWhere">使用指定数据类型类<see cref="DataParameters"/>.AddUpdate方法
+        /// <para>set字段能否被修改受 <see cref="PropertyAttribute"/> 特性影响</para>
         /// </param>
         /// <returns></returns>
-        public virtual int Update<TModel>(object setAndWhere) where TModel : class, new()
+        public virtual int UpdatePart<TModel>(object setAndWhere) where TModel : class, new()
         {
-            return DBContext.Update<TModel>(setAndWhere);
+            return DBContext.UpdatePart<TModel>(setAndWhere);
         }
         #endregion
 
@@ -96,7 +95,7 @@ namespace ZeKi.Frame.DAL
         /// <summary>
         /// 删除
         /// </summary>
-        /// <param name="model">传递主键字段值即可,如需统一清除缓存,可以传递所有字段值数据</param>
+        /// <param name="model">如需统一清除缓存,可以传递删除缓存相关字段</param>
         /// <returns></returns>
         public virtual bool Delete<TModel>(TModel model) where TModel : class, new()
         {
@@ -108,75 +107,103 @@ namespace ZeKi.Frame.DAL
         /// <summary>
         /// 查询列表
         /// </summary>
-        /// <typeparam name="T">返回模型,如果与表不一致,需要在返回表添加表特性或者sql为全sql</typeparam>
-        /// <param name="sql">可以书写where name=@name,会自动补全, 也可以书写 select * from tb where name=@name</param>
+        /// <typeparam name="TResult">返回类型,可以不是数据库对应模型</typeparam>
+        /// <param name="sql">全sql</param>
         /// <param name="param"></param>
         /// <returns>返回集合</returns>
-        public virtual IEnumerable<T> QueryList<T>(string sql, object param = null)
+        public virtual IEnumerable<TResult> QueryList<TResult>(string sql, object param = null)
         {
-            return DBContext.QueryList<T>(sql, param);
+            return DBContext.QueryList<TResult>(sql, param);
         }
 
         /// <summary>
         /// 查询
         /// </summary>
-        /// <typeparam name="T">返回模型</typeparam>
-        /// <param name="whereObj">使用 匿名类、指定数据类型类<see cref="DataParameters"/>、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</param>
+        /// <typeparam name="TTable">表对应模型</typeparam>
+        /// <typeparam name="TResult">返回模型</typeparam>
+        /// <param name="whereObj">使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</param>
         /// <param name="orderStr">填写：id asc / id,name desc</param>
         /// <param name="selectFields">,分隔</param>
         /// <returns></returns>
-        public virtual IEnumerable<T> QueryList<T>(object whereObj = null, string orderStr = null, string selectFields = "*")
+        public virtual IEnumerable<TResult> QueryList<TTable, TResult>(object whereObj = null, string orderStr = null, string selectFields = null)
         {
-            return DBContext.QueryList<T>(whereObj, orderStr, selectFields);
+            return DBContext.QueryList<TTable, TResult>(whereObj, orderStr, selectFields);
+        }
+
+        /// <summary>
+        /// 查询[适用于连表查询]
+        /// </summary>
+        /// <typeparam name="TResult">返回类型,可以不是数据库对应模型</typeparam>
+        /// <param name="whereObj">使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</param>
+        /// <param name="orderStr">填写：id asc / id,name desc</param>
+        /// <returns></returns>
+        public virtual IEnumerable<TResult> QueryJoinList<TResult>(string sqlNoWhere, object whereObj, string orderStr)
+        {
+            return DBContext.QueryJoinList<TResult>(sqlNoWhere, whereObj, orderStr);
         }
 
         /// <summary>
         /// 查询
         /// </summary>
         /// <typeparam name="T">返回模型</typeparam>
-        /// <param name="whereObj">使用 匿名类、指定数据类型类<see cref="DataParameters"/>、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</param>
+        /// <param name="whereObj">使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</param>
         /// <param name="orderStr">填写：id asc / id,name desc</param>
+        /// <param name="selectFields">,分隔</param>
         /// <returns></returns>
-        public virtual IEnumerable<T> QueryList<T>(string sqlNoWhere, object whereObj = null, string orderStr = null)
+        public virtual IEnumerable<T> QueryList<T>(object whereObj = null, string orderStr = null, string selectFields = null)
         {
-            return DBContext.QueryList<T>(sqlNoWhere, whereObj, orderStr);
+            return DBContext.QueryList<T, T>(whereObj, orderStr, selectFields);
         }
 
         /// <summary>
         /// 查询单个
         /// </summary>
-        /// <typeparam name="T">返回模型,如果与表不一致,需要在返回表添加表特性或者sql为全sql</typeparam>
-        /// <param name="sql">可以书写where name=@name 也可以书写 select top 1 * from tb where name=@name</param>
+        /// <typeparam name="TResult">返回类型,可以不是数据库对应模型</typeparam>
+        /// <param name="sql">全sql</param>
         /// <param name="param"></param>
         /// <returns>返回单个</returns>
-        public virtual T QueryModel<T>(string sql, object param = null)
+        public virtual TResult QueryModel<TResult>(string sql, object param = null)
         {
-            return DBContext.QueryModel<T>(sql, param);
+            return DBContext.QueryModel<TResult>(sql, param);
         }
 
         /// <summary>
         /// 查询
         /// </summary>
-        /// <typeparam name="T">返回模型</typeparam>
-        /// <param name="whereObj">使用 匿名类、指定数据类型类<see cref="DataParameters"/>、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</param>
+        /// <typeparam name="TTable">表对应模型</typeparam>
+        /// <typeparam name="TResult">返回模型</typeparam>
+        /// <param name="whereObj">使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</param>
         /// <param name="selectFields">,分隔</param>
         /// <param name="orderStr">填写：id asc / id,name desc</param>
         /// <returns></returns>
-        public virtual T QueryModel<T>(object whereObj, string orderStr = null, string selectFields = "*")
+        public virtual TResult QueryModel<TTable, TResult>(object whereObj, string orderStr = null, string selectFields = null)
         {
-            return DBContext.QueryModel<T>(whereObj, orderStr, selectFields);
+            return DBContext.QueryModel<TTable, TResult>(whereObj, orderStr, selectFields);
         }
 
         /// <summary>
         /// 查询
         /// </summary>
         /// <typeparam name="T">返回模型</typeparam>
-        /// <param name="whereObj">使用 匿名类、指定数据类型类<see cref="DataParameters"/>、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</param>
+        /// <param name="whereObj">使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</param>
+        /// <param name="selectFields">,分隔</param>
         /// <param name="orderStr">填写：id asc / id,name desc</param>
         /// <returns></returns>
-        public virtual T QueryModel<T>(string sqlNoWhere, object whereObj = null, string orderStr = null)
+        public virtual T QueryModel<T>(object whereObj, string orderStr = null, string selectFields = null)
         {
-            return DBContext.QueryModel<T>(sqlNoWhere, whereObj, orderStr);
+            return DBContext.QueryModel<T, T>(whereObj, orderStr, selectFields);
+        }
+
+        /// <summary>
+        /// 查询[适用于连表查询]
+        /// </summary>
+        /// <typeparam name="TResult">返回类型,可以不是数据库对应模型</typeparam>
+        /// <param name="whereObj">使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</param>
+        /// <param name="orderStr">填写：id asc / id,name desc</param>
+        /// <returns></returns>
+        public virtual TResult QueryJoinModel<TResult>(string sqlNoWhere, object whereObj, string orderStr)
+        {
+            return DBContext.QueryJoinModel<TResult>(sqlNoWhere, whereObj, orderStr);
         }
 
         /// <summary>
@@ -214,42 +241,13 @@ namespace ZeKi.Frame.DAL
         /// <summary>
         /// 分页查询返回集合
         /// </summary>
-        /// <typeparam name="T">返回模型</typeparam>
+        /// <typeparam name="TResult">返回类型,可以不是数据库对应模型</typeparam>
         /// <param name="pcp">分页模型(参数传递查看PageParameters字段注解)</param>
-        /// <param name="param">同dapper参数传值</param>
         /// <returns></returns>
-        public virtual PageData<T> PageList<T>(PageParameters pcp, object param = null) where T : class, new()
+        public virtual PageData<TResult> PageList<TResult>(PageParameters pcp)
         {
-            return DBContext.PageList<T>(pcp, param);
+            return DBContext.PageList<TResult>(pcp);
         }
-
-        ///// <summary>
-        ///// 分页查询返回数据集
-        ///// </summary>
-        ///// <param name="pcp">分页必填参数</param>
-        ///// <param name="param">该参数需传原生参数化对象.如mssql:SqlParameter,多个用List包含传递</param>
-        ///// <returns></returns>
-        //public virtual DataSet PageDataSet(PageParameters pcp, object param = null)
-        //{
-        //    using (var _conn = GetConnection())
-        //    {
-        //        return DBConnection.PageDataSet(pcp, param);
-        //    }
-        //}
-
-        ///// <summary>
-        ///// 分页查询返回数据表
-        ///// </summary>
-        ///// <param name="pcp">分页必填参数</param>
-        ///// <param name="param">该参数需传原生参数化对象.如mssql:SqlParameter,多个用List包含传递</param>
-        ///// <returns></returns>
-        //public virtual DataTable PageDataTable(PageParameters pcp, object param = null)
-        //{
-        //    using (var _conn = GetConnection())
-        //    {
-        //        return DBConnection.PageDataTable(pcp, param);
-        //    }
-        //}
         #endregion
 
         #region Procedure
@@ -257,12 +255,17 @@ namespace ZeKi.Frame.DAL
         /// 执行查询存储过程(用于查询数据)
         /// <para>参数传递参考：https://github.com/StackExchange/Dapper#stored-procedures </para>
         /// </summary>
-        /// <typeparam name="T">返回模型,如果没有对应模型类接收,可以传入dynamic,然后序列化再反序列化成List泛型参数:Hashtable</typeparam>
+        /// <typeparam name="T">返回模型</typeparam>
         /// <param name="proceName">存储过程名</param>
         /// <param name="param">特定键值字典/Hashtable/匿名类/自定义类,过程中有OutPut或者Return参数,使用<see cref="DataParameters"/></param>
-        /// <returns>返回集合</returns>
+        /// <returns></returns>
         public virtual IEnumerable<T> QueryProcedure<T>(string proceName, object param = null)
         {
+            if (typeof(T) == typeof(Hashtable) || typeof(T) == typeof(Dictionary<string, object>))
+            {
+                var resultList = DBContext.QueryProcedure<dynamic>(proceName, param);
+                return JsonConvert.DeserializeObject<IEnumerable<T>>(JsonConvert.SerializeObject(resultList));
+            }
             return DBContext.QueryProcedure<T>(proceName, param);
         }
 
@@ -297,7 +300,7 @@ namespace ZeKi.Frame.DAL
         /// <summary>
         /// Count统计
         /// </summary>
-        /// <param name="whereObj">使用 匿名类、指定数据类型类<see cref="DataParameters"/>、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</param>
+        /// <param name="whereObj">使用 匿名类、字典(<see cref="Dictionary{TKey, TValue}"/>[键为string,值为object]、<see cref="Hashtable"/>)、自定义类</param>
         /// <returns></returns>
         public virtual int Count<TModel>(object whereObj = null) where TModel : class, new()
         {
@@ -372,34 +375,6 @@ namespace ZeKi.Frame.DAL
             return DBContext.ExecTransaction(strSqls, param);
         }
 
-        #endregion
-
-        #region DataTable 
-        ///// <summary>
-        ///// 获取DataTable(与dapper无关)
-        ///// </summary>
-        ///// <param name="commandText"></param>
-        ///// <param name="param">该参数需传原生参数化对象.如mssql:SqlParameter,多个用List包含传递</param>
-        ///// <param name="commandType">CommandType为StoredProcedure时,直接写存储过程名</param>
-        ///// <returns></returns>
-        //public virtual DataTable ExecDataTable(string commandText, object param = null, CommandType commandType = CommandType.Text)
-        //{
-        //   return DBConnection.ExecDataTable(commandText, param, commandType);
-        //}
-        #endregion
-
-        #region DataSet
-        ///// <summary>
-        ///// 获取DataSet(与dapper无关)
-        ///// </summary>
-        ///// <param name="commandText"></param>
-        ///// <param name="param">该参数需传原生参数化对象.如mssql:SqlParameter,多个用List包含传递</param>
-        ///// <param name="commandType">CommandType为StoredProcedure时,直接写存储过程名</param>
-        ///// <returns></returns>
-        //public virtual DataSet ExecDataSet(string commandText, object param = null, CommandType commandType = CommandType.Text)
-        //{
-        //   return DBConnection.ExecDataSet(commandText, param, commandType);
-        //}
         #endregion
 
         #region 内部帮助/受保护类型 方法
