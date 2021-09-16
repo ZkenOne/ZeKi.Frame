@@ -38,10 +38,10 @@ namespace ZeKi.Frame.BLL.Interceptor
                 await next(context);  //执行原始方法
                 dbContext.CommitTransaction();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 dbContext.RollbackTransaction();
-                throw ex;
+                throw;
             }
         }
     }

@@ -53,7 +53,7 @@ namespace ZeKi.Frame.IDAL
         /// <typeparam name="T"></typeparam>
         /// <param name="connection"></param>
         /// <param name="setAndWhere">使用指定数据类型类<see cref="DataParameters"/>.AddUpdate方法
-        /// <para>set字段能否被修改受 <see cref="PropertyAttribute"/> 特性影响</para>
+        /// <para>set字段能否被修改受 <see cref="ColumnAttribute"/> 特性影响</para>
         /// </param>
         /// <returns></returns>
         int UpdatePart<TModel>(object setAndWhere) where TModel : class, new();

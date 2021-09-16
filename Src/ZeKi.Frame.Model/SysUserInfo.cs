@@ -10,12 +10,12 @@ namespace ZeKi.Frame.Model
     [Table("sysUserInfo")]
     public class SysUserInfo
     {
-        [Property(true, true, DbIgnore.Insert | DbIgnore.Update)]
+        [Column(true, true, DbIgnore.Insert | DbIgnore.Update)]
         public int uId { get; set; }
 
         public int uDepId { get; set; }
 
-        [Property(DbType.String, 50)]
+        [Column(DbType.String, 50)]
         public string uLoginName { get; set; }
 
         public string uPwd { get; set; }
@@ -24,13 +24,13 @@ namespace ZeKi.Frame.Model
 
         public string uEmail { get; set; }
 
-        [Property(DbType.String, 200)]
+        [Column(DbType.String, 200)]
         public string uRemark { get; set; }
 
-        [Property(DbIgnore.Insert)]
+        [Column(DbIgnore.Insert)]
         public bool uIsDel { get; set; }
 
-        [Property(DbIgnore.Update)]
+        [Column(DbIgnore.Update)]
         public DateTime uAddTime { get; set; }
 
     }

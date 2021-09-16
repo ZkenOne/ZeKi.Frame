@@ -27,7 +27,7 @@ namespace ZeKi.Frame.DB
         /// <summary>
         /// 类Type对应属性特性缓存变量
         /// </summary>
-        private static readonly ConcurrentDictionary<Type, List<PropertyAttribute>> _typePropertyMap = new ConcurrentDictionary<Type, List<PropertyAttribute>>();
+        private static readonly ConcurrentDictionary<Type, List<ColumnAttribute>> _typePropertyMap = new ConcurrentDictionary<Type, List<ColumnAttribute>>();
         /// <summary>
         /// 类Type对应表名缓存变量
         /// </summary>
@@ -138,9 +138,9 @@ namespace ZeKi.Frame.DB
                     sqlbulkcopy.BulkCopyTimeout = timeOut;
                     sqlbulkcopy.WriteToServer(table);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    throw ex;
+                    throw;
                 }
             }
         }
@@ -152,7 +152,7 @@ namespace ZeKi.Frame.DB
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="connection"></param>
-        /// <param name="entityToUpdate">字段能否被修改受 <see cref="PropertyAttribute"/> 特性限制</param>
+        /// <param name="entityToUpdate">字段能否被修改受 <see cref="ColumnAttribute"/> 特性限制</param>
         /// <param name="transaction"></param>
         /// <param name="commandTimeout"></param>
         /// <returns></returns>
@@ -181,7 +181,7 @@ namespace ZeKi.Frame.DB
         /// <typeparam name="T"></typeparam>
         /// <param name="connection"></param>
         /// <param name="setAndWhere">使用指定数据类型类<see cref="DataParameters"/>.AddUpdate方法
-        /// <para>set字段能否被修改受 <see cref="PropertyAttribute"/> 特性影响</para>
+        /// <para>set字段能否被修改受 <see cref="ColumnAttribute"/> 特性影响</para>
         /// </param>
         /// <param name="transaction"></param>
         /// <param name="commandTimeout"></param>
@@ -521,10 +521,10 @@ namespace ZeKi.Frame.DB
                     s = conn.Execute(strSqls, param, tran);
                     tran.Commit();
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     tran.Rollback();
-                    throw ex;
+                    throw;
                 }
                 return s;
             }
@@ -619,7 +619,7 @@ namespace ZeKi.Frame.DB
             string sqlParam = string.Empty, partStr = string.Empty, field = paramInfo.Name, tablePrefix = paramInfo.TablePrefix.IsNullOrWhiteSpace() ? "" : paramInfo.TablePrefix + ".";
             var sqlCondition = paramInfo.SqlCondition;
             //优先级: 先取参数中设置的ParamInfo,没有设置则取Add泛型添加时字段对应的Property特性,前面没有则取modelType对应字段的Property特性
-            var propertyAttr = GetPropertyAttr(paramInfo.ModelType ?? modelType, paramInfo.Name);
+            var propertyAttr = GetColumnAttr(paramInfo.ModelType ?? modelType, paramInfo.Name);
             var dbType = paramInfo.DbType != null ? paramInfo.DbType : propertyAttr?.DbType;
             var size = paramInfo.Size != null ? paramInfo.Size : propertyAttr?.Size;
             var precision = paramInfo.Precision != null ? paramInfo.Precision : propertyAttr?.Precision;
@@ -755,7 +755,7 @@ namespace ZeKi.Frame.DB
         /// <param name="type">实体type</param>
         /// <param name="propertyName">属性名</param>
         /// <returns></returns>
-        private static PropertyAttribute GetPropertyAttr(Type type, string propertyName)
+        private static ColumnAttribute GetColumnAttr(Type type, string propertyName)
         {
             if (type == null)
                 return null;
@@ -803,20 +803,20 @@ namespace ZeKi.Frame.DB
             //false: t_model_type为表模型Type,只取自身就行
             var tableAttr = t_model_type.GetCustomAttribute<TableAttribute>(false);
             _typeTableNameMap[t_model_type] = tableAttr.TableName;
-            var propertyAttributes = new List<PropertyAttribute>();
+            var columnAttributes = new List<ColumnAttribute>();
             var fieldSelectList = new List<string>();
             var fieldInsertList = new List<string>();
             var fieldUpdateList = new List<string>();
             foreach (var prop in t_model_type.GetProperties(BindingFlags.Instance | BindingFlags.Public).Where(p => p.GetGetMethod(false) != null))
             {
-                var propAttr = prop.GetCustomAttribute<PropertyAttribute>();
-                if (propAttr != null)
+                var columnAttr = prop.GetCustomAttribute<ColumnAttribute>();
+                if (columnAttr != null)
                 {
-                    propAttr.Name = prop.Name;
-                    propertyAttributes.Add(propAttr);
+                    columnAttr.Name = prop.Name;
+                    columnAttributes.Add(columnAttr);
                 }
 
-                if (propAttr == null)
+                if (columnAttr == null)
                 {
                     fieldSelectList.Add(prop.Name);
                     fieldInsertList.Add(prop.Name);
@@ -827,29 +827,29 @@ namespace ZeKi.Frame.DB
                     /*/枚举位运算(比如: propAttr.Ignore=DbIgnore.Update | DbIgnore.Insert,(propAttr.Ignore & DbIgnore.Insert)返回为DbIgnore.Insert)
                     * 也就是在 propAttr.Ignore 中找 是不是 有 DbIgnore.Insert
                     */
-                    if ((propAttr.Ignore & DbIgnore.All) != DbIgnore.All)
+                    if ((columnAttr.Ignore & DbIgnore.All) != DbIgnore.All)
                     {
-                        if (!propAttr.IsInc && (propAttr.Ignore & DbIgnore.Insert) != DbIgnore.Insert)
+                        if (!columnAttr.IsInc && (columnAttr.Ignore & DbIgnore.Insert) != DbIgnore.Insert)
                         {
                             fieldInsertList.Add(prop.Name);
                         }
-                        if (!propAttr.IsInc && (propAttr.Ignore & DbIgnore.Update) != DbIgnore.Update)
+                        if (!columnAttr.IsInc && (columnAttr.Ignore & DbIgnore.Update) != DbIgnore.Update)
                         {
                             fieldUpdateList.Add(prop.Name);
                         }
-                        if ((propAttr.Ignore & DbIgnore.Select) != DbIgnore.Select)
+                        if ((columnAttr.Ignore & DbIgnore.Select) != DbIgnore.Select)
                         {
                             fieldSelectList.Add(prop.Name);
                         }
                     }
                 }
 
-                if (propAttr != null && propAttr.IsPKey)
+                if (columnAttr != null && columnAttr.IsPKey)
                 {
                     _typePKeyNameMap[t_model_type] = prop.Name;
                 }
             }
-            _typePropertyMap[t_model_type] = propertyAttributes;
+            _typePropertyMap[t_model_type] = columnAttributes;
             _fieldNameCache[$"{t_model_type.FullName}_Select"] = fieldSelectList;
             _fieldNameCache[$"{t_model_type.FullName}_Insert"] = fieldInsertList;
             _fieldNameCache[$"{t_model_type.FullName}_Update"] = fieldUpdateList;

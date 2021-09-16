@@ -73,7 +73,7 @@ namespace ZeKi.Frame.BLL.Interceptor
         {
             if (arg is DateTime || arg is DateTime?)
                 return ((DateTime)arg).ToString("yyyyMMddHHmmss");
-            if (arg is string || arg is ValueType || arg is Nullable)
+            if (arg is string || arg is ValueType || IsNullable(arg))
                 return arg.ToString();
             if (arg != null)
             {
@@ -83,6 +83,12 @@ namespace ZeKi.Frame.BLL.Interceptor
                 }
             }
             return string.Empty;
+
+            bool IsNullable(object obj)
+            {
+                var type = obj.GetType();
+                return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
+            }
         } 
         #endregion
     }

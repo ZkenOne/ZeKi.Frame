@@ -9,7 +9,7 @@ namespace ZeKi.Frame.Model
     [Table("sysDepartment")]
     public class SysDepartment
     {
-        [Property(true, true, DbIgnore.Insert | DbIgnore.Update)]
+        [Column(true, true, DbIgnore.Insert | DbIgnore.Update)]
         public int depId { get; set; }
 
         public int depPid { get; set; }

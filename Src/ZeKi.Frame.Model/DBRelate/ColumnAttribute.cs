@@ -7,12 +7,12 @@ using System.Text;
 namespace ZeKi.Frame.Model
 {
     /// <summary>
-    /// 属性特性
+    /// 列字段 特性
     /// </summary>
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-    public class PropertyAttribute : Attribute
+    public class ColumnAttribute : Attribute
     {
-        public PropertyAttribute(DbIgnore _ignore)
+        public ColumnAttribute(DbIgnore _ignore)
         {
             Ignore = _ignore;
         }
@@ -21,12 +21,12 @@ namespace ZeKi.Frame.Model
         /// 指定参数化字段类型
         /// </summary>
         /// <param name="_dbType"></param>
-        public PropertyAttribute(DbType _dbType)
+        public ColumnAttribute(DbType _dbType)
         {
             DbType = _dbType;
         }
 
-        public PropertyAttribute(bool _isPKey = false, bool _isInc = false, DbIgnore _ignore = DbIgnore.No)
+        public ColumnAttribute(bool _isPKey = false, bool _isInc = false, DbIgnore _ignore = DbIgnore.No)
         {
             IsPKey = _isPKey;
             IsInc = _isInc;
@@ -38,7 +38,7 @@ namespace ZeKi.Frame.Model
         /// </summary>
         /// <param name="_dbType"></param>
         /// <param name="_size">size如果比实际字段内容小,则会截取文本,设置和数据库字段值一致或者大于</param>
-        public PropertyAttribute(DbType _dbType, int _size, DbIgnore _ignore = DbIgnore.No)
+        public ColumnAttribute(DbType _dbType, int _size, DbIgnore _ignore = DbIgnore.No)
         {
             DbType = _dbType;
             Size = _size;
@@ -52,7 +52,7 @@ namespace ZeKi.Frame.Model
         /// <param name="_size">size如果比实际字段内容小,则会截取文本,设置和数据库字段值一致或者大于</param>
         /// <param name="_precision"></param>
         /// <param name="_scale"></param>
-        public PropertyAttribute(DbType _dbType, int _size, byte _precision, byte _scale)
+        public ColumnAttribute(DbType _dbType, int _size, byte _precision, byte _scale)
         {
             DbType = _dbType;
             Size = _size;
@@ -60,7 +60,7 @@ namespace ZeKi.Frame.Model
             Scale = _scale;
         }
 
-        public PropertyAttribute(bool _isPKey, bool _isInc, DbIgnore _ignore, DbType _dbType, int _size)
+        public ColumnAttribute(bool _isPKey, bool _isInc, DbIgnore _ignore, DbType _dbType, int _size)
         {
             IsPKey = _isPKey;
             IsInc = _isInc;
@@ -69,7 +69,7 @@ namespace ZeKi.Frame.Model
             Size = _size;
         }
 
-        public PropertyAttribute(bool _isPKey, bool _isInc, DbIgnore _ignore, DbType _dbType, int _size, byte _precision, byte _scale)
+        public ColumnAttribute(bool _isPKey, bool _isInc, DbIgnore _ignore, DbType _dbType, int _size, byte _precision, byte _scale)
         {
             IsPKey = _isPKey;
             IsInc = _isInc;

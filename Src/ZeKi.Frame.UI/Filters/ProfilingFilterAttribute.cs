@@ -27,7 +27,7 @@ namespace ZeKi.Frame.UI.Filters
             {
                 var ad = context.ActionDescriptor as ControllerActionDescriptor;
                 var area = context.RouteData.DataTokens.TryGetValue("area", out object areaToken)
-                    ? areaToken as string + "."
+                    ? areaToken + "."
                     : null;
                 using (mp.Step($"Controller: {area}{ad.RouteValues["controller"]}.{ad.RouteValues["action"]}"))
                 {
@@ -66,7 +66,7 @@ namespace ZeKi.Frame.UI.Filters
                         //if (value.ExecuteType == "OpenAsync" || value.ExecuteType == "Open")
                         //    continue;
                         //value.Errored:true 表示 sql执行出错
-                        
+
                         sbStr.AppendLine($"NO -》 {i++}");
                         sbStr.AppendLine($"ExecuteType -》 {value.ExecuteType}");
                         sbStr.AppendLine($"CommandString -》 {value.CommandString}");
