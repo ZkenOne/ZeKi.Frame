@@ -86,6 +86,8 @@ namespace ZeKi.Frame.BLL.Interceptor
 
             bool IsNullable(object obj)
             {
+                if (obj == null)
+                    return false;
                 var type = obj.GetType();
                 return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
             }

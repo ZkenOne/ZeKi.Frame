@@ -11,6 +11,11 @@ namespace ZeKi.Frame.BLL
 {
     public class SysRoleBLL : BaseBLL, ISysRoleBLL
     {
+        public SysRoleBLL(IBaseDAL baseDAL) : base(baseDAL)
+        {
+
+        }
+
         public string GetRoL()
         {
             return $"SysRoleBLL";

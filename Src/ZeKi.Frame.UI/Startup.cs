@@ -39,7 +39,7 @@ namespace ZeKi.Frame.UI
             //services.AddRedisCacheSetup();
 
             //加入控制器替换规则
-            services.Replace(ServiceDescriptor.Transient<IControllerActivator, ServiceBasedControllerActivator>());
+            //services.Replace(ServiceDescriptor.Transient<IControllerActivator, ServiceBasedControllerActivator>());
 
             services.AddControllers((mvcOption) =>
             {

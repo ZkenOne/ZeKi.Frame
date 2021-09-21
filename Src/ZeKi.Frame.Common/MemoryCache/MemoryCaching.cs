@@ -9,21 +9,26 @@ namespace ZeKi.Frame.Common
     public class MemoryCaching : ICaching
     {
         //引用Microsoft.Extensions.Caching.Memory;这个和.net 还是不一样，没有了Httpruntime了
-        public IMemoryCache MemoryCache { set; get; }
+        private readonly IMemoryCache _memoryCache;
+
+        public MemoryCaching(IMemoryCache memoryCache)
+        {
+            _memoryCache = memoryCache;
+        }
 
         public object Get(string cacheKey)
         {
-            return MemoryCache.Get(cacheKey);
+            return _memoryCache.Get(cacheKey);
         }
 
         public TItem Get<TItem>(string cacheKey)
         {
-            return MemoryCache.Get<TItem>(cacheKey);
+            return _memoryCache.Get<TItem>(cacheKey);
         }
 
         public void Set(string cacheKey, object cacheValue, TimeSpan timeSpan)
         {
-            MemoryCache.Set(cacheKey, cacheValue, timeSpan);
+            _memoryCache.Set(cacheKey, cacheValue, timeSpan);
         }
     }
 

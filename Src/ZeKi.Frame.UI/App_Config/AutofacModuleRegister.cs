@@ -22,36 +22,32 @@ namespace ZeKi.Frame.UI
         //重写Autofac管道Load方法，在这里注册注入
         protected override void Load(ContainerBuilder builder)
         {
-            //获取所有控制器类型并使用属性注入
-            var controllerBaseType = typeof(ControllerBase);
-            builder.RegisterAssemblyTypes(typeof(Program).Assembly).Where(t => controllerBaseType.IsAssignableFrom(t) && t != controllerBaseType).InstancePerDependency().PropertiesAutowired();
-
-            //过滤器注册并使用属性注入(普通类也如此)
-            builder.RegisterType<ExampleFilterAttribute>().AsSelf().InstancePerDependency().PropertiesAutowired();
-            builder.RegisterType<ProfilingFilterAttribute>().AsSelf().InstancePerDependency().PropertiesAutowired();
-            builder.RegisterType<GlobalErrorFilterAttribute>().AsSelf().InstancePerDependency().PropertiesAutowired();
+            //过滤器注册(普通类也如此)
+            //builder.RegisterType<ExampleFilterAttribute>().AsSelf().InstancePerLifetimeScope();
+            builder.RegisterType<GlobalErrorFilterAttribute>().AsSelf().InstancePerLifetimeScope();
+            builder.RegisterType<ProfilingFilterAttribute>().AsSelf().InstancePerLifetimeScope();
 
             //注册httpclient出站请求中间件
-            builder.RegisterType<GlobalHttpHandler>().AsSelf().InstancePerDependency().PropertiesAutowired();
+            builder.RegisterType<GlobalHttpHandler>().AsSelf().InstancePerDependency();
 
             //如果是泛型类可以这么注册
-            //builder.RegisterGeneric(typeof(BaseDAL<>)).As(typeof(IBaseDAL<>)).InstancePerDependency().PropertiesAutowired();
-            //builder.RegisterGeneric(typeof(BaseBLL<>)).As(typeof(IBaseBLL<>)).InstancePerDependency().PropertiesAutowired();
+            //builder.RegisterGeneric(typeof(BaseDAL<>)).As(typeof(IBaseDAL<>)).InstancePerDependency();
+            //builder.RegisterGeneric(typeof(BaseBLL<>)).As(typeof(IBaseBLL<>)).InstancePerDependency();
 
             //ZeKi.Frame.BLL.dll/ZeKi.Frame.DAL.dll中的所有类注册给它的全部实现接口，并且把实现类中的属性也进行注册
             Assembly bllAsmService = Assembly.Load(AppSettings.GetValue("BLLFullName"));
             Assembly dalAsmService = Assembly.Load(AppSettings.GetValue("DALFullName"));
             //不是抽象类 并且 公开 并且 是class 并且 (后缀为BLL 或者 后缀为DAL)
             builder.RegisterAssemblyTypes(bllAsmService, dalAsmService).Where(t => !t.IsAbstract && t.IsPublic && t.IsClass && (t.Name.EndsWith("BLL") || t.Name.EndsWith("DAL")))
-                .AsImplementedInterfaces().InstancePerDependency().PropertiesAutowired();  //允许属性注入
+                .AsImplementedInterfaces().InstancePerDependency();
             //将IBaseDAL强制为BaseDAL实例
-            builder.RegisterType<BaseDAL>().As<IBaseDAL>().InstancePerDependency().PropertiesAutowired();
+            builder.RegisterType<BaseDAL>().As<IBaseDAL>().InstancePerDependency();
 
             //注册 数据库上下文,并设置 同一请求共用一个连接实例
-            builder.RegisterType<DbContext>().AsSelf().InstancePerLifetimeScope().PropertiesAutowired();
+            builder.RegisterType<DbContext>().AsSelf().InstancePerLifetimeScope();
 
-            //注册 缓存 允许属性注入
-            builder.RegisterType<MemoryCaching>().As<ICaching>().PropertiesAutowired();
+            //注册 缓存
+            builder.RegisterType<MemoryCaching>().As<ICaching>();
 
             //注册数据库连接对象(同一请求共用一个连接实例)[MiniProfiler.Current在此时为空...]
             //builder.Register(componentContext =>
@@ -73,7 +69,7 @@ namespace ZeKi.Frame.UI
             //    if (_conn.State == ConnectionState.Closed)
             //        _conn.Open();
             //    return _conn;
-            //}).PropertiesAutowired().InstancePerLifetimeScope();
+            //}).InstancePerLifetimeScope();
             ////.OnRelease(conn =>
             ////{
             ////    //释放时调用,有此方法时框架不会自动调用Dispose方法(默认会调用,没有其他特殊操作不需要写OnRelease方法)

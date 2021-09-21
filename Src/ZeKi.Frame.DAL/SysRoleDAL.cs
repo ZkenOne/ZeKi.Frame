@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ZeKi.Frame.DB;
 using ZeKi.Frame.IDAL;
 using ZeKi.Frame.Model;
 
@@ -10,6 +11,12 @@ namespace ZeKi.Frame.DAL
 {
     public class SysRoleDAL : BaseDAL, ISysRoleDAL
     {
+        public SysRoleDAL(DbContext dbContext) : base(dbContext)
+        {
+
+        }
+
+
         //在其中清空缓存(DAL层),外部调用使用SysRoleDAL.XXX
         //private readonly RedisHelper redisHelper = new RedisHelper();
         //public override int Insert<TModel>(TModel model, bool getId = false)
@@ -102,5 +109,6 @@ namespace ZeKi.Frame.DAL
         //    }
         //    return res;
         //}
+
     }
 }

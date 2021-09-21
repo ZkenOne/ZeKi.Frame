@@ -15,7 +15,12 @@ namespace ZeKi.Frame.BLL
     /// </summary>
     public abstract class BaseBLL : IBaseBLL
     {
-        public IBaseDAL DAL { set; get; }
+        protected readonly IBaseDAL _baseDAL;
+
+        public BaseBLL(IBaseDAL baseDAL)
+        {
+            _baseDAL = baseDAL;
+        }
 
         #region Insert
         /// <summary>
@@ -25,7 +30,7 @@ namespace ZeKi.Frame.BLL
         /// <returns>getId为true并且有自增列则返回插入的id值,否则为影响行数</returns>
         public virtual int Insert<TModel>(TModel model, bool getId = false) where TModel : class, new()
         {
-            return DAL.Insert<TModel>(model, getId);
+            return _baseDAL.Insert<TModel>(model, getId);
         }
         #endregion
 
@@ -37,7 +42,7 @@ namespace ZeKi.Frame.BLL
         /// <returns></returns>
         public virtual bool Update<TModel>(TModel model) where TModel : class, new()
         {
-            return DAL.Update<TModel>(model);
+            return _baseDAL.Update<TModel>(model);
         }
 
         /// <summary>
@@ -51,7 +56,7 @@ namespace ZeKi.Frame.BLL
         /// <returns></returns>
         public virtual int UpdatePart<TModel>(object setAndWhere) where TModel : class, new()
         {
-            return DAL.UpdatePart<TModel>(setAndWhere);
+            return _baseDAL.UpdatePart<TModel>(setAndWhere);
         }
         #endregion
 
@@ -63,7 +68,7 @@ namespace ZeKi.Frame.BLL
         /// <returns></returns>
         public virtual bool Delete<TModel>(TModel model) where TModel : class, new()
         {
-            return DAL.Delete<TModel>(model);
+            return _baseDAL.Delete<TModel>(model);
         }
         #endregion
 
@@ -77,7 +82,7 @@ namespace ZeKi.Frame.BLL
         /// <returns></returns>
         public virtual IEnumerable<TResult> QueryList<TTable, TResult>(object whereObj = null, string orderStr = null, string selectFields = null)
         {
-            return DAL.QueryList<TTable, TResult>(whereObj, orderStr, selectFields);
+            return _baseDAL.QueryList<TTable, TResult>(whereObj, orderStr, selectFields);
         }
 
         /// <summary>
@@ -89,7 +94,7 @@ namespace ZeKi.Frame.BLL
         /// <returns></returns>
         public virtual IEnumerable<T> QueryList<T>(object whereObj = null, string orderStr = null, string selectFields = null)
         {
-            return DAL.QueryList<T>(whereObj, orderStr, selectFields);
+            return _baseDAL.QueryList<T>(whereObj, orderStr, selectFields);
         }
 
         /// <summary>
@@ -100,7 +105,7 @@ namespace ZeKi.Frame.BLL
         /// <returns></returns>
         public virtual TResult QueryModel<TTable, TResult>(object whereObj, string orderStr = null, string selectFields = null)
         {
-            return DAL.QueryModel<TTable, TResult>(whereObj, orderStr, selectFields);
+            return _baseDAL.QueryModel<TTable, TResult>(whereObj, orderStr, selectFields);
         }
 
         /// <summary>
@@ -111,7 +116,7 @@ namespace ZeKi.Frame.BLL
         /// <returns></returns>
         public virtual T QueryModel<T>(object whereObj, string orderStr = null, string selectFields = null)
         {
-            return DAL.QueryModel<T>(whereObj, orderStr, selectFields);
+            return _baseDAL.QueryModel<T>(whereObj, orderStr, selectFields);
         }
         #endregion
 

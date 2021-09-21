@@ -11,10 +11,18 @@ namespace ZeKi.Frame.BLL
 {
     public class SysPermissionBLL : BaseBLL, ISysPermissionBLL
     {
-        public ISysUserInfoBLL SysUserInfoBLL { get; set; }
-        public ISysRoleBLL SysRoleBLL { get; set; }
-        public ISysUserInfoDAL SysUserInfoDAL { get; set; }
-        public ISysRoleDAL SysRoleDAL { get; set; }
+        private readonly ISysUserInfoBLL _sysUserInfoBLL;
+        private readonly ISysRoleBLL _sysRoleBLL;
+        private readonly ISysUserInfoDAL _sysUserInfoDAL;
+        private readonly ISysRoleDAL _sysRoleDAL;
+
+        public SysPermissionBLL(ISysUserInfoBLL sysUserInfoBLL, ISysRoleBLL sysRoleBLL, ISysUserInfoDAL sysUserInfoDAL, ISysRoleDAL sysRoleDAL, IBaseDAL baseDAL) : base(baseDAL)
+        {
+            _sysUserInfoBLL = sysUserInfoBLL;
+            _sysRoleBLL = sysRoleBLL;
+            _sysUserInfoDAL = sysUserInfoDAL;
+            _sysRoleDAL = sysRoleDAL;
+        }
 
         /// <summary>
         /// 展示调用
@@ -34,11 +42,11 @@ namespace ZeKi.Frame.BLL
                 uPwd = "jsdjfiu",
                 uRemark = "ceshi1"
             };
-            var res1 = SysUserInfoBLL.Insert(insertModel, true);
+            var res1 = _sysUserInfoBLL.Insert(insertModel, true);
             insertModel.uGender = true;
             insertModel.uEmail = "222@@@@qq.com";
             insertModel.uLoginName = "lisi";
-            var res2 = SysUserInfoBLL.Insert(insertModel, false);
+            var res2 = _sysUserInfoBLL.Insert(insertModel, false);
             Console.WriteLine(res1);
             Console.WriteLine(res2);
             var user_list = new List<SysUserInfo>
@@ -47,7 +55,7 @@ namespace ZeKi.Frame.BLL
                 new SysUserInfo() { uId = 22, uAddTime = DateTime.Now, uDepId = 1, uLoginName = "1", uPwd = "2" },
                 new SysUserInfo() { uId = 33, uAddTime = DateTime.Now, uDepId = 1, uLoginName = "2", uPwd = "2" }
             };
-            DAL.BulkCopyToInsert(user_list);
+            _baseDAL.BulkCopyToInsert(user_list);
             #endregion
 
             #region Update
@@ -63,7 +71,7 @@ namespace ZeKi.Frame.BLL
                 uPwd = "123456",
                 uRemark = "nihao"
             };
-            var res3 = SysUserInfoBLL.Update(updateModel);
+            var res3 = _sysUserInfoBLL.Update(updateModel);
             Console.WriteLine(res3);
 
             var dataParams = new DataParameters();
@@ -71,49 +79,49 @@ namespace ZeKi.Frame.BLL
             dataParams.Add<SysUserInfo>(p => p.uLoginName, "cwjl");
             dataParams.Add<SysUserInfo>(p => p.uEmail, "902@qq.com");
             dataParams.AddUpdate<SysUserInfo>(p => p.uEmail, "1219114@qq.com");
-            var r1 = SysUserInfoDAL.UpdatePart<SysUserInfo>(dataParams);
+            var r1 = _sysUserInfoDAL.UpdatePart<SysUserInfo>(dataParams);
             Console.WriteLine(r1);
             #endregion
 
             #region Delete
-            var isOk1 = SysUserInfoBLL.Delete(new Model.SysUserInfo() { uId = 4 });
+            var isOk1 = _sysUserInfoBLL.Delete(new Model.SysUserInfo() { uId = 4 });
             Console.WriteLine(isOk1);
             #endregion
 
             #region Statistics
-            var res7 = SysUserInfoDAL.Count<SysUserInfo>(new { udepid = 2 });
+            var res7 = _sysUserInfoDAL.Count<SysUserInfo>(new { udepid = 2 });
             Console.WriteLine(res7);
             #endregion
 
             #region Query
             //匿名类查询
-            var list_0 = DAL.QueryList<SysUserInfo>(new { uId = 2 });
+            var list_0 = _baseDAL.QueryList<SysUserInfo>(new { uId = 2 });
             //dataParamseters多功能的使用
             dataParams.Clear();
             dataParams.Add<SysUserInfo>(p => p.uLoginName, "zzq");
             dataParams.Add<SysUserInfo>(p => p.uRemark, "良", ConditionOperator.Like);
-            var list_1 = DAL.QueryList<SysUserInfo>(dataParams);
+            var list_1 = _baseDAL.QueryList<SysUserInfo>(dataParams);
             dataParams.Clear();
             dataParams.Add<SysUserInfo>(p => p.uLoginName, "zzq");
             dataParams.Add<SysUserInfo>(p => p.uLoginName, "zzq", ConditionOperator.NotEqual); //可以多个同字段条件
             dataParams.Add<SysUserInfo>(p => p.uEmail, "123");
             dataParams.Add<SysUserInfo>(p => p.uRemark, "良", ConditionOperator.Like);
             dataParams.AddBetween<SysUserInfo>(p => p.uId, 1, 2000);
-            var list_2 = DAL.QueryList<SysUserInfo>(dataParams, selectFields: "uloginname");
+            var list_2 = _baseDAL.QueryList<SysUserInfo>(dataParams, selectFields: "uloginname");
             var dict = new Dictionary<string, object>
             {
                 { "uloginname", "1zzq" },
                 { "uEmail", "126@qq.com" },
                 { "uRemark", "nv100" }
             };
-            var list_1_1 = DAL.QueryList<SysUserInfo>(dict, selectFields: "uloginname,uRemark");
+            var list_1_1 = _baseDAL.QueryList<SysUserInfo>(dict, selectFields: "uloginname,uRemark");
             //连表使用
             var mainSql = "select u.*,dep.depName from sysUserInfo as u join sysDepartment as dep on dep.depId=u.uDepId";
             dataParams.Clear();
             dataParams.Add<SysUserInfo>(p => p.uId, 2, tablePrefix: "u");
             dataParams.Add<SysUserInfo>(p => p.uRemark, "hi", ConditionOperator.Like, tablePrefix: "u");
             dataParams.Add<SysDepartment>(p => p.depId, 6, tablePrefix: "dep");
-            var list_2_1 = DAL.QueryJoinList<UserInfoWithDep>(mainSql, dataParams, "u.uId asc");
+            var list_2_1 = _baseDAL.QueryJoinList<UserInfoWithDep>(mainSql, dataParams, "u.uId asc");
 
             //分页
             dataParams.Clear();
@@ -129,20 +137,20 @@ namespace ZeKi.Frame.BLL
                 Table = @"sysUserInfo as u join sysDepartment as dep on dep.depId=u.uDepId",
                 WhereParam = dataParams
             };
-            var pageData = DAL.PageList<UserInfoWithDep>(pcp_n);
+            var pageData = _baseDAL.PageList<UserInfoWithDep>(pcp_n);
             #endregion
 
             #region 存储过程
             dataParams.Clear();
             dataParams.Add("@channelId", 2, DbType.Int32);
             dataParams.Add("outstr", "未知错误", DbType.String, direction: ParameterDirection.Output);
-            DAL.ExecProcedure("sp_test", dataParams);
+            _baseDAL.ExecProcedure("sp_test", dataParams);
             var outstr = dataParams.GetParamVal<string>("outstr");
             Console.WriteLine(outstr);
             #endregion
 
             #region 事务
-            DAL.ExecTransaction(() =>
+            _baseDAL.ExecTransaction(() =>
             {
                 var insertModel2 = new Model.SysUserInfo()
                 {
@@ -156,9 +164,9 @@ namespace ZeKi.Frame.BLL
                     uRemark = "ces12i1fffdx21"
                 };
                 //需要加tran
-                var res12 = SysUserInfoDAL.Insert(insertModel2, true);
-                var res22 = SysUserInfoDAL.Insert(insertModel2, true);
-                var res33 = SysUserInfoDAL.Delete(new Model.SysUserInfo() { uId = (int)res12 });
+                var res12 = _sysUserInfoDAL.Insert(insertModel2, true);
+                var res22 = _sysUserInfoDAL.Insert(insertModel2, true);
+                var res33 = _sysUserInfoDAL.Delete(new Model.SysUserInfo() { uId = (int)res12 });
 
                 var roleModel = new Model.SysRole()
                 {
@@ -166,7 +174,7 @@ namespace ZeKi.Frame.BLL
                     rName = "444",
                     rAddTime = DateTime.Now
                 };
-                var res44 = SysRoleDAL.Insert(roleModel, true);
+                var res44 = _sysRoleDAL.Insert(roleModel, true);
                 //var res45 = SysRoleDAL.Delete(new Model.SysRole() { rId = res44 });
                 Console.WriteLine(res12);
                 Console.WriteLine(res22);
@@ -189,11 +197,11 @@ namespace ZeKi.Frame.BLL
                 uPwd = "jsdjfiu",
                 uRemark = "ceshi1"
             };
-            var res21 = SysUserInfoDAL.Insert(insertModel, true);
+            var res21 = _sysUserInfoDAL.Insert(insertModel, true);
             #endregion
 
             #region 表别名
-            var s = SysRoleBLL.QueryModel<Model.SysRole>(new { });
+            var s = _sysRoleBLL.QueryModel<Model.SysRole>(new { });
             //SysUserInfoDAL.QueryModel("ffff=11");  //模拟出错,MiniProfiler过滤器中会记录Errored=true
             Console.WriteLine(s.rName);
             #endregion
@@ -214,9 +222,9 @@ namespace ZeKi.Frame.BLL
                 uRemark = "cces12i1ff6fdx21"
             };
             //需要加tran
-            var res12 = DAL.Insert(insertModel, true);
-            var res22 = SysUserInfoDAL.Insert(insertModel, false);
-            var res33 = SysUserInfoDAL.Delete(new Model.SysUserInfo() { uId = (int)res12 });
+            var res12 = _baseDAL.Insert(insertModel, true);
+            var res22 = _sysUserInfoDAL.Insert(insertModel, false);
+            var res33 = _sysUserInfoDAL.Delete(new Model.SysUserInfo() { uId = (int)res12 });
 
             var roleModel = new Model.SysRole()
             {
@@ -224,8 +232,8 @@ namespace ZeKi.Frame.BLL
                 rName = "421d44",
                 rAddTime = DateTime.Now
             };
-            var res44 = SysRoleDAL.Insert(roleModel, true);
-            var res45 = SysRoleDAL.Delete(new Model.SysRole() { rId = res44 });
+            var res44 = _sysRoleDAL.Insert(roleModel, true);
+            var res45 = _sysRoleDAL.Delete(new Model.SysRole() { rId = res44 });
             Console.WriteLine(res12);
             Console.WriteLine(res22);
             Console.WriteLine(res33);

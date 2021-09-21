@@ -17,7 +17,12 @@ namespace ZeKi.Frame.UI.Filters
     /// </summary>
     public class ProfilingFilterAttribute : ActionFilterAttribute
     {
-        public ILogger<ProfilingFilterAttribute> Logger { set; get; }
+        private readonly ILogger<ProfilingFilterAttribute> _logger;
+
+        public ProfilingFilterAttribute(ILogger<ProfilingFilterAttribute> logger)
+        {
+            _logger = logger;
+        }
 
         public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
@@ -77,7 +82,7 @@ namespace ZeKi.Frame.UI.Filters
                     }
 
                     //也可以将这些存入数据库,不记录日志
-                    Logger.LogTrace(sbStr.ToString());
+                    _logger.LogTrace(sbStr.ToString());
                     //debug
                     Trace.WriteLine(sbStr.ToString());
                 }

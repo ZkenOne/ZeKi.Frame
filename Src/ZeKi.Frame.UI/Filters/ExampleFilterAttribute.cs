@@ -10,14 +10,19 @@ namespace ZeKi.Frame.UI.Filters
     //example DI
     public class ExampleFilterAttribute : ActionFilterAttribute
     {
-        public ISysUserInfoBLL SysUserInfoBLL { set; get; }
+        private readonly ISysUserInfoBLL _sysUserInfoBLL;
+
+        public ExampleFilterAttribute(ISysUserInfoBLL sysUserInfoBLL)
+        {
+            _sysUserInfoBLL = sysUserInfoBLL;
+        }
 
         //推荐这种写法
         public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
             //action 前执行,相当于OnActionExecuting
 
-            var name = SysUserInfoBLL.GetTName();
+            var name = _sysUserInfoBLL.GetTName();
             Console.WriteLine(name);
 
             await next();

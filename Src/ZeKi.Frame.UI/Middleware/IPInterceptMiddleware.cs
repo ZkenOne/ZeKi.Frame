@@ -19,7 +19,6 @@ namespace ZeKi.Frame.UI.Middleware
         //private readonly ILogger<IPInterceptMiddleware> _logger;
         //private readonly IWebHostEnvironment _env;
 
-        //中间件 这里只能使用构造函数注入
         public IPInterceptMiddleware(RequestDelegate next/*, ILogger<IPInterceptMiddleware> logger, IWebHostEnvironment env*/)
         {
             _next = next;

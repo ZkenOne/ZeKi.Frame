@@ -18,16 +18,15 @@ namespace ZeKi.Frame.DAL
     /// </summary>
     public class BaseDAL : IBaseDAL
     {
-        public DbContext DBContext { set; get; }
+        private readonly DbContext _dbContext;
 
         #region 构造函数
-        /// <summary>
-        /// 
-        /// </summary>
-        public BaseDAL()
-        {
 
+        public BaseDAL(DbContext dbContext)
+        {
+            _dbContext = dbContext;
         }
+
         #endregion
 
         #region Insert
@@ -38,7 +37,7 @@ namespace ZeKi.Frame.DAL
         /// <returns>getIncVal为true并且有自增列则返回插入自增值,否则为影响行数</returns>
         public virtual int Insert<TModel>(TModel model, bool getIncVal = false) where TModel : class, new()
         {
-            return DBContext.Insert(model, getIncVal);
+            return _dbContext.Insert(model, getIncVal);
         }
 
         /// <summary>
@@ -49,7 +48,7 @@ namespace ZeKi.Frame.DAL
         /// <returns>返回总影响行数</returns>
         public virtual int BatchInsert<TModel>(IEnumerable<TModel> list, int ps = 500) where TModel : class, new()
         {
-            return DBContext.BatchInsert(list, ps);
+            return _dbContext.BatchInsert(list, ps);
         }
 
         /// <summary>
@@ -61,7 +60,7 @@ namespace ZeKi.Frame.DAL
         /// <param name="timeOut">超时时间,单位：秒</param>
         public virtual void BulkCopyToInsert<TModel>(IEnumerable<TModel> entitysToInsert, SqlBulkCopyOptions copyOptions = SqlBulkCopyOptions.Default, int timeOut = 60 * 10) where TModel : class, new()
         {
-            DBContext.BulkCopyToInsert(entitysToInsert, copyOptions, timeOut);
+            _dbContext.BulkCopyToInsert(entitysToInsert, copyOptions, timeOut);
         }
         #endregion
 
@@ -73,7 +72,7 @@ namespace ZeKi.Frame.DAL
         /// <returns></returns>
         public virtual bool Update<TModel>(TModel model) where TModel : class, new()
         {
-            return DBContext.Update(model);
+            return _dbContext.Update(model);
         }
 
         /// <summary>
@@ -87,7 +86,7 @@ namespace ZeKi.Frame.DAL
         /// <returns></returns>
         public virtual int UpdatePart<TModel>(object setAndWhere) where TModel : class, new()
         {
-            return DBContext.UpdatePart<TModel>(setAndWhere);
+            return _dbContext.UpdatePart<TModel>(setAndWhere);
         }
         #endregion
 
@@ -99,7 +98,7 @@ namespace ZeKi.Frame.DAL
         /// <returns></returns>
         public virtual bool Delete<TModel>(TModel model) where TModel : class, new()
         {
-            return DBContext.Delete(model);
+            return _dbContext.Delete(model);
         }
         #endregion
 
@@ -113,7 +112,7 @@ namespace ZeKi.Frame.DAL
         /// <returns>返回集合</returns>
         public virtual IEnumerable<TResult> QueryList<TResult>(string sql, object param = null)
         {
-            return DBContext.QueryList<TResult>(sql, param);
+            return _dbContext.QueryList<TResult>(sql, param);
         }
 
         /// <summary>
@@ -127,7 +126,7 @@ namespace ZeKi.Frame.DAL
         /// <returns></returns>
         public virtual IEnumerable<TResult> QueryList<TTable, TResult>(object whereObj = null, string orderStr = null, string selectFields = null)
         {
-            return DBContext.QueryList<TTable, TResult>(whereObj, orderStr, selectFields);
+            return _dbContext.QueryList<TTable, TResult>(whereObj, orderStr, selectFields);
         }
 
         /// <summary>
@@ -139,7 +138,7 @@ namespace ZeKi.Frame.DAL
         /// <returns></returns>
         public virtual IEnumerable<TResult> QueryJoinList<TResult>(string sqlNoWhere, object whereObj, string orderStr)
         {
-            return DBContext.QueryJoinList<TResult>(sqlNoWhere, whereObj, orderStr);
+            return _dbContext.QueryJoinList<TResult>(sqlNoWhere, whereObj, orderStr);
         }
 
         /// <summary>
@@ -152,7 +151,7 @@ namespace ZeKi.Frame.DAL
         /// <returns></returns>
         public virtual IEnumerable<T> QueryList<T>(object whereObj = null, string orderStr = null, string selectFields = null)
         {
-            return DBContext.QueryList<T, T>(whereObj, orderStr, selectFields);
+            return _dbContext.QueryList<T, T>(whereObj, orderStr, selectFields);
         }
 
         /// <summary>
@@ -164,7 +163,7 @@ namespace ZeKi.Frame.DAL
         /// <returns>返回单个</returns>
         public virtual TResult QueryModel<TResult>(string sql, object param = null)
         {
-            return DBContext.QueryModel<TResult>(sql, param);
+            return _dbContext.QueryModel<TResult>(sql, param);
         }
 
         /// <summary>
@@ -178,7 +177,7 @@ namespace ZeKi.Frame.DAL
         /// <returns></returns>
         public virtual TResult QueryModel<TTable, TResult>(object whereObj, string orderStr = null, string selectFields = null)
         {
-            return DBContext.QueryModel<TTable, TResult>(whereObj, orderStr, selectFields);
+            return _dbContext.QueryModel<TTable, TResult>(whereObj, orderStr, selectFields);
         }
 
         /// <summary>
@@ -191,7 +190,7 @@ namespace ZeKi.Frame.DAL
         /// <returns></returns>
         public virtual T QueryModel<T>(object whereObj, string orderStr = null, string selectFields = null)
         {
-            return DBContext.QueryModel<T, T>(whereObj, orderStr, selectFields);
+            return _dbContext.QueryModel<T, T>(whereObj, orderStr, selectFields);
         }
 
         /// <summary>
@@ -203,7 +202,7 @@ namespace ZeKi.Frame.DAL
         /// <returns></returns>
         public virtual TResult QueryJoinModel<TResult>(string sqlNoWhere, object whereObj, string orderStr)
         {
-            return DBContext.QueryJoinModel<TResult>(sqlNoWhere, whereObj, orderStr);
+            return _dbContext.QueryJoinModel<TResult>(sqlNoWhere, whereObj, orderStr);
         }
 
         /// <summary>
@@ -219,7 +218,7 @@ namespace ZeKi.Frame.DAL
         /// <returns></returns>
         public virtual IEnumerable<TReturn> QueryList<TFirst, TSecond, TReturn>(string sql, Func<TFirst, TSecond, TReturn> map, object param = null)
         {
-            return DBContext.QueryList(sql, map, param);
+            return _dbContext.QueryList(sql, map, param);
         }
 
         /// <summary>
@@ -235,7 +234,7 @@ namespace ZeKi.Frame.DAL
         /// <returns></returns>
         public virtual IEnumerable<TReturn> QueryList<TFirst, TSecond, TThird, TReturn>(string sql, Func<TFirst, TSecond, TThird, TReturn> map, object param = null)
         {
-            return DBContext.QueryList(sql, map, param);
+            return _dbContext.QueryList(sql, map, param);
         }
 
         /// <summary>
@@ -246,7 +245,7 @@ namespace ZeKi.Frame.DAL
         /// <returns></returns>
         public virtual PageData<TResult> PageList<TResult>(PageParameters pcp)
         {
-            return DBContext.PageList<TResult>(pcp);
+            return _dbContext.PageList<TResult>(pcp);
         }
         #endregion
 
@@ -263,10 +262,10 @@ namespace ZeKi.Frame.DAL
         {
             if (typeof(T) == typeof(Hashtable) || typeof(T) == typeof(Dictionary<string, object>))
             {
-                var resultList = DBContext.QueryProcedure<dynamic>(proceName, param);
+                var resultList = _dbContext.QueryProcedure<dynamic>(proceName, param);
                 return JsonConvert.DeserializeObject<IEnumerable<T>>(JsonConvert.SerializeObject(resultList));
             }
-            return DBContext.QueryProcedure<T>(proceName, param);
+            return _dbContext.QueryProcedure<T>(proceName, param);
         }
 
         /// <summary>
@@ -280,7 +279,7 @@ namespace ZeKi.Frame.DAL
         /// <returns></returns>
         public virtual void ExecProcedure(string proceName, object param = null)
         {
-            DBContext.ExecProcedure(proceName, param);
+            _dbContext.ExecProcedure(proceName, param);
         }
         #endregion
 
@@ -294,7 +293,7 @@ namespace ZeKi.Frame.DAL
         /// <returns></returns>
         public virtual int Count<TModel>(string sqlWhere, object param = null) where TModel : class, new()
         {
-            return DBContext.Count<TModel>(sqlWhere, param);
+            return _dbContext.Count<TModel>(sqlWhere, param);
         }
 
         /// <summary>
@@ -304,7 +303,7 @@ namespace ZeKi.Frame.DAL
         /// <returns></returns>
         public virtual int Count<TModel>(object whereObj = null) where TModel : class, new()
         {
-            return DBContext.Count<TModel>(whereObj);
+            return _dbContext.Count<TModel>(whereObj);
         }
 
         /// <summary>
@@ -317,7 +316,7 @@ namespace ZeKi.Frame.DAL
         /// <returns></returns>
         public virtual TResult Sum<TModel, TResult>(string field, string sqlWhere, object param = null) where TModel : class, new()
         {
-            return DBContext.Sum<TModel, TResult>(field, sqlWhere, param);
+            return _dbContext.Sum<TModel, TResult>(field, sqlWhere, param);
         }
         #endregion
 
@@ -328,7 +327,7 @@ namespace ZeKi.Frame.DAL
         /// <returns></returns>
         public virtual int Execute(string sql, object param = null)
         {
-            return DBContext.Execute(sql, param);
+            return _dbContext.Execute(sql, param);
         }
         #endregion
 
@@ -353,13 +352,13 @@ namespace ZeKi.Frame.DAL
         {
             try
             {
-                DBContext.BeginTransaction(isolation);
+                _dbContext.BeginTransaction(isolation);
                 action();
-                DBContext.CommitTransaction();
+                _dbContext.CommitTransaction();
             }
             catch (Exception)
             {
-                DBContext.RollbackTransaction();
+                _dbContext.RollbackTransaction();
                 throw;
             }
         }
@@ -372,7 +371,7 @@ namespace ZeKi.Frame.DAL
         /// <returns></returns>
         public virtual int ExecTransaction(string strSqls, object param = null)
         {
-            return DBContext.ExecTransaction(strSqls, param);
+            return _dbContext.ExecTransaction(strSqls, param);
         }
 
         #endregion

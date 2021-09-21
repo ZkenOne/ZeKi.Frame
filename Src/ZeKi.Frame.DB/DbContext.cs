@@ -16,23 +16,25 @@ namespace ZeKi.Frame.DB
     /// </summary>
     public class DbContext : IDisposable
     {
+        private IDbConnection _conn = null;
+        private IDbTransaction _tran = null;
+
         private static readonly string connStr = AppSettings.GetValue("ConnectionString");
         private static readonly DBEnums.DBType dbType = (DBEnums.DBType)AppSettings.GetValue<int>("DBType");
         private static readonly int commandTimeout = AppSettings.GetValue<int>("CommandTimeout");   //单位：秒
 
-        private IDbConnection conn = null;
-        private IDbTransaction tran = null;
+        
 
         private IDbConnection Connection
         {
             get
             {
                 //DbContext对象同一请求共用一个实例,所以这里不会出现并发实例化多个数据库连接
-                if (conn == null)
+                if (_conn == null)
                 {
-                    conn = GetConnection();
+                    _conn = GetConnection();
                 }
-                return conn;
+                return _conn;
             }
         }
 
@@ -44,7 +46,7 @@ namespace ZeKi.Frame.DB
         /// <returns>getIncVal为true并且有自增列则返回插入自增值,否则为影响行数</returns>
         public int Insert<TModel>(TModel model, bool getIncVal = false) where TModel : class
         {
-            return Connection.Insert(model, getIncVal, tran, commandTimeout: commandTimeout);
+            return Connection.Insert(model, getIncVal, _tran, commandTimeout: commandTimeout);
         }
 
         /// <summary>
@@ -55,7 +57,7 @@ namespace ZeKi.Frame.DB
         /// <returns>返回总影响行数</returns>
         public int BatchInsert<TModel>(IEnumerable<TModel> list, int ps = 500) where TModel : class
         {
-            return Connection.BatchInsert(list, ps, tran, commandTimeout: commandTimeout);
+            return Connection.BatchInsert(list, ps, _tran, commandTimeout: commandTimeout);
         }
 
         /// <summary>
@@ -67,7 +69,7 @@ namespace ZeKi.Frame.DB
         /// <param name="timeOut">超时时间,单位：秒</param>
         public void BulkCopyToInsert<TModel>(IEnumerable<TModel> entitysToInsert, SqlBulkCopyOptions copyOptions = SqlBulkCopyOptions.Default, int timeOut = 60 * 10) where TModel : class, new()
         {
-            Connection.BulkCopyToInsert(entitysToInsert, copyOptions, tran, timeOut);
+            Connection.BulkCopyToInsert(entitysToInsert, copyOptions, _tran, timeOut);
         }
         #endregion
 
@@ -79,7 +81,7 @@ namespace ZeKi.Frame.DB
         /// <returns></returns>
         public bool Update<TModel>(TModel model) where TModel : class
         {
-            return Connection.Update(model, tran, commandTimeout: commandTimeout);
+            return Connection.Update(model, _tran, commandTimeout: commandTimeout);
         }
 
         /// <summary>
@@ -93,7 +95,7 @@ namespace ZeKi.Frame.DB
         /// <returns></returns>
         public int UpdatePart<TModel>(object setAndWhere) where TModel : class
         {
-            return Connection.UpdatePart<TModel>(setAndWhere, tran, commandTimeout: commandTimeout);
+            return Connection.UpdatePart<TModel>(setAndWhere, _tran, commandTimeout: commandTimeout);
         }
         #endregion
 
@@ -105,7 +107,7 @@ namespace ZeKi.Frame.DB
         /// <returns></returns>
         public bool Delete<TModel>(TModel model) where TModel : class
         {
-            return Connection.Delete(model, tran, commandTimeout: commandTimeout);
+            return Connection.Delete(model, _tran, commandTimeout: commandTimeout);
         }
         #endregion
 
@@ -119,7 +121,7 @@ namespace ZeKi.Frame.DB
         /// <returns>返回集合</returns>
         public IEnumerable<TResult> QueryList<TResult>(string sql, object param = null)
         {
-            return Connection.QueryList<TResult>(sql, param, tran, commandTimeout: commandTimeout);
+            return Connection.QueryList<TResult>(sql, param, _tran, commandTimeout: commandTimeout);
         }
 
         /// <summary>
@@ -133,7 +135,7 @@ namespace ZeKi.Frame.DB
         /// <returns></returns>
         public IEnumerable<TResult> QueryList<TTable, TResult>(object whereObj = null, string orderStr = null, string selectFields = null)
         {
-            return Connection.QueryList<TTable, TResult>(whereObj, orderStr, selectFields, tran, commandTimeout: commandTimeout);
+            return Connection.QueryList<TTable, TResult>(whereObj, orderStr, selectFields, _tran, commandTimeout: commandTimeout);
         }
 
         /// <summary>
@@ -145,7 +147,7 @@ namespace ZeKi.Frame.DB
         /// <returns></returns>
         public IEnumerable<TResult> QueryJoinList<TResult>(string sqlNoWhere, object whereObj, string orderStr)
         {
-            return Connection.QueryJoinList<TResult>(sqlNoWhere, whereObj, orderStr, tran, commandTimeout: commandTimeout);
+            return Connection.QueryJoinList<TResult>(sqlNoWhere, whereObj, orderStr, _tran, commandTimeout: commandTimeout);
         }
 
         /// <summary>
@@ -157,7 +159,7 @@ namespace ZeKi.Frame.DB
         /// <returns>返回单个</returns>
         public TResult QueryModel<TResult>(string sql, object param = null)
         {
-            return Connection.QueryModel<TResult>(sql, param, tran, commandTimeout: commandTimeout);
+            return Connection.QueryModel<TResult>(sql, param, _tran, commandTimeout: commandTimeout);
         }
 
         /// <summary>
@@ -170,7 +172,7 @@ namespace ZeKi.Frame.DB
         /// <returns></returns>
         public TResult QueryModel<TTable, TResult>(object whereObj, string orderStr = null, string selectFields = null)
         {
-            return Connection.QueryModel<TTable, TResult>(whereObj, orderStr, selectFields, tran, commandTimeout: commandTimeout);
+            return Connection.QueryModel<TTable, TResult>(whereObj, orderStr, selectFields, _tran, commandTimeout: commandTimeout);
         }
 
         /// <summary>
@@ -182,7 +184,7 @@ namespace ZeKi.Frame.DB
         /// <returns></returns>
         public TResult QueryJoinModel<TResult>(string sqlNoWhere, object whereObj, string orderStr)
         {
-            return Connection.QueryJoinModel<TResult>(sqlNoWhere, whereObj, orderStr, tran, commandTimeout: commandTimeout);
+            return Connection.QueryJoinModel<TResult>(sqlNoWhere, whereObj, orderStr, _tran, commandTimeout: commandTimeout);
         }
 
         /// <summary>
@@ -198,7 +200,7 @@ namespace ZeKi.Frame.DB
         /// <returns></returns>
         public IEnumerable<TReturn> QueryList<TFirst, TSecond, TReturn>(string sql, Func<TFirst, TSecond, TReturn> map, object param = null)
         {
-            return Connection.Query(sql, map, param, tran, commandTimeout: commandTimeout);
+            return Connection.Query(sql, map, param, _tran, commandTimeout: commandTimeout);
         }
 
         /// <summary>
@@ -214,7 +216,7 @@ namespace ZeKi.Frame.DB
         /// <returns></returns>
         public IEnumerable<TReturn> QueryList<TFirst, TSecond, TThird, TReturn>(string sql, Func<TFirst, TSecond, TThird, TReturn> map, object param = null)
         {
-            return Connection.Query(sql, map, param, tran, commandTimeout: commandTimeout);
+            return Connection.Query(sql, map, param, _tran, commandTimeout: commandTimeout);
         }
 
         ///// <summary>
@@ -239,7 +241,7 @@ namespace ZeKi.Frame.DB
         /// <returns></returns>
         public PageData<TResult> PageList<TResult>(PageParameters pcp)
         {
-            return Connection.PageList<TResult>(pcp, tran, commandTimeout: commandTimeout);
+            return Connection.PageList<TResult>(pcp, _tran, commandTimeout: commandTimeout);
         }
         #endregion
 
@@ -254,7 +256,7 @@ namespace ZeKi.Frame.DB
         /// <returns>返回集合</returns>
         public IEnumerable<T> QueryProcedure<T>(string proceName, object param = null)
         {
-            return Connection.QueryProcedure<T>(proceName, param, tran, commandTimeout: commandTimeout);
+            return Connection.QueryProcedure<T>(proceName, param, _tran, commandTimeout: commandTimeout);
         }
 
         /// <summary>
@@ -268,7 +270,7 @@ namespace ZeKi.Frame.DB
         /// <returns></returns>
         public void ExecProcedure(string proceName, object param = null)
         {
-            Connection.ExecProcedure(proceName, param, tran, commandTimeout: commandTimeout);
+            Connection.ExecProcedure(proceName, param, _tran, commandTimeout: commandTimeout);
         }
         #endregion
 
@@ -282,7 +284,7 @@ namespace ZeKi.Frame.DB
         /// <returns></returns>
         public int Count<TModel>(string sqlWhere, object param = null) where TModel : class
         {
-            return Connection.Count<TModel>(sqlWhere, param, tran, commandTimeout: commandTimeout);
+            return Connection.Count<TModel>(sqlWhere, param, _tran, commandTimeout: commandTimeout);
         }
 
         /// <summary>
@@ -292,7 +294,7 @@ namespace ZeKi.Frame.DB
         /// <returns></returns>
         public int Count<TModel>(object whereObj = null) where TModel : class
         {
-            return Connection.Count<TModel>(whereObj, tran, commandTimeout: commandTimeout);
+            return Connection.Count<TModel>(whereObj, _tran, commandTimeout: commandTimeout);
         }
 
         /// <summary>
@@ -305,7 +307,7 @@ namespace ZeKi.Frame.DB
         /// <returns></returns>
         public TResult Sum<TModel, TResult>(string field, string sqlWhere, object param = null) where TModel : class
         {
-            return Connection.Sum<TModel, TResult>(field, sqlWhere, param, tran, commandTimeout: commandTimeout);
+            return Connection.Sum<TModel, TResult>(field, sqlWhere, param, _tran, commandTimeout: commandTimeout);
         }
         #endregion
 
@@ -316,7 +318,7 @@ namespace ZeKi.Frame.DB
         /// <returns></returns>
         public int Execute(string sql, object param = null)
         {
-            return Connection.ExecuteSql(sql, param, tran, commandTimeout: commandTimeout);
+            return Connection.ExecuteSql(sql, param, _tran, commandTimeout: commandTimeout);
         }
         #endregion
 
@@ -345,34 +347,34 @@ namespace ZeKi.Frame.DB
 
         public void BeginTransaction(IsolationLevel isolation = IsolationLevel.ReadCommitted)
         {
-            if (tran != null)
+            if (_tran != null)
                 throw new InvalidOperationException("当前存在已经运行的事务,创建事务失败");
-            tran = (Connection as DbConnection).BeginTransaction(isolation);
+            _tran = (Connection as DbConnection).BeginTransaction(isolation);
         }
 
         public void CommitTransaction()
         {
-            if (tran != null)
+            if (_tran != null)
             {
-                tran.Commit();
-                tran = null;
+                _tran.Commit();
+                _tran = null;
             }
         }
 
         public void RollbackTransaction()
         {
-            if (tran != null)
+            if (_tran != null)
             {
-                if (tran is ProfiledDbTransaction transaction)
+                if (_tran is ProfiledDbTransaction transaction)
                 {
                     if (transaction.WrappedTransaction.Connection != null)
-                        tran.Rollback();
+                        _tran.Rollback();
                 }
-                else if (tran.Connection != null)
+                else if (_tran.Connection != null)
                 {
-                    tran.Rollback();
+                    _tran.Rollback();
                 }
-                tran = null;
+                _tran = null;
             }
         }
 
@@ -380,7 +382,7 @@ namespace ZeKi.Frame.DB
         {
             get
             {
-                return tran != null;
+                return _tran != null;
             }
         }
         #endregion
@@ -418,10 +420,10 @@ namespace ZeKi.Frame.DB
         #region 释放链接(请求完后容器会调用)
         public void Dispose()
         {
-            if (conn != null)
-                conn.Dispose();
-            if (tran != null)
-                tran.Dispose();
+            if (_conn != null)
+                _conn.Dispose();
+            if (_tran != null)
+                _tran.Dispose();
         }
         #endregion
     }
