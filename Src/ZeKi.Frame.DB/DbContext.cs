@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Microsoft.Extensions.Options;
 using StackExchange.Profiling;
 using StackExchange.Profiling.Data;
 using System;
@@ -8,6 +9,7 @@ using System.Data.Common;
 using System.Data.SqlClient;
 using ZeKi.Frame.Common;
 using ZeKi.Frame.Model;
+using ZeKi.Frame.Model.Config;
 
 namespace ZeKi.Frame.DB
 {
@@ -16,14 +18,14 @@ namespace ZeKi.Frame.DB
     /// </summary>
     public class DbContext : IDisposable
     {
-        private IDbConnection _conn = null;
-        private IDbTransaction _tran = null;
+        private IDbConnection _conn;
+        private IDbTransaction _tran;
+        private readonly DBConfig _dbConfig;
 
-        private static readonly string connStr = AppSettings.GetValue("ConnectionString");
-        private static readonly DBEnums.DBType dbType = (DBEnums.DBType)AppSettings.GetValue<int>("DBType");
-        private static readonly int commandTimeout = AppSettings.GetValue<int>("CommandTimeout");   //单位：秒
-
-        
+        public DbContext(IOptionsSnapshot<DBConfig> optionsSnapshot)
+        {
+            _dbConfig = optionsSnapshot.Value;
+        }
 
         private IDbConnection Connection
         {
@@ -46,7 +48,7 @@ namespace ZeKi.Frame.DB
         /// <returns>getIncVal为true并且有自增列则返回插入自增值,否则为影响行数</returns>
         public int Insert<TModel>(TModel model, bool getIncVal = false) where TModel : class
         {
-            return Connection.Insert(model, getIncVal, _tran, commandTimeout: commandTimeout);
+            return Connection.Insert(model, getIncVal, _tran, commandTimeout: _dbConfig.CommandTimeout);
         }
 
         /// <summary>
@@ -57,7 +59,7 @@ namespace ZeKi.Frame.DB
         /// <returns>返回总影响行数</returns>
         public int BatchInsert<TModel>(IEnumerable<TModel> list, int ps = 500) where TModel : class
         {
-            return Connection.BatchInsert(list, ps, _tran, commandTimeout: commandTimeout);
+            return Connection.BatchInsert(list, ps, _tran, commandTimeout: _dbConfig.CommandTimeout);
         }
 
         /// <summary>
@@ -81,7 +83,7 @@ namespace ZeKi.Frame.DB
         /// <returns></returns>
         public bool Update<TModel>(TModel model) where TModel : class
         {
-            return Connection.Update(model, _tran, commandTimeout: commandTimeout);
+            return Connection.Update(model, _tran, commandTimeout: _dbConfig.CommandTimeout);
         }
 
         /// <summary>
@@ -95,7 +97,7 @@ namespace ZeKi.Frame.DB
         /// <returns></returns>
         public int UpdatePart<TModel>(object setAndWhere) where TModel : class
         {
-            return Connection.UpdatePart<TModel>(setAndWhere, _tran, commandTimeout: commandTimeout);
+            return Connection.UpdatePart<TModel>(setAndWhere, _tran, commandTimeout: _dbConfig.CommandTimeout);
         }
         #endregion
 
@@ -107,7 +109,7 @@ namespace ZeKi.Frame.DB
         /// <returns></returns>
         public bool Delete<TModel>(TModel model) where TModel : class
         {
-            return Connection.Delete(model, _tran, commandTimeout: commandTimeout);
+            return Connection.Delete(model, _tran, commandTimeout: _dbConfig.CommandTimeout);
         }
         #endregion
 
@@ -121,7 +123,7 @@ namespace ZeKi.Frame.DB
         /// <returns>返回集合</returns>
         public IEnumerable<TResult> QueryList<TResult>(string sql, object param = null)
         {
-            return Connection.QueryList<TResult>(sql, param, _tran, commandTimeout: commandTimeout);
+            return Connection.QueryList<TResult>(sql, param, _tran, commandTimeout: _dbConfig.CommandTimeout);
         }
 
         /// <summary>
@@ -135,7 +137,7 @@ namespace ZeKi.Frame.DB
         /// <returns></returns>
         public IEnumerable<TResult> QueryList<TTable, TResult>(object whereObj = null, string orderStr = null, string selectFields = null)
         {
-            return Connection.QueryList<TTable, TResult>(whereObj, orderStr, selectFields, _tran, commandTimeout: commandTimeout);
+            return Connection.QueryList<TTable, TResult>(whereObj, orderStr, selectFields, _tran, commandTimeout: _dbConfig.CommandTimeout);
         }
 
         /// <summary>
@@ -147,7 +149,7 @@ namespace ZeKi.Frame.DB
         /// <returns></returns>
         public IEnumerable<TResult> QueryJoinList<TResult>(string sqlNoWhere, object whereObj, string orderStr)
         {
-            return Connection.QueryJoinList<TResult>(sqlNoWhere, whereObj, orderStr, _tran, commandTimeout: commandTimeout);
+            return Connection.QueryJoinList<TResult>(sqlNoWhere, whereObj, orderStr, _tran, commandTimeout: _dbConfig.CommandTimeout);
         }
 
         /// <summary>
@@ -159,7 +161,7 @@ namespace ZeKi.Frame.DB
         /// <returns>返回单个</returns>
         public TResult QueryModel<TResult>(string sql, object param = null)
         {
-            return Connection.QueryModel<TResult>(sql, param, _tran, commandTimeout: commandTimeout);
+            return Connection.QueryModel<TResult>(sql, param, _tran, commandTimeout: _dbConfig.CommandTimeout);
         }
 
         /// <summary>
@@ -172,7 +174,7 @@ namespace ZeKi.Frame.DB
         /// <returns></returns>
         public TResult QueryModel<TTable, TResult>(object whereObj, string orderStr = null, string selectFields = null)
         {
-            return Connection.QueryModel<TTable, TResult>(whereObj, orderStr, selectFields, _tran, commandTimeout: commandTimeout);
+            return Connection.QueryModel<TTable, TResult>(whereObj, orderStr, selectFields, _tran, commandTimeout: _dbConfig.CommandTimeout);
         }
 
         /// <summary>
@@ -184,7 +186,7 @@ namespace ZeKi.Frame.DB
         /// <returns></returns>
         public TResult QueryJoinModel<TResult>(string sqlNoWhere, object whereObj, string orderStr)
         {
-            return Connection.QueryJoinModel<TResult>(sqlNoWhere, whereObj, orderStr, _tran, commandTimeout: commandTimeout);
+            return Connection.QueryJoinModel<TResult>(sqlNoWhere, whereObj, orderStr, _tran, commandTimeout: _dbConfig.CommandTimeout);
         }
 
         /// <summary>
@@ -200,7 +202,7 @@ namespace ZeKi.Frame.DB
         /// <returns></returns>
         public IEnumerable<TReturn> QueryList<TFirst, TSecond, TReturn>(string sql, Func<TFirst, TSecond, TReturn> map, object param = null)
         {
-            return Connection.Query(sql, map, param, _tran, commandTimeout: commandTimeout);
+            return Connection.Query(sql, map, param, _tran, commandTimeout: _dbConfig.CommandTimeout);
         }
 
         /// <summary>
@@ -216,7 +218,7 @@ namespace ZeKi.Frame.DB
         /// <returns></returns>
         public IEnumerable<TReturn> QueryList<TFirst, TSecond, TThird, TReturn>(string sql, Func<TFirst, TSecond, TThird, TReturn> map, object param = null)
         {
-            return Connection.Query(sql, map, param, _tran, commandTimeout: commandTimeout);
+            return Connection.Query(sql, map, param, _tran, commandTimeout: _dbConfig.CommandTimeout);
         }
 
         ///// <summary>
@@ -241,7 +243,7 @@ namespace ZeKi.Frame.DB
         /// <returns></returns>
         public PageData<TResult> PageList<TResult>(PageParameters pcp)
         {
-            return Connection.PageList<TResult>(pcp, _tran, commandTimeout: commandTimeout);
+            return Connection.PageList<TResult>(pcp, _tran, commandTimeout: _dbConfig.CommandTimeout);
         }
         #endregion
 
@@ -256,7 +258,7 @@ namespace ZeKi.Frame.DB
         /// <returns>返回集合</returns>
         public IEnumerable<T> QueryProcedure<T>(string proceName, object param = null)
         {
-            return Connection.QueryProcedure<T>(proceName, param, _tran, commandTimeout: commandTimeout);
+            return Connection.QueryProcedure<T>(proceName, param, _tran, commandTimeout: _dbConfig.CommandTimeout);
         }
 
         /// <summary>
@@ -270,7 +272,7 @@ namespace ZeKi.Frame.DB
         /// <returns></returns>
         public void ExecProcedure(string proceName, object param = null)
         {
-            Connection.ExecProcedure(proceName, param, _tran, commandTimeout: commandTimeout);
+            Connection.ExecProcedure(proceName, param, _tran, commandTimeout: _dbConfig.CommandTimeout);
         }
         #endregion
 
@@ -284,7 +286,7 @@ namespace ZeKi.Frame.DB
         /// <returns></returns>
         public int Count<TModel>(string sqlWhere, object param = null) where TModel : class
         {
-            return Connection.Count<TModel>(sqlWhere, param, _tran, commandTimeout: commandTimeout);
+            return Connection.Count<TModel>(sqlWhere, param, _tran, commandTimeout: _dbConfig.CommandTimeout);
         }
 
         /// <summary>
@@ -294,7 +296,7 @@ namespace ZeKi.Frame.DB
         /// <returns></returns>
         public int Count<TModel>(object whereObj = null) where TModel : class
         {
-            return Connection.Count<TModel>(whereObj, _tran, commandTimeout: commandTimeout);
+            return Connection.Count<TModel>(whereObj, _tran, commandTimeout: _dbConfig.CommandTimeout);
         }
 
         /// <summary>
@@ -307,7 +309,7 @@ namespace ZeKi.Frame.DB
         /// <returns></returns>
         public TResult Sum<TModel, TResult>(string field, string sqlWhere, object param = null) where TModel : class
         {
-            return Connection.Sum<TModel, TResult>(field, sqlWhere, param, _tran, commandTimeout: commandTimeout);
+            return Connection.Sum<TModel, TResult>(field, sqlWhere, param, _tran, commandTimeout: _dbConfig.CommandTimeout);
         }
         #endregion
 
@@ -318,7 +320,7 @@ namespace ZeKi.Frame.DB
         /// <returns></returns>
         public int Execute(string sql, object param = null)
         {
-            return Connection.ExecuteSql(sql, param, _tran, commandTimeout: commandTimeout);
+            return Connection.ExecuteSql(sql, param, _tran, commandTimeout: _dbConfig.CommandTimeout);
         }
         #endregion
 
@@ -395,10 +397,10 @@ namespace ZeKi.Frame.DB
         private IDbConnection GetConnection()
         {
             IDbConnection _conn = null;
-            switch (dbType)
+            switch (_dbConfig.Type)
             {
                 case DBEnums.DBType.MSSQL:
-                    _conn = new SqlConnection(connStr);
+                    _conn = new SqlConnection(_dbConfig.ConnectionString);
                     break;
                 case DBEnums.DBType.MYSQL:
 
@@ -409,7 +411,7 @@ namespace ZeKi.Frame.DB
             //core在此类的构造函数中获取不到MiniProfiler.Current其值
             //因为还没执行ProfilingFilterAttribute.OnActionExecutionAsync方法的StartNew,所以为null
             if (MiniProfiler.Current != null) //MiniProfiler初始化
-                _conn = new StackExchange.Profiling.Data.ProfiledDbConnection((DbConnection)_conn, MiniProfiler.Current);
+                _conn = new ProfiledDbConnection((DbConnection)_conn, MiniProfiler.Current);
             if (_conn.State == ConnectionState.Closed)
                 _conn.Open();
             return _conn;

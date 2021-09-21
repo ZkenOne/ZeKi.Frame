@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using Autofac;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using StackExchange.Profiling;
 using ZeKi.Frame.Common;
 using ZeKi.Frame.DAL;
@@ -19,6 +20,13 @@ namespace ZeKi.Frame.UI
 {
     public class AutofacModuleRegister : Autofac.Module
     {
+        private readonly IConfiguration _configuration;
+
+        public AutofacModuleRegister(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
         //重写Autofac管道Load方法，在这里注册注入
         protected override void Load(ContainerBuilder builder)
         {
@@ -34,9 +42,10 @@ namespace ZeKi.Frame.UI
             //builder.RegisterGeneric(typeof(BaseDAL<>)).As(typeof(IBaseDAL<>)).InstancePerDependency();
             //builder.RegisterGeneric(typeof(BaseBLL<>)).As(typeof(IBaseBLL<>)).InstancePerDependency();
 
+            //获取BLL DAL 的程序集名称
+            Assembly bllAsmService = Assembly.Load(_configuration.GetValue<string>("AssemblyNameConfig:BLLFullName"));
+            Assembly dalAsmService = Assembly.Load(_configuration.GetValue<string>("AssemblyNameConfig:DALFullName"));
             //ZeKi.Frame.BLL.dll/ZeKi.Frame.DAL.dll中的所有类注册给它的全部实现接口，并且把实现类中的属性也进行注册
-            Assembly bllAsmService = Assembly.Load(AppSettings.GetValue("BLLFullName"));
-            Assembly dalAsmService = Assembly.Load(AppSettings.GetValue("DALFullName"));
             //不是抽象类 并且 公开 并且 是class 并且 (后缀为BLL 或者 后缀为DAL)
             builder.RegisterAssemblyTypes(bllAsmService, dalAsmService).Where(t => !t.IsAbstract && t.IsPublic && t.IsClass && (t.Name.EndsWith("BLL") || t.Name.EndsWith("DAL")))
                 .AsImplementedInterfaces().InstancePerDependency();
