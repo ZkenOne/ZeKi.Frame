@@ -13,8 +13,8 @@ namespace ZeKi.Frame.DAL
     public class SysUserInfoDAL : BaseDAL, ISysUserInfoDAL
     {
         //使用DAL
-        public ISysRoleDAL _sysRoleDAL { set; get; }
-        public ILogger<SysUserInfoDAL> _logger { set; get; }
+        private readonly ISysRoleDAL _sysRoleDAL;
+        private readonly ILogger<SysUserInfoDAL> _logger;
 
         public SysUserInfoDAL(ISysRoleDAL sysRoleDAL, ILogger<SysUserInfoDAL> logger, DbContext dbContext) : base(dbContext)
         {

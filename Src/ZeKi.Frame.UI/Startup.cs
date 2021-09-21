@@ -17,6 +17,7 @@ using Microsoft.Extensions.Hosting;
 using StackExchange.Profiling;
 using ZeKi.Frame.Common;
 using ZeKi.Frame.IBLL;
+using ZeKi.Frame.Model.Config;
 using ZeKi.Frame.UI.Filters;
 using ZeKi.Frame.UI.Handler;
 using ZeKi.Frame.UI.Middleware;
@@ -25,12 +26,12 @@ namespace ZeKi.Frame.UI
 {
     public class Startup
     {
+        private readonly IConfiguration _configuration;
+
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            _configuration = configuration;
         }
-
-        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -50,11 +51,13 @@ namespace ZeKi.Frame.UI
             });
 
             //注册CurrencyClient 且 添加一个出站请求中间件
-            services.AddHttpClient<ICurrencyClient, CurrencyClient>()
-                .AddHttpMessageHandler<GlobalHttpHandler>();
+            services.AddHttpClient<ICurrencyClient, CurrencyClient>().AddHttpMessageHandler<GlobalHttpHandler>();
 
             ////注册配置动态代理(AspectCore)[AutoFac和AspectCore共存时 在ConfigureContainer配置]
             //services.ConfigureDynamicProxy();
+
+            //获取配置,方便其它地方注入使用
+            services.Configure<DBConfig>(_configuration.GetSection("DBConfig"));
         }
 
         // ConfigureContainer is where you can register things directly
@@ -80,7 +83,7 @@ namespace ZeKi.Frame.UI
             #endregion
 
             // Register your own things directly with Autofac, like:
-            builder.RegisterModule(new AutofacModuleRegister());
+            builder.RegisterModule(new AutofacModuleRegister(_configuration));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
